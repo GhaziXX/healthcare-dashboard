@@ -29,18 +29,18 @@ class SideMenu extends StatelessWidget {
             isDoctor
                 ? DrawerListTile(
                     title: "Doctor",
-                    svgSrc: "Assets/icons/menu_doctor.svg",
+                    svgSrc: "assets/icons/menu_doctor.svg",
                     press: () {},
                     usePath: true,
                   )
                 : DrawerListTile(
                     title: "Patients",
-                    svgSrc: "Assets/icons/menu_patient.svg",
+                    svgSrc: "assets/icons/menu_patient.svg",
                     press: () {},
                     usePath: true),
             DrawerListTile(
               title: "Report",
-              svgSrc: "Assets/icons/menu_report.svg",
+              svgSrc: "assets/icons/menu_report.svg",
               press: () {},
               usePath: true,
             ),
