@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
               create: (context) => MenuController(),
             )
           ],
-          child: AuthScreen(),
-          //  child: MainScreen(
-          //    isDoctor: false,
-          //  ),
+          // child: AuthScreen(),
+          child: MainScreen(
+            isDoctor: false,
+          ),
         ),
       );
     });

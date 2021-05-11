@@ -154,7 +154,7 @@ class _LoginState extends State<Login> {
             obscureText: _isObscurePass,
             validator: FieldValidator.password(
               minLength: 6,
-              maxLength: 12,
+              maxLength: 20,
               shouldContainNumber: true,
               shouldContainCapitalLetter: true,
               shouldContainSmallLetter: true,

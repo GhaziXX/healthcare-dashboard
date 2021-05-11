@@ -166,7 +166,7 @@ class _SignupState extends State<Signup> {
             obscureText: _isPasswordObscure,
             validator: FieldValidator.password(
               minLength: 6,
-              maxLength: 12,
+              maxLength: 20,
               shouldContainNumber: true,
               shouldContainCapitalLetter: true,
               shouldContainSmallLetter: true,

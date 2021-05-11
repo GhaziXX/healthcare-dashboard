@@ -37,6 +37,7 @@ dependencies:
   jiffy: ^4.1.0
   flutter_fast_forms: ^0.9.0
   responsive_sizer: ^2.0.1
+  sticky_headers: ^0.2.0
   
 dev_dependencies:
   flutter_test:
