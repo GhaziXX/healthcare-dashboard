@@ -37,8 +37,6 @@ class DashboardScreen extends StatelessWidget {
                         RealtimeGraphs(),
                         SizedBox(height: defaultPadding),
                         Report(),
-                        SizedBox(height: defaultPadding),
-                        RealtimeGraphs(),
                         if (Responsive.isMobile(context))
                           SizedBox(height: defaultPadding),
                         if (Responsive.isMobile(context)) GeneralDetails()
