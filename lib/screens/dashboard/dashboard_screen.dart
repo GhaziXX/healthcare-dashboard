@@ -10,51 +10,65 @@ import 'components/realtime_graph.dart';
 import 'components/report.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key key,@required this.isDoctor,}) : super(key: key);
+  const DashboardScreen({
+    Key key,
+    @required this.isDoctor,
+  }) : super(key: key);
   final bool isDoctor;
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
     return SafeArea(
-      child: SingleChildScrollView(
-       padding: EdgeInsets.all(defaultPadding),
-        child: StickyHeader(
-          header: Header(isDoctor: this.isDoctor,),
-          content: Column(
-            children: [
-              //Header(),
-              SizedBox(
-                height:3* defaultPadding,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      children: [
-                        if (Responsive.isMobile(context)) GeneralDetails(connected: true,),
-                        if (Responsive.isMobile(context)) SizedBox(height: defaultPadding),
-                        MyGraph(),
-                        SizedBox(height: defaultPadding),
-                        RealtimeGraphs(),
-                        SizedBox(height: defaultPadding),
-                        Report(),
-                      ],
-                    ),
-                  ),
-                  if (!Responsive.isMobile(context))
-                    SizedBox(
-                      width: defaultPadding,
-                    ),
-                  if (!Responsive.isMobile(context))
+      child: Scrollbar(
+        controller: _scrollController,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.all(defaultPadding),
+          child: StickyHeader(
+            header: Header(
+              isDoctor: true,
+            ),
+            content: Column(
+              children: [
+                //Header(),
+                SizedBox(
+                  height: defaultPadding,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Expanded(
-                      flex: 2,
-                      child: GeneralDetails(connected: true,),
-                    )
-                ],
-              )
-            ],
+                      flex: 5,
+                      child: Column(
+                        children: [
+                          MyGraph(),
+                          SizedBox(height: defaultPadding),
+                          RealtimeGraphs(),
+                          SizedBox(height: defaultPadding),
+                          Report(),
+                          if (Responsive.isMobile(context))
+                            SizedBox(height: defaultPadding),
+                          if (Responsive.isMobile(context)) GeneralDetails()
+                        ],
+                      ),
+                    ),
+                    if (!Responsive.isMobile(context))
+                      SizedBox(
+                        width: defaultPadding,
+                      ),
+                    if (!Responsive.isMobile(context))
+                      Expanded(
+                        flex: 2,
+                        child: GeneralDetails(
+                          connected: true,
+                        ),
+                      )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

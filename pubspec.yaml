@@ -41,7 +41,12 @@ dependencies:
   mqtt_client:
   syncfusion_flutter_charts:
   syncfusion_flutter_gauges:
-
+  intl: ^0.17.0
+  syncfusion_flutter_datepicker: ^19.1.59-beta
+  time_range_picker: ^2.0.1
+  postgres: ^2.3.2
+  
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

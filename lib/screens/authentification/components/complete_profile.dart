@@ -274,6 +274,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                   keyboardType: TextInputType.multiline,
                   controller: _doctorBioController,
                   maxLines: 99,
+                  maxLength: 1000,
                   validator: FieldValidator.required(
                       message: "Please enter a short description"),
                   decoration: const InputDecoration(
