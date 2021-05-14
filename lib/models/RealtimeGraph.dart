@@ -1,7 +1,7 @@
 class RealtimeGraph {
-  final String icon, title, details;
+  final String icon, title, details,route;
 
-  RealtimeGraph({this.icon, this.title, this.details});
+  RealtimeGraph({this.icon, this.title, this.details,this.route});
 }
 
 List realtimeGraphs = [
@@ -9,10 +9,12 @@ List realtimeGraphs = [
     icon: "assets/icons/temperature.svg",
     title: "Temperature",
     details: "Details",
+    route: '/tempGraph'
   ),
   RealtimeGraph(
     icon: "assets/icons/ecg.svg",
     title: "ECG",
     details: "Details",
+    route: "/ECG"
   ),
 ];

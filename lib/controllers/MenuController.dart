@@ -1,13 +1,15 @@
+import 'package:admin/screens/dashboard/components/dropdown.dart';
 import 'package:flutter/material.dart';
 
 class MenuController extends ChangeNotifier {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<CustomDropdownState> _globalKey = GlobalKey<CustomDropdownState>();
 
-  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
+  GlobalKey<CustomDropdownState> get menuKey => _globalKey;
 
   void controlMenu() {
-    if (!_scaffoldKey.currentState.isDrawerOpen) {
-      _scaffoldKey.currentState.openDrawer();
+    if (_globalKey.currentState.isDropdownOpened) {
+      _globalKey.currentState.floatingDropdown.remove();
     }
+    else print("ma mchetech");
   }
 }

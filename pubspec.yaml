@@ -32,13 +32,16 @@ dependencies:
   flutter_svg: ^0.22.0
   fl_chart: ^0.35.0
   provider: ^5.0.0
-  the_validator: ^2.0.0
   date_time_picker: ^2.0.0
+  the_validator: ^2.0.0
   jiffy: ^4.1.0
   flutter_fast_forms: ^0.9.0
   responsive_sizer: ^2.0.1
   sticky_headers: ^0.2.0
-  
+  mqtt_client:
+  syncfusion_flutter_charts:
+  syncfusion_flutter_gauges:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

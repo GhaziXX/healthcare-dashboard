@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../constants/constants.dart';
 
 class GeneralInfoCard extends StatelessWidget {
-  const GeneralInfoCard({
-    Key key,
-    @required this.title,
-    @required this.details,
-    @required this.size,
-    @required this.icon,
-  }) : super(key: key);
+  const GeneralInfoCard(
+      {Key key,
+      @required this.title,
+      @required this.details,
+      @required this.icon,
+      @required this.color})
+      : super(key: key);
 
-  final String title, details, size;
+  final String title, details;
   final IconData icon;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,10 @@ class GeneralInfoCard extends StatelessWidget {
             width: 20,
             child: Icon(
               icon,
-              color: primaryColor,
+              color: color,
             ),
           ),
+          SizedBox(width: defaultPadding),
           Expanded(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -54,7 +56,6 @@ class GeneralInfoCard extends StatelessWidget {
               ],
             ),
           )),
-          Text(size),
         ],
       ),
     );

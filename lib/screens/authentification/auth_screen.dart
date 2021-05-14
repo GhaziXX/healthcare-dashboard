@@ -1,9 +1,8 @@
-import 'package:admin/constants.dart';
+import 'package:admin/constants/constants.dart';
 import 'package:admin/screens/authentification/components/complete_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../responsive.dart';
 import 'components/login.dart';
 import 'components/signup.dart';
 

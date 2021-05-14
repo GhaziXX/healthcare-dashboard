@@ -2,7 +2,7 @@ import 'package:admin/models/RealtimeGraph.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../constants.dart';
+import 'package:admin/constants/constants.dart';
 
 class Report extends StatelessWidget {
   const Report({

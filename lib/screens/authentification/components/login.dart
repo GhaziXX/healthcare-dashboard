@@ -1,4 +1,4 @@
-import 'package:admin/constants.dart';
+import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:the_validator/the_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

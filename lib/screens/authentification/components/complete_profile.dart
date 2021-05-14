@@ -6,7 +6,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:the_validator/the_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../constants.dart';
+import '../../../constants/constants.dart';
 import '../../../responsive.dart';
 import 'action_button.dart';
 

@@ -1,4 +1,4 @@
-import 'package:admin/constants.dart';
+import 'package:admin/constants/constants.dart';
 import 'package:the_validator/the_validator.dart';
 import '../../../responsive.dart';
 import 'action_button.dart';

@@ -1,8 +1,7 @@
 import 'package:admin/models/RealtimeGraph.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../../constants.dart';
+import '../../../constants/constants.dart';
 
 class RealtimeGraphs extends StatelessWidget {
   const RealtimeGraphs({
@@ -24,6 +23,8 @@ class RealtimeGraphs extends StatelessWidget {
             "Realtime Graphs",
             style: Theme.of(context).textTheme.subtitle1,
           ),
+          //SizedBox(height: defaultPadding),
+
           SizedBox(
             width: double.infinity,
             child: DataTable(
@@ -35,20 +36,20 @@ class RealtimeGraphs extends StatelessWidget {
               ],
               rows: List.generate(
                 realtimeGraphs.length,
-                (index) => realtimeGraphDataRow(realtimeGraphs[index]),
+                (index) => realtimeGraphDataRow(realtimeGraphs[index],context),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
 
-DataRow realtimeGraphDataRow(RealtimeGraph graph) {
+DataRow realtimeGraphDataRow(RealtimeGraph graph,BuildContext context) {
   return DataRow(cells: [
     DataCell(
-      Row(
+       Row(
         children: [
           SvgPicture.asset(
             graph.icon,
@@ -62,6 +63,7 @@ DataRow realtimeGraphDataRow(RealtimeGraph graph) {
           )
         ],
       ),
+      onTap: (){Navigator.pushNamed(context,graph.route );},
     ),
     DataCell(Text(graph.details)),
   ]);

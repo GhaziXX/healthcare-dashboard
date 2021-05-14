@@ -1,10 +1,8 @@
-import 'package:admin/controllers/MenuController.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../responsive.dart';
 import 'components/side_menu.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({
@@ -17,7 +15,6 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
       drawer: SideMenu(
         isDoctor: false,
       ),
@@ -31,7 +28,7 @@ class MainScreen extends StatelessWidget {
               ),
             Expanded(
               flex: 5,
-              child: DashboardScreen(),
+              child: DashboardScreen(isDoctor: isDoctor,),
             )
           ],
         ),
