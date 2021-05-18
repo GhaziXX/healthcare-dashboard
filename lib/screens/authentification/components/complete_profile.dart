@@ -1,10 +1,14 @@
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/models/DoctorsCat.dart';
+import 'package:admin/models/UserData.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:the_validator/the_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 import '../../../responsive.dart';
@@ -43,7 +47,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               : 16),
       child: Center(
         child: Card(
-          elevation: 4,
+          elevation: 10,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25)),
           ),
@@ -94,8 +98,28 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       ),
                       ActionButton(
                           title: "Finish",
-                          press: () {
-                            _formKey.currentState.validate();
+                          press: () async {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              final firebaseUser = context.read<User>();
+                              await FirestoreServices().createUser(UserData(
+                                  firstName: _nameController.text,
+                                  lastName: _lastController.text,
+                                  age: _age,
+                                  isDoctor: _isDoctor,
+                                  description: _isDoctor
+                                      ? _doctorBioController.text
+                                      : null,
+                                  phoneNumber: _phoneController.text,
+                                  gender: _gender,
+                                  address: _addressController.text,
+                                  id: firebaseUser.uid,
+                                  email: firebaseUser.email,
+                                  birthdate: _birthdateController.text,
+                                  speciality: _doctorType));
+                              await firebaseUser.reload();
+                              //Navigator.of(context).pushNamed("/mainScreen");
+                            }
                           }),
                     ],
                   ),
@@ -198,7 +222,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                   : null,
           onChanged: (val) {
             _age = Jiffy(val).fromNow().split(" ").sublist(0, 2).join(" ");
-            print(_age);
+            //print(_age);
           },
           onSaved: (val) {
             _age = Jiffy(val).fromNow().split(" ").sublist(0, 2).join(" ");

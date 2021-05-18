@@ -15,9 +15,11 @@ class GraphInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if (Responsive.isMobile(context)) { Navigator.of(context).pushNamed(info.route);}
-        else Navigator.pushNamed(context, '/all');
+      onTap: () {
+        if (Responsive.isMobile(context)) {
+          Navigator.of(context).pushNamed(info.route);
+        } else
+          Navigator.pushNamed(context, '/all');
       },
       child: Container(
         padding: EdgeInsets.all(defaultPadding),
@@ -29,23 +31,25 @@ class GraphInfoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(defaultPadding * 0.5),
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: info.color.withOpacity(0.1),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+            SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(defaultPadding * 0.5),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: info.color.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: SvgPicture.asset(
+                      info.svgSrc,
+                      color: info.color,
+                    ),
                   ),
-                  child: SvgPicture.asset(
-                    info.svgSrc,
-                    color: info.color,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             Text(
               info.title,

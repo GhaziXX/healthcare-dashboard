@@ -28,7 +28,7 @@ class DashboardScreen extends StatelessWidget {
           padding: EdgeInsets.all(defaultPadding),
           child: StickyHeader(
             header: Header(
-              isDoctor: true,
+              isDoctor: isDoctor,
             ),
             content: Column(
               children: [
@@ -50,7 +50,10 @@ class DashboardScreen extends StatelessWidget {
                           Report(),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
-                          if (Responsive.isMobile(context)) GeneralDetails()
+                          if (Responsive.isMobile(context))
+                            GeneralDetails(
+                              connected: true,
+                            )
                         ],
                       ),
                     ),

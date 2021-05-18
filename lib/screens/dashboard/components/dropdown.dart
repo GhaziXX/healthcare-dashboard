@@ -2,6 +2,7 @@ import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../responsive.dart';
+
 class CustomDropdown extends StatefulWidget {
   const CustomDropdown({Key key}) : super(key: key);
 
@@ -34,7 +35,7 @@ class CustomDropdownState extends State<CustomDropdown> {
   OverlayEntry _createFloatingDropdown() {
     return OverlayEntry(builder: (context) {
       return GestureDetector(
-        onTap: (){
+        onTap: () {
           setState(() {
             if (isDropdownOpened) {
               floatingDropdown.remove();
@@ -48,12 +49,14 @@ class CustomDropdownState extends State<CustomDropdown> {
           child: CompositedTransformFollower(
             link: this._layerLink,
             showWhenUnlinked: false,
-            offset: Offset(0,height),
+            offset: Offset(0, height),
             child: Container(
               width: width,
               child: Column(
                 children: [
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   DropDown(
                     itemHeight: height,
                   ),
@@ -102,7 +105,9 @@ class CustomDropdownState extends State<CustomDropdown> {
                     child: Text("Ghazi Tounsi",
                         style: TextStyle(color: Colors.white)),
                   ),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                !isDropdownOpened
+                    ? Icon(Icons.keyboard_arrow_down, color: Colors.white)
+                    : Icon(Icons.keyboard_arrow_up, color: Colors.white),
               ],
             ),
           )),
@@ -136,7 +141,9 @@ class _DropDownState extends State<DropDown> {
                 iconData: Icons.person_outline,
                 isSelected: false,
               ),
-              SizedBox(height: defaultPadding,),
+              SizedBox(
+                height: defaultPadding,
+              ),
               DropDownItem.last(
                 text: "Logout",
                 iconData: Icons.exit_to_app,
@@ -157,19 +164,17 @@ class DropDownItem extends StatelessWidget {
   final bool isFirstItem;
   final bool isLastItem;
 
-
-
-  const DropDownItem(
-      {Key key,
-        this.text,
-        this.iconData,
-        this.isSelected = false,
-        this.isFirstItem = false,
-        this.isLastItem = false,})
-      : super(key: key);
+  const DropDownItem({
+    Key key,
+    this.text,
+    this.iconData,
+    this.isSelected = false,
+    this.isFirstItem = false,
+    this.isLastItem = false,
+  }) : super(key: key);
 
   factory DropDownItem.first(
-      {String text, IconData iconData, bool isSelected,route}) {
+      {String text, IconData iconData, bool isSelected, route}) {
     return DropDownItem(
       text: text,
       iconData: iconData,
@@ -178,7 +183,8 @@ class DropDownItem extends StatelessWidget {
     );
   }
 
-  factory DropDownItem.last({String text, IconData iconData, bool isSelected,route}) {
+  factory DropDownItem.last(
+      {String text, IconData iconData, bool isSelected, route}) {
     return DropDownItem(
       text: text,
       iconData: iconData,
@@ -190,23 +196,16 @@ class DropDownItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: (){
-
-      },
+      onPressed: () {},
       child: Row(
         children: <Widget>[
           Text(
             text,
             style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 16),
           ),
+          if (!Responsive.isMobile(context)) Spacer(),
           if (!Responsive.isMobile(context))
-            Spacer(),
-          if (!Responsive.isMobile(context))
-            Icon(
-                iconData,
-                color: Colors.white,
-                size : 18
-            ),
+            Icon(iconData, color: Colors.white, size: 18),
         ],
       ),
     );

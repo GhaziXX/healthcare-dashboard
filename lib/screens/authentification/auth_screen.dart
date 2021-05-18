@@ -24,18 +24,10 @@ class _AuthScreenState extends State<AuthScreen> {
         height: _size.height,
         child: Stack(
           children: [
-            Row(
-              children: [
-                Container(
-                  height: double.infinity,
-                  width: _size.width / 2,
-                  color: bgColor,
-                ),
-                Container(
-                    height: double.infinity,
-                    width: _size.width / 2,
-                    color: bgColor),
-              ],
+            Container(
+              height: double.infinity,
+              width: _size.width / 2,
+              color: bgColor,
             ),
             if (_size.width > 914)
               Align(

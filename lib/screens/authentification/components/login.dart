@@ -1,7 +1,12 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/constants/constants.dart';
+import 'package:admin/models/snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:the_validator/the_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:provider/provider.dart';
 
 import '../../../responsive.dart';
 import 'action_button.dart';
@@ -35,7 +40,7 @@ class _LoginState extends State<Login> {
               : 16),
       child: Center(
         child: Card(
-          elevation: 4,
+          elevation: 10,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25)),
           ),
@@ -92,7 +97,27 @@ class _LoginState extends State<Login> {
                       ActionButton(
                           title: "Login",
                           press: () {
-                            _formKey.currentState.validate();
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              context
+                                  .read<AuthenticationServices>()
+                                  .signIn(
+                                      email: _emailController.text,
+                                      password: _passwordController.text)
+                                  .then((value) async {
+                                SnackbarMessage(
+                                  message: value,
+                                  icon: Icon(Icons.error, color: Colors.red),
+                                ).showMessage(
+                                  context,
+                                );
+                                if (value == 'Signed in') {
+                                  context.read<User>();
+                                  // Navigator.of(context)
+                                  //     .pushNamed("/mainScreen");
+                                }
+                              });
+                            }
                           }),
                       SizedBox(height: 32),
                       Responsive(
@@ -152,14 +177,7 @@ class _LoginState extends State<Login> {
             },
             controller: _passwordController,
             obscureText: _isObscurePass,
-            validator: FieldValidator.password(
-              minLength: 6,
-              maxLength: 20,
-              shouldContainNumber: true,
-              shouldContainCapitalLetter: true,
-              shouldContainSmallLetter: true,
-              shouldContainSpecialChars: true,
-            ),
+            validator: FieldValidator.required(),
             style: TextStyle(color: Colors.white, fontSize: 10.sp),
             decoration: InputDecoration(
               labelText: "Password",

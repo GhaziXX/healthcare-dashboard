@@ -27,7 +27,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
   google_fonts: ^2.0.0
   flutter_svg: ^0.22.0
   fl_chart: ^0.35.0
@@ -41,10 +40,14 @@ dependencies:
   mqtt_client:
   syncfusion_flutter_charts:
   syncfusion_flutter_gauges:
+  firebase_core: 
+  firebase_auth:
+  cloud_firestore:
+  another_flushbar:
   intl: ^0.17.0
   syncfusion_flutter_datepicker: ^19.1.59-beta
   time_range_picker: ^2.0.1
-  postgres: ^2.3.2
+  http: ^0.13.3
   
   
 dev_dependencies:

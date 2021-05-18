@@ -10,46 +10,57 @@ class RealtimeGraphs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(defaultPadding),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Realtime Graphs",
-            style: Theme.of(context).textTheme.subtitle1,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Realtime Graphs",
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        SizedBox(
+          height: defaultPadding,
+        ),
+        Container(
+          padding: EdgeInsets.all(defaultPadding),
+          decoration: BoxDecoration(
+            color: secondaryColor,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
-          //SizedBox(height: defaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //SizedBox(height: defaultPadding),
 
-          SizedBox(
-            width: double.infinity,
-            child: DataTable(
-              columnSpacing: defaultPadding,
-              horizontalMargin: 0,
-              columns: [
-                DataColumn(label: Text("Graph name")),
-                DataColumn(label: Text("Details")),
-              ],
-              rows: List.generate(
-                realtimeGraphs.length,
-                (index) => realtimeGraphDataRow(realtimeGraphs[index],context),
+              SizedBox(
+                width: double.infinity,
+                child: DataTable(
+                  columnSpacing: defaultPadding,
+                  horizontalMargin: 0,
+                  columns: [
+                    DataColumn(
+                        label: Text("Graph name", textAlign: TextAlign.center)),
+                    // DataColumn(
+                    //     label: Text("Details", textAlign: TextAlign.center)),
+                  ],
+                  rows: List.generate(
+                    realtimeGraphs.length,
+                    (index) =>
+                        realtimeGraphDataRow(realtimeGraphs[index], context),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-DataRow realtimeGraphDataRow(RealtimeGraph graph,BuildContext context) {
+DataRow realtimeGraphDataRow(RealtimeGraph graph, BuildContext context) {
   return DataRow(cells: [
     DataCell(
-       Row(
+      Row(
         children: [
           SvgPicture.asset(
             graph.icon,
@@ -63,8 +74,10 @@ DataRow realtimeGraphDataRow(RealtimeGraph graph,BuildContext context) {
           )
         ],
       ),
-      onTap: (){Navigator.pushNamed(context,graph.route );},
+      onTap: () {
+        Navigator.pushNamed(context, graph.route);
+      },
     ),
-    DataCell(Text(graph.details)),
+    // DataCell(Text(graph.details)),
   ]);
 }

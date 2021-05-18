@@ -22,7 +22,6 @@ class AllinOneScreen extends StatefulWidget {
   _AllinOneScreenState createState() => _AllinOneScreenState();
 }
 
-
 class _AllinOneScreenState extends State<AllinOneScreen> {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
                   Row(
                     children: [
                       Expanded(
-                        flex : 5,
+                        flex: 5,
                         child: Column(
                           children: [
                             Header(
@@ -61,16 +60,26 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
                                   crossAxisCount: _size.width < 650 ? 1 : 2,
                                   childAspectRatio: _size.width < 650 ? 1.1 : 1,
                                 ),
-                                tablet: GraphGridView(
-                                ),
+                                tablet: GraphGridView(),
                                 desktop: GraphGridView(
                                   crossAxisCount: _size.width < 1400 ? 3 : 2,
                                   childAspectRatio: _size.width < 1400 ? 1 : 4,
                                 )),
-                            SizedBox(height: defaultPadding,),
-                            if (!Responsive.isMobile(context)) Responsive(mobile: Container(),
-                                tablet: GraphHolder(child: ECGGraph(ecg:[])),
-                                desktop: GraphHolder(child: ECGGraph(ecg:[]))),
+                            SizedBox(
+                              height: defaultPadding,
+                            ),
+                            if (!Responsive.isMobile(context))
+                              Responsive(
+                                  mobile: Container(),
+                                  tablet: GraphHolder(
+                                      child: ECGGraph(
+                                          ecg:
+                                              data != null ? data["ecg"] : [])),
+                                  desktop: GraphHolder(
+                                      child: ECGGraph(
+                                          ecg: data != null
+                                              ? data["ecg"]
+                                              : []))),
                           ],
                         ),
                       ),
@@ -107,9 +116,12 @@ class _GraphGridViewState extends State<GraphGridView> {
   Widget build(BuildContext context) {
     List<Widget> children = [
       SPO2Radial(data != null ? data["spo2"] : 0),
-      HeartRate(data != null ? data["heartrate"] : 0,),
+      HeartRate(
+        data != null ? data["heartrate"] : 0,
+      ),
       TempGauge(data != null ? data["temperature"] : 0),
-      if (Responsive.isMobile(context)) ECGGraph(ecg: data != null ? [] : [])
+      if (Responsive.isMobile(context))
+        ECGGraph(ecg: data != null ? data["ecg"] : [])
     ];
     List<Widget> zeros = [
       SPO2Radial(0),
@@ -161,7 +173,9 @@ class GraphHolder extends StatelessWidget {
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: SizedBox (child: this.child,),
+      child: SizedBox(
+        child: this.child,
+      ),
     );
   }
 }

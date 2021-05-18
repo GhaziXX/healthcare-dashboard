@@ -1,9 +1,13 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/constants/constants.dart';
+import 'package:admin/models/snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:the_validator/the_validator.dart';
 import '../../../responsive.dart';
 import 'action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:provider/provider.dart';
 
 class Signup extends StatefulWidget {
   final Function onLoginSelected;
@@ -40,7 +44,7 @@ class _SignupState extends State<Signup> {
               : 16),
       child: Center(
         child: Card(
-          elevation: 4,
+          elevation: 10,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(25),
@@ -98,8 +102,27 @@ class _SignupState extends State<Signup> {
                       ),
                       ActionButton(
                           press: () {
-                            if (_formKey.currentState.validate())
-                              widget.onCompleteProfileSelected();
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              context
+                                  .read<AuthenticationServices>()
+                                  .signUp(
+                                      email: _emailController.text,
+                                      password: _passwordController.text)
+                                  .then((value) {
+                                if (value == 'Signed Up') {
+                                  widget.onCompleteProfileSelected();
+                                } else {
+                                  SnackbarMessage(
+                                    message: value,
+                                    icon: Icon(Icons.error, color: Colors.red),
+                                  ).showMessage(
+                                    context,
+                                  );
+                                }
+                                context.read<User>();
+                              });
+                            }
                           },
                           title: 'Register'),
                       SizedBox(
@@ -151,6 +174,8 @@ class _SignupState extends State<Signup> {
           ),
           TextFormField(
             style: TextStyle(color: Colors.white, fontSize: 10.sp),
+            controller: _passwordController,
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 setState(() {
@@ -162,16 +187,23 @@ class _SignupState extends State<Signup> {
                 });
               }
             },
-            controller: _passwordController,
             obscureText: _isPasswordObscure,
             validator: FieldValidator.password(
-              minLength: 6,
-              maxLength: 20,
-              shouldContainNumber: true,
-              shouldContainCapitalLetter: true,
-              shouldContainSmallLetter: true,
-              shouldContainSpecialChars: true,
-            ),
+                minLength: 6,
+                shouldContainNumber: true,
+                shouldContainCapitalLetter: true,
+                shouldContainSmallLetter: true,
+                shouldContainSpecialChars: true,
+                errorMessage: "Password must match the required format",
+                onNumberNotPresent: () {
+                  return "Password must contain number";
+                },
+                onSpecialCharsNotPresent: () {
+                  return "Password must contain special characters";
+                },
+                onCapitalLetterNotPresent: () {
+                  return "Password must contain capital letters";
+                }),
             decoration: InputDecoration(
               labelText: "Password",
               prefixIcon: Icon(Icons.lock_outline),

@@ -16,13 +16,15 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: bgColor.withOpacity(0.9),
-      padding: EdgeInsets.only(top:defaultPadding/2,bottom: defaultPadding/2),
+      padding:
+          EdgeInsets.only(top: defaultPadding / 2, bottom: defaultPadding / 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (!Responsive.isDesktop(context))
             IconButton(
+                splashRadius: 0.1,
                 icon: Icon(Icons.menu),
                 onPressed: () {
                   context
@@ -34,7 +36,9 @@ class Header extends StatelessWidget {
               "Dashboard",
               style: Theme.of(context).textTheme.headline6,
             ),
-          SizedBox(width: 10,),
+          SizedBox(
+            width: 10,
+          ),
           if (!Responsive.isMobile(context))
             Spacer(
               flex: Responsive.isDesktop(context) ? 2 : 1,
@@ -43,7 +47,9 @@ class Header extends StatelessWidget {
             Expanded(
               child: SearchField(),
             ),
-          SizedBox(width: 10,),
+          SizedBox(
+            width: 10,
+          ),
           CustomDropdown()
         ],
       ),
@@ -83,7 +89,3 @@ class SearchField extends StatelessWidget {
     );
   }
 }
-
-
-
-

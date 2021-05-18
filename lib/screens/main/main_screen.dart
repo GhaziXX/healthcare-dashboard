@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideMenu(
-        isDoctor: false,
+        isDoctor: isDoctor,
       ),
       body: SafeArea(
         child: Row(

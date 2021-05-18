@@ -3,7 +3,6 @@ import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
 class ECGGraph extends StatefulWidget {
   final List<dynamic> ecg;
 
@@ -57,7 +56,9 @@ class _ECGGraphState extends State<ECGGraph> {
             ),
           ],
         ),
-        SizedBox( height: _size.height * 0.03,),
+        SizedBox(
+          height: _size.height * 0.03,
+        ),
         SfCartesianChart(
           plotAreaBorderWidth: 0,
           primaryXAxis: NumericAxis(
@@ -85,38 +86,40 @@ class _ECGGraphState extends State<ECGGraph> {
           ],
           tooltipBehavior: TooltipBehavior(enable: true),
         ),
-
       ],
     );
   }
 
   void _updateDataSource(Timer timer) {
-    if (!pause) {
-      if (mounted) {
-        //print(chartData.length);
-        setState(() {
-          if (chartData.length > 600) {
-            chartData.removeRange(0, 200);
-            for (int i = 0; i <= 199; i++) {
-              chartData.add(_ChartData(start + (i / 200), widget.ecg[i]));
+    if (widget.ecg != null) {
+      if (!pause) {
+        if (mounted) {
+          //print(chartData.length);
+          int l = widget.ecg.length;
+          setState(() {
+            if (chartData.length > 80) {
+              chartData.removeRange(0, l);
+              for (int i = 0; i <= l - 1; i++) {
+                chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+              }
+              _chartSeriesController.updateDataSource(
+                addedDataIndexes: List<int>.generate(
+                    l, (index) => chartData.length - 1 + index),
+                removedDataIndexes: List<int>.generate(l, (index) => index),
+              );
+            } else {
+              for (int i = 0; i <= l - 1; i++) {
+                chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+              }
+              _chartSeriesController.updateDataSource(
+                addedDataIndexes: List<int>.generate(
+                    l, (index) => chartData.length - 1 + index),
+              );
             }
-            _chartSeriesController.updateDataSource(
-              addedDataIndexes: List<int>.generate(
-                  200, (index) => chartData.length - 1 + index),
-              removedDataIndexes: List<int>.generate(200, (index) => index),
-            );
-          } else {
-            for (int i = 0; i <= 199; i++) {
-              chartData.add(_ChartData(start + (i / 200), widget.ecg[i]));
-            }
-            _chartSeriesController.updateDataSource(
-              addedDataIndexes: List<int>.generate(
-                  200, (index) => chartData.length - 1 + index),
-            );
-          }
-          //count += 199;
-          start++;
-        });
+            //count += 199;
+            start++;
+          });
+        }
       }
     }
   }
