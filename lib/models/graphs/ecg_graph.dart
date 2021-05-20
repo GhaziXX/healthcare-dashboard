@@ -27,7 +27,7 @@ class _ECGGraphState extends State<ECGGraph> {
 
   @override
   void dispose() {
-    timer?.cancel();
+    timer.cancel();
     super.dispose();
   }
 

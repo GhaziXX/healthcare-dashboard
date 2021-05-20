@@ -24,19 +24,21 @@ class UserData {
       this.address,
       this.isDoctor,
       this.birthdate});
-  UserData.fromData(Map<String, dynamic> data)
-      : id = data['id'],
-        firstName = data['first'],
-        lastName = data['last'],
-        description = data['description'],
-        age = data['age'],
-        gender = data['gender'],
-        speciality = data['speciality'],
-        phoneNumber = data['phoneNumber'],
-        email = data['email'],
-        isDoctor = data['isDoctor'],
-        birthdate = data['birthdate'],
-        address = data['address'];
+
+  UserData.fromJson(Map<String, dynamic> data)
+      : this(
+            id: data['id'] as String,
+            firstName: data['firstName'] as String,
+            lastName: data['lastName'] as String,
+            description: data['description'] as String,
+            age: data['age'] as String,
+            gender: data['gender'] as String,
+            speciality: data['speciality'] as String,
+            phoneNumber: data['phoneNumber'] as String,
+            email: data['email'] as String,
+            isDoctor: data['isDoctor'] as bool,
+            birthdate: data['birthdate'] as String,
+            address: data['address'] as String);
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'backend/firebase/authentification_services.dart';
+import 'models/UserData.dart';
 import 'mqtt/mqtt_wrapper.dart';
 import 'screens/authentification/auth_screen.dart';
 import 'screens/measures/ecg_screen.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatefulWidget {
 var data;
 MQTTWrapper mqttClientWrapper;
 bool isDoctor = true;
+UserData userData;
 
 class _MyAppState extends State<MyApp> {
   void setup() {
@@ -60,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             create: (context) =>
                 context.read<AuthenticationServices>().authStateChanges,
             initialData: null,
-          )
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -73,7 +75,10 @@ class _MyAppState extends State<MyApp> {
             canvasColor: secondaryColor,
           ),
           routes: {
-            '/mainScreen': (context) => MainScreen(isDoctor: isDoctor),
+            '/mainScreen': (context) => MainScreen(
+                  isDoctor: isDoctor,
+                  userData: userData,
+                ),
             '/spo2': (context) => SPO2Screen(isDoctor: isDoctor),
             '/temperature': (context) => TempScreen(isDoctor: isDoctor),
             '/heartrate': (context) => HeartScreen(isDoctor: isDoctor),

@@ -25,7 +25,6 @@ class Report extends StatelessWidget {
 
     TextEditingController _timeController = TextEditingController();
     TextEditingController _dateController = TextEditingController();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

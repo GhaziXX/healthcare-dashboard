@@ -15,8 +15,13 @@ import '../../../responsive.dart';
 import 'action_button.dart';
 
 class CompleteProfile extends StatefulWidget {
+  const CompleteProfile({Key key, this.address, this.password})
+      : super(key: key);
+
   @override
   _CompleteProfileState createState() => _CompleteProfileState();
+  final String address;
+  final String password;
 }
 
 class _CompleteProfileState extends State<CompleteProfile> {
@@ -101,6 +106,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           press: () async {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
+
                               final firebaseUser = context.read<User>();
                               await FirestoreServices().createUser(UserData(
                                   firstName: _nameController.text,

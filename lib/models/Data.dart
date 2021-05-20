@@ -5,8 +5,8 @@ class Data {
   final List data;
 
   Data({
-    @required this.date,
-    @required this.data,
+    this.date,
+    this.data,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {

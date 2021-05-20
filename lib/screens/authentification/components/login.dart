@@ -8,6 +8,8 @@ import 'package:the_validator/the_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:provider/provider.dart';
 
+import '../../../backend/firebase/authentification_services.dart';
+
 import '../../../responsive.dart';
 import 'action_button.dart';
 
@@ -27,6 +29,11 @@ class _LoginState extends State<Login> {
 
   bool _isPassEmpty = true;
   bool _isObscurePass = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +111,18 @@ class _LoginState extends State<Login> {
                                   .signIn(
                                       email: _emailController.text,
                                       password: _passwordController.text)
-                                  .then((value) async {
-                                SnackbarMessage(
-                                  message: value,
-                                  icon: Icon(Icons.error, color: Colors.red),
-                                ).showMessage(
-                                  context,
-                                );
+                                  .then((value) {
+                                if (value != 'Signed in') {
+                                  SnackbarMessage(
+                                    message: value,
+                                    icon: Icon(Icons.error, color: Colors.red),
+                                  ).showMessage(
+                                    context,
+                                  );
+                                }
                                 if (value == 'Signed in') {
-                                  context.read<User>();
+                                  print("signed in");
+                                  // context.read<User>();
                                   // Navigator.of(context)
                                   //     .pushNamed("/mainScreen");
                                 }

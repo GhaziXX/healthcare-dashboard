@@ -1,3 +1,4 @@
+import 'package:admin/models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -13,8 +14,10 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
     Key key,
     @required this.isDoctor,
+    @required this.userData,
   }) : super(key: key);
   final bool isDoctor;
+  final UserData userData;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class DashboardScreen extends StatelessWidget {
           child: StickyHeader(
             header: Header(
               isDoctor: isDoctor,
+              userData: userData,
             ),
             content: Column(
               children: [

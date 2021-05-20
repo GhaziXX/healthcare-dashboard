@@ -1,4 +1,5 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/models/UserData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,9 +9,11 @@ class SideMenu extends StatelessWidget {
   const SideMenu({
     Key key,
     @required this.isDoctor,
+    @required this.userData,
   }) : super(key: key);
 
   final bool isDoctor;
+  final UserData userData;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +84,7 @@ class SideMenu extends StatelessWidget {
               title: "Logout",
               icon: Icons.logout,
               press: () {
+                Navigator.popUntil(context, ModalRoute.withName('/'));
                 context.read<AuthenticationServices>().signOut();
               },
               usePath: false,

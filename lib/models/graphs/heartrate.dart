@@ -53,7 +53,7 @@ class _HeartRateState extends State<HeartRate> with TickerProviderStateMixin {
                   Icon(
                     Icons.favorite,
                     color: secondaryColor,
-                    size: 2 * _heartAnimation.value,
+                    size: 2.0 * _heartAnimation.value,
                   ),
                 ]),
               );

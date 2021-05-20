@@ -1,7 +1,7 @@
 class RealtimeGraph {
   final String icon, title, details, route;
 
-  RealtimeGraph({this.icon, this.title, this.details, this.route});
+  RealtimeGraph({this.icon,this.title,this.details,this.route});
 }
 
 List realtimeGraphs = [

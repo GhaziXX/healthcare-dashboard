@@ -77,6 +77,7 @@ class CustomTimeRangeSelector extends StatelessWidget {
                   },
                 );
                 if (timeRangeNotifier.value != null) {
+                  print('okkk');
                   value = timeRangeNotifier.value;
                   timeController.text = value.startTime.format(context) +
                       " - " +

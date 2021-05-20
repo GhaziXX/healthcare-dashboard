@@ -1,3 +1,4 @@
+import 'package:admin/models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,11 @@ import 'dropdown.dart';
 class Header extends StatelessWidget {
   const Header({
     @required this.isDoctor,
+    @required this.userData,
     Key key,
   }) : super(key: key);
   final bool isDoctor;
+  final UserData userData;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +56,11 @@ class Header extends StatelessWidget {
           CustomDropdown(
             isFullSize: Responsive.isMobile(context) ? false : true,
             headerIcon: Icons.face,
-            headerTitle: "slt sahbi",
             headerIconSize: 38,
-            itemIcons: [Icons.person_outline,Icons.logout],
-            itemTitles: ["Profile","Logout"],
-            itemColor: [Colors.white,Colors.white],
+            itemIcons: [Icons.person_outline, Icons.logout],
+            itemTitles: ["Profile", "Logout"],
+            itemColor: [Colors.white, Colors.white],
+            headerTitle: userData.firstName,
           )
         ],
       ),

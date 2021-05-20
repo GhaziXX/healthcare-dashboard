@@ -109,19 +109,21 @@ class _SignupState extends State<Signup> {
                                   .signUp(
                                       email: _emailController.text,
                                       password: _passwordController.text)
-                                  .then((value) {
-                                if (value == 'Signed Up') {
-                                  widget.onCompleteProfileSelected();
-                                } else {
-                                  SnackbarMessage(
-                                    message: value,
-                                    icon: Icon(Icons.error, color: Colors.red),
-                                  ).showMessage(
-                                    context,
-                                  );
-                                }
-                                context.read<User>();
-                              });
+                                  .then(
+                                (value) {
+                                  if (value == 'Signed Up') {
+                                    widget.onCompleteProfileSelected();
+                                  } else {
+                                    SnackbarMessage(
+                                      message: value,
+                                      icon:
+                                          Icon(Icons.error, color: Colors.red),
+                                    ).showMessage(
+                                      context,
+                                    );
+                                  }
+                                },
+                              );
                             }
                           },
                           title: 'Register'),

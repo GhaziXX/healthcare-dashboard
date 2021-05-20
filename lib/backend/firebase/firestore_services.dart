@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:admin/models/UserData.dart';
 
-
 class FirestoreServices {
   final CollectionReference _usersCollectionReference =
       FirebaseFirestore.instance.collection("users");
@@ -13,7 +12,6 @@ class FirestoreServices {
       print(e.message);
     }
   }
-
 
   Future<bool> searchUser(String uid) async {
     bool exists = false;
@@ -32,14 +30,15 @@ class FirestoreServices {
   }
 
   Future<UserData> getCurrentUser(String uid) async {
+    UserData data;
     try {
       await _usersCollectionReference.doc(uid).get().then((doc) {
-        //print(doc.data());
-        return UserData.fromData(doc.data());
+        Map<String, dynamic> d = doc.data();
+        data = UserData.fromJson(d);
       });
     } catch (e) {
       print(e.toString());
     }
-    return null;
+    return data;
   }
 }
