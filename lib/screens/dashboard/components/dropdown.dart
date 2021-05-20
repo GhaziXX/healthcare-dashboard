@@ -1,10 +1,27 @@
 import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-import '../../../responsive.dart';
+
 
 class CustomDropdown extends StatefulWidget {
-  const CustomDropdown({Key key}) : super(key: key);
+  const CustomDropdown(
+      {Key key,
+      @required this.headerTitle,
+      @required this.headerIcon,
+      @required this.headerIconSize,
+      @required this.itemIcons,
+      @required this.itemTitles,
+      @required this.itemColor,
+      @required this.isFullSize})
+      : super(key: key);
+  final String headerTitle;
+  final IconData headerIcon;
+  final double headerIconSize;
+  final List<IconData> itemIcons;
+  final List<String> itemTitles;
+  final List<Color> itemColor;
+  final bool isFullSize;
 
   @override
   CustomDropdownState createState() => CustomDropdownState();
@@ -59,6 +76,10 @@ class CustomDropdownState extends State<CustomDropdown> {
                   ),
                   DropDown(
                     itemHeight: height,
+                    icons: widget.itemIcons,
+                    titles: widget.itemTitles,
+                    colors: widget.itemColor,
+                    isFullSize: widget.isFullSize,
                   ),
                 ],
               ),
@@ -94,20 +115,23 @@ class CustomDropdownState extends State<CustomDropdown> {
             decoration: BoxDecoration(
                 color: secondaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(color: Colors.white10)),
+                border: Border.all(width : 2 ,color: primaryColor.withOpacity(0.15))),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.face, size: 38, color: Colors.white),
-                if (!Responsive.isMobile(context))
+                Icon(widget.headerIcon,
+                    size: widget.headerIconSize, color: Colors.white),
+                if (widget.isFullSize)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: defaultPadding / 2),
-                    child: Text("Ghazi Tounsi",
+                    child: Text(widget.headerTitle,
                         style: TextStyle(color: Colors.white)),
                   ),
                 !isDropdownOpened
                     ? Icon(Icons.keyboard_arrow_down, color: Colors.white)
                     : Icon(Icons.keyboard_arrow_up, color: Colors.white),
+
               ],
             ),
           )),
@@ -117,7 +141,19 @@ class CustomDropdownState extends State<CustomDropdown> {
 
 class DropDown extends StatefulWidget {
   final double itemHeight;
-  const DropDown({Key key, this.itemHeight}) : super(key: key);
+  final List<IconData> icons;
+  final List<String> titles;
+  final List<Color> colors;
+  final bool isFullSize;
+
+  const DropDown(
+      {Key key,
+      this.itemHeight,
+      @required this.icons,
+      @required this.titles,
+      @required this.colors,
+      @required this.isFullSize})
+      : super(key: key);
 
   @override
   _DropDownState createState() => _DropDownState();
@@ -133,21 +169,23 @@ class _DropDownState extends State<DropDown> {
           decoration: BoxDecoration(
               color: secondaryColor,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: Colors.white10)),
+              border: Border.all(width : 2, color: primaryColor.withOpacity(0.15))),
           child: Column(
             children: <Widget>[
-              DropDownItem.first(
-                text: "Profile",
-                iconData: Icons.person_outline,
-                isSelected: false,
+              DropDownItem(
+                text: widget.titles[0],
+                iconData: widget.icons[0],
+                color: widget.colors[0],
+                isFullSize: widget.isFullSize,
               ),
               SizedBox(
                 height: defaultPadding,
               ),
-              DropDownItem.last(
-                text: "Logout",
-                iconData: Icons.exit_to_app,
-                isSelected: true,
+              DropDownItem(
+                text: widget.titles[1],
+                iconData: widget.icons[1],
+                color: widget.colors[1],
+                isFullSize: widget.isFullSize,
               ),
             ],
           ),
@@ -160,54 +198,41 @@ class _DropDownState extends State<DropDown> {
 class DropDownItem extends StatelessWidget {
   final String text;
   final IconData iconData;
-  final bool isSelected;
-  final bool isFirstItem;
-  final bool isLastItem;
+  final Color color;
+  final bool isFullSize;
 
-  const DropDownItem({
-    Key key,
-    this.text,
-    this.iconData,
-    this.isSelected = false,
-    this.isFirstItem = false,
-    this.isLastItem = false,
-  }) : super(key: key);
+  const DropDownItem(
+      {
+        Key key,
+        @required this.text,
+        @required this.iconData,
+        @required this.color,
+        @required this.isFullSize})
+      : super(key: key);
 
-  factory DropDownItem.first(
-      {String text, IconData iconData, bool isSelected, route}) {
-    return DropDownItem(
-      text: text,
-      iconData: iconData,
-      isSelected: isSelected,
-      isFirstItem: true,
-    );
-  }
-
-  factory DropDownItem.last(
-      {String text, IconData iconData, bool isSelected, route}) {
-    return DropDownItem(
-      text: text,
-      iconData: iconData,
-      isSelected: isSelected,
-      isLastItem: true,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {},
-      child: Row(
-        children: <Widget>[
+    return this.isFullSize?
+    TextButton(
+        onPressed: () {},
+        child: Row(children: <Widget>[
           Text(
             text,
             style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 16),
           ),
-          if (!Responsive.isMobile(context)) Spacer(),
-          if (!Responsive.isMobile(context))
-            Icon(iconData, color: Colors.white, size: 18),
-        ],
-      ),
-    );
+          Spacer(),
+          Icon(iconData, color: this.color, size: 18),
+        ]))
+    :
+    TextButton(
+        onPressed: () {},
+        child: Row(children: <Widget>[
+          Text(
+            text,
+            style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 16),
+          ),
+        ]))
+    ;
   }
 }

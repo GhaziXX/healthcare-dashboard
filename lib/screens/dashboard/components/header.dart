@@ -50,7 +50,15 @@ class Header extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          CustomDropdown()
+          CustomDropdown(
+            isFullSize: Responsive.isMobile(context) ? false : true,
+            headerIcon: Icons.face,
+            headerTitle: "slt sahbi",
+            headerIconSize: 38,
+            itemIcons: [Icons.person_outline,Icons.logout],
+            itemTitles: ["Profile","Logout"],
+            itemColor: [Colors.white,Colors.white],
+          )
         ],
       ),
     );
