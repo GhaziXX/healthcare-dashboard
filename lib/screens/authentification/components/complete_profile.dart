@@ -1,4 +1,6 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/firebase/firestore_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/DoctorsCat.dart';
 import 'package:admin/models/UserData.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -107,7 +109,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
 
-                              final firebaseUser = context.read<User>();
+                              AuthNotifier authNotifier =
+                                  context.read<AuthNotifier>();
+
                               await FirestoreServices().createUser(UserData(
                                   firstName: _nameController.text,
                                   lastName: _lastController.text,
@@ -119,11 +123,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   phoneNumber: _phoneController.text,
                                   gender: _gender,
                                   address: _addressController.text,
-                                  id: firebaseUser.uid,
-                                  email: firebaseUser.email,
+                                  id: authNotifier.user.uid,
+                                  email: authNotifier.user.email,
                                   birthdate: _birthdateController.text,
                                   speciality: _doctorType));
-                              await firebaseUser.reload();
+                              notifyUser(authNotifier);
                               //Navigator.of(context).pushNamed("/mainScreen");
                             }
                           }),
