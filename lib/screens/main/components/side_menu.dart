@@ -1,4 +1,5 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/UserData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthNotifier authNotifier = context.watch<AuthNotifier>();
     return Drawer(
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -84,8 +86,9 @@ class SideMenu extends StatelessWidget {
               title: "Logout",
               icon: Icons.logout,
               press: () {
-                Navigator.popUntil(context, ModalRoute.withName('/'));
-                context.read<AuthenticationServices>().signOut();
+                signOut(authNotifier);
+                // Navigator.popUntil(context, ModalRoute.withName('/'));
+                // context.read<AuthenticationServices>().signOut();
               },
               usePath: false,
             ),

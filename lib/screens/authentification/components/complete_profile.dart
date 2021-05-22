@@ -1,6 +1,9 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/firebase/firestore_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/DoctorsCat.dart';
 import 'package:admin/models/UserData.dart';
+import 'package:admin/mqtt/mqtt_wrapper.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +33,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _birthdateController = TextEditingController();
+  TextEditingController _gidController = TextEditingController();
 
   TextEditingController _doctorBioController = TextEditingController();
 
@@ -107,7 +111,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
 
-                              final firebaseUser = context.read<User>();
+                              AuthNotifier authNotifier =
+                                  context.read<AuthNotifier>();
+                              MQTTWrapper(() {}, (_) {}, false, "", true)
+                                  .publishUid(
+                                      uid: authNotifier.user.uid,
+                                      gid: _gidController.text);
                               await FirestoreServices().createUser(UserData(
                                   firstName: _nameController.text,
                                   lastName: _lastController.text,
@@ -119,11 +128,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   phoneNumber: _phoneController.text,
                                   gender: _gender,
                                   address: _addressController.text,
-                                  id: firebaseUser.uid,
-                                  email: firebaseUser.email,
+                                  id: authNotifier.user.uid,
+                                  email: authNotifier.user.email,
                                   birthdate: _birthdateController.text,
-                                  speciality: _doctorType));
-                              await firebaseUser.reload();
+                                  speciality: _doctorType,
+                                  gid: _gidController.text));
+                              notifyUser(authNotifier);
                               //Navigator.of(context).pushNamed("/mainScreen");
                             }
                           }),
@@ -204,6 +214,22 @@ class _CompleteProfileState extends State<CompleteProfile> {
             labelText: "Street address",
             prefixIcon: Icon(
               Icons.location_city,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 32,
+        ),
+        TextFormField(
+          controller: _gidController,
+          style: TextStyle(color: Colors.white, fontSize: 10.sp),
+          keyboardType: TextInputType.streetAddress,
+          validator: FieldValidator.required(
+              message: "Please enter your product id"),
+          decoration: const InputDecoration(
+            labelText: "product id",
+            prefixIcon: Icon(
+              Icons.fingerprint,
             ),
           ),
         ),

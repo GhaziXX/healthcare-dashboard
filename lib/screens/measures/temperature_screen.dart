@@ -2,6 +2,7 @@ import 'package:admin/constants/constants.dart';
 import 'package:admin/models/graphs/temperature_gauge.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
+import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 

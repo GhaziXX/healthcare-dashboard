@@ -5,10 +5,11 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../responsive.dart';
 
 class SnackbarMessage extends StatelessWidget {
-  SnackbarMessage({Key key, this.message, this.icon}) : super(key: key);
+  SnackbarMessage({Key key, this.message, this.icon, this.isDissmisible=true}) : super(key: key);
 
   final String message;
   final Icon icon;
+  final bool isDissmisible;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class SnackbarMessage extends StatelessWidget {
             ? _size.width
             : 60.w,
         message: message,
+        isDismissible: isDissmisible,
         borderRadius: BorderRadius.all(Radius.circular(8)),
         icon: icon,
         duration: Duration(seconds: 2, milliseconds: 500),

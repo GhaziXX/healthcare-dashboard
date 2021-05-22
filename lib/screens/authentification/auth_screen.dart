@@ -1,3 +1,5 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/screens/authentification/components/complete_profile.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'components/login.dart';
 import 'components/signup.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -13,6 +16,11 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   Option selectedOption = Option.Login;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

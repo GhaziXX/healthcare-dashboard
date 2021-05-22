@@ -1,5 +1,6 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/firebase/firestore_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,11 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
+    //AuthNotifier authNotifier = context.read<AuthNotifier>();
+    // print("---------------- INIT LOGIN ----------------------");
+    // initCurrentUser(authNotifier);
+    Future.delayed(Duration.zero, () => context.read<AuthNotifier>())
+        .then((value) => initCurrentUser(value));
     super.initState();
   }
 
@@ -106,27 +112,26 @@ class _LoginState extends State<Login> {
                           press: () {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
-                              context
-                                  .read<AuthenticationServices>()
-                                  .signIn(
-                                      email: _emailController.text,
-                                      password: _passwordController.text)
-                                  .then((value) {
-                                if (value != 'Signed in') {
-                                  SnackbarMessage(
-                                    message: value,
-                                    icon: Icon(Icons.error, color: Colors.red),
-                                  ).showMessage(
-                                    context,
-                                  );
-                                }
-                                if (value == 'Signed in') {
-                                  print("signed in");
-                                  // context.read<User>();
-                                  // Navigator.of(context)
-                                  //     .pushNamed("/mainScreen");
-                                }
-                              });
+                              AuthNotifier authNotifier =
+                                  context.read<AuthNotifier>();
+
+                              signIn(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                authNotifier: authNotifier,
+                              ).then(
+                                (value) {
+                                  if (value != 'Signed in') {
+                                    SnackbarMessage(
+                                      message: value,
+                                      icon:
+                                          Icon(Icons.error, color: Colors.red),
+                                    ).showMessage(
+                                      context,
+                                    );
+                                  }
+                                },
+                              );
                             }
                           }),
                       SizedBox(height: 32),

@@ -1,4 +1,5 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +32,13 @@ class _SignupState extends State<Signup> {
   bool _isPasswordObscure = true;
   bool _isConfirmPasswordEmpty = true;
   bool _isConfirmPasswordObscure = true;
+
+  @override
+  void initState() {
+    AuthNotifier authNotifier = context.read<AuthNotifier>();
+    initCurrentUser(authNotifier);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,27 +111,30 @@ class _SignupState extends State<Signup> {
                       ActionButton(
                           press: () {
                             if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
-                              context
-                                  .read<AuthenticationServices>()
-                                  .signUp(
-                                      email: _emailController.text,
-                                      password: _passwordController.text)
-                                  .then(
-                                (value) {
-                                  if (value == 'Signed Up') {
-                                    widget.onCompleteProfileSelected();
-                                  } else {
-                                    SnackbarMessage(
-                                      message: value,
-                                      icon:
-                                          Icon(Icons.error, color: Colors.red),
-                                    ).showMessage(
-                                      context,
-                                    );
-                                  }
-                                },
-                              );
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                AuthNotifier authNotifier =
+                                    context.read<AuthNotifier>();
+                                signUp(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  authNotifier: authNotifier,
+                                ).then(
+                                  (value) {
+                                    if (value != 'Signed Up') {
+                                      SnackbarMessage(
+                                        message: value,
+                                        icon: Icon(Icons.error,
+                                            color: Colors.red),
+                                      ).showMessage(
+                                        context,
+                                      );
+                                    } else {
+                                      widget.onCompleteProfileSelected();
+                                    }
+                                  },
+                                );
+                              }
                             }
                           },
                           title: 'Register'),

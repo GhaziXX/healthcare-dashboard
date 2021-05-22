@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:admin/mqtt/mqtt_constants.dart' as CONST;
 import 'package:admin/backend/mqtt/app.dart'
     if (dart.library.html) 'package:admin/backend/mqtt/web.dart' as mqttsetup;
 
@@ -15,17 +14,21 @@ class MQTTWrapper {
   final VoidCallback onConnectedCallback;
   final Function(dynamic) onDataReceivedCallback;
   final bool debug;
+  final String user;
+  final bool isPublish;
 
   MqttCurrentConnectionState connectionState = MqttCurrentConnectionState.IDLE;
   MqttSubscriptionState subscriptionState = MqttSubscriptionState.IDLE;
 
-  MQTTWrapper(
-      this.onConnectedCallback, this.onDataReceivedCallback, this.debug);
+  MQTTWrapper(this.onConnectedCallback, this.onDataReceivedCallback, this.debug,
+      this.user, this.isPublish);
 
   void prepareMqttClient() async {
-    _setupMqttClient();
-    await _connectClient();
-    _subscribeToTopic(CONST.topic);
+    if (!isPublish) {
+      _setupMqttClient();
+      await _connectClient();
+      _subscribeToTopic(user);
+    }
   }
 
   void _subscribeToTopic(String topic) {
@@ -34,6 +37,21 @@ class MQTTWrapper {
       client.subscribe(topic, MqttQos.atLeastOnce);
       client.updates.listen(_onMessage);
     }
+  }
+
+  publishUid({String uid, String gid}) {
+    MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
+    builder.addString("$uid,$gid");
+    _sendSetupMqttClient();
+    _connectClient().then((_) {
+      client.subscribe("Healthcare/userids", MqttQos.exactlyOnce);
+      try {
+        client.publishMessage(
+            "Healthcare/userids", MqttQos.exactlyOnce, builder.payload);
+      } on Exception catch (e) {
+        print(e);
+      }
+    });
   }
 
   void _onMessage(List<MqttReceivedMessage> event) {
@@ -47,10 +65,9 @@ class MQTTWrapper {
 
   Future<void> _connectClient() async {
     try {
-      print('MQTTWrapper::Mosquitto client connecting....');
+      //print('MQTTWrapper::Mosquitto client connecting....');
       await client.connect();
     } on Exception catch (e) {
-      // print('MQTTWrapper::client exception - $e');
       client.disconnect();
     }
 
@@ -67,12 +84,21 @@ class MQTTWrapper {
     final MqttConnectMessage connMess = MqttConnectMessage()
         .withClientIdentifier(Random().nextDouble().toString())
         .startClean()
-        .withWillQos(MqttQos.atLeastOnce);
+        .withWillQos(MqttQos.exactlyOnce);
     print('MQTTWrapper::Client connecting....');
     client.connectionMessage = connMess;
     client.onDisconnected = _onDisconnected;
     client.onConnected = _onConnected;
     client.onSubscribed = _onSubscribed;
+  }
+
+  void _sendSetupMqttClient() {
+    client.logging(on: false);
+    final MqttConnectMessage connMess = MqttConnectMessage()
+        .withClientIdentifier(Random().nextDouble().toString())
+        .startClean()
+        .withWillQos(MqttQos.exactlyOnce);
+    client.connectionMessage = connMess;
   }
 
   void _onSubscribed(String topic) {

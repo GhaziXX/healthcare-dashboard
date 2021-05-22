@@ -1,8 +1,7 @@
 import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CustomDropdown extends StatefulWidget {
   const CustomDropdown(
@@ -115,7 +114,8 @@ class CustomDropdownState extends State<CustomDropdown> {
             decoration: BoxDecoration(
                 color: secondaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(width : 2 ,color: primaryColor.withOpacity(0.15))),
+                border: Border.all(
+                    width: 2, color: primaryColor.withOpacity(0.15))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -131,7 +131,6 @@ class CustomDropdownState extends State<CustomDropdown> {
                 !isDropdownOpened
                     ? Icon(Icons.keyboard_arrow_down, color: Colors.white)
                     : Icon(Icons.keyboard_arrow_up, color: Colors.white),
-
               ],
             ),
           )),
@@ -169,7 +168,8 @@ class _DropDownState extends State<DropDown> {
           decoration: BoxDecoration(
               color: secondaryColor,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(width : 2, color: primaryColor.withOpacity(0.15))),
+              border:
+                  Border.all(width: 2, color: primaryColor.withOpacity(0.15))),
           child: Column(
             children: <Widget>[
               DropDownItem(
@@ -202,37 +202,39 @@ class DropDownItem extends StatelessWidget {
   final bool isFullSize;
 
   const DropDownItem(
-      {
-        Key key,
-        @required this.text,
-        @required this.iconData,
-        @required this.color,
-        @required this.isFullSize})
+      {Key key,
+      @required this.text,
+      @required this.iconData,
+      @required this.color,
+      @required this.isFullSize})
       : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
-    return this.isFullSize?
-    TextButton(
-        onPressed: () {},
-        child: Row(children: <Widget>[
-          Text(
-            text,
-            style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 16),
-          ),
-          Spacer(),
-          Icon(iconData, color: this.color, size: 18),
-        ]))
-    :
-    TextButton(
-        onPressed: () {},
-        child: Row(children: <Widget>[
-          Text(
-            text,
-            style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 16),
-          ),
-        ]))
-    ;
+    return this.isFullSize
+        ? TextButton(
+            onPressed: () {},
+            child: Row(children: <Widget>[
+              Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(fontSize: 10.sp),
+              ),
+              Spacer(),
+              Icon(iconData, color: this.color, size: 18),
+            ]))
+        : TextButton(
+            onPressed: () {},
+            child: Row(children: <Widget>[
+              Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(fontSize: 10.sp),
+              ),
+            ]));
   }
 }

@@ -1,4 +1,6 @@
+import 'package:admin/main.dart';
 import 'package:admin/models/UserData.dart';
+import 'package:admin/mqtt/mqtt_wrapper.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -10,7 +12,7 @@ import 'components/my_graphs.dart';
 import 'components/realtime_graph.dart';
 import 'components/report.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
     Key key,
     @required this.isDoctor,
@@ -18,6 +20,32 @@ class DashboardScreen extends StatelessWidget {
   }) : super(key: key);
   final bool isDoctor;
   final UserData userData;
+
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+var data;
+MQTTWrapper mqttClientWrapper;
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  void setup() {
+    mqttClientWrapper = MQTTWrapper(
+        () => print("Connected"),
+        (newDataJson) => setState(() {
+              data = newDataJson;
+            }),
+        false,
+        "Healthcare/" + widget.userData.id + widget.userData.gid,
+        false);
+    mqttClientWrapper.prepareMqttClient();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setup();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +59,8 @@ class DashboardScreen extends StatelessWidget {
           padding: EdgeInsets.all(defaultPadding),
           child: StickyHeader(
             header: Header(
-              isDoctor: isDoctor,
-              userData: userData,
+              isDoctor: widget.isDoctor,
+              userData: widget.userData,
             ),
             content: Column(
               children: [

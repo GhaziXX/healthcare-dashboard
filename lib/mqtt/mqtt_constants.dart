@@ -3,5 +3,5 @@ final String broker = "178.62.122.202";
 //"178.62.122.202"; //"192.168.1.165"; //"178.62.122.202"; //'192.168.1.13';
 final int mobilePort = 1883;
 final int webPort = 8083;
-final String clientIdentifier = 'ghazi';
-final String topic = "Healthcare/" + clientIdentifier;
+final String clientIdentifier = '';
+//final String topic = "Healthcare/" + clientIdentifier;

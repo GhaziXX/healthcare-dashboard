@@ -1,14 +1,15 @@
 import 'package:admin/backend/firebase/authentification_wrapper.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'backend/firebase/authentification_services.dart';
+import 'backend/firebase/firestore_services.dart';
 import 'models/UserData.dart';
 import 'mqtt/mqtt_wrapper.dart';
 import 'screens/authentification/auth_screen.dart';
@@ -29,39 +30,21 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-var data;
-MQTTWrapper mqttClientWrapper;
 bool isDoctor = true;
 UserData userData;
 
 class _MyAppState extends State<MyApp> {
-  void setup() {
-    mqttClientWrapper = MQTTWrapper(
-        () => print("Connected"),
-        (newDataJson) => setState(() {
-              data = newDataJson;
-            }),
-        false);
-    mqttClientWrapper.prepareMqttClient();
-  }
-
   @override
   void initState() {
     super.initState();
-    setup();
   }
 
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return MultiProvider(
         providers: [
-          Provider<AuthenticationServices>(
-            create: (_) => AuthenticationServices((FirebaseAuth.instance)),
-          ),
-          StreamProvider(
-            create: (context) =>
-                context.read<AuthenticationServices>().authStateChanges,
-            initialData: null,
+          ChangeNotifierProvider(
+            create: (context) => AuthNotifier(),
           ),
         ],
         child: MaterialApp(
@@ -86,7 +69,36 @@ class _MyAppState extends State<MyApp> {
             '/all': (context) => AllinOneScreen(isDoctor: isDoctor),
             '/auth': (context) => AuthScreen()
           },
-          home: AuthenticationWrapper(),
+          home: Consumer<AuthNotifier>(
+            builder: (context, notifier, child) {
+              //print("el notif rahi ${notifier.user}");
+              if (notifier.user != null) {
+                //print(notifier.user);
+                return FutureBuilder(
+                  future: FirestoreServices().getCurrentUser(notifier.user.uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.done) {
+                      UserData data = snapshot.data;
+                      return MainScreen(
+                        isDoctor: data.isDoctor,
+                        userData: data,
+                      );
+                    } else if (!snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.done) {
+                      return MainScreen(
+                        isDoctor: false,
+                        userData: UserData(
+                            firstName: "Not Specified", id: notifier.user.uid),
+                      );
+                    }
+                    return Container(color: bgColor);
+                  },
+                );
+              }
+              return AuthScreen();
+            },
+          ),
           // home: AuthScreen(),
         ),
       );
