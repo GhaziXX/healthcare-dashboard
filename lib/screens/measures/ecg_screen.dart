@@ -6,16 +6,16 @@ import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../main.dart';
 import '../../responsive.dart';
+import '../ScreenArgs.dart';
 
 class ECGScreen extends StatefulWidget {
   @override
   const ECGScreen({
     Key key,
-    @required this.isDoctor,
+
   }) : super(key: key);
-  final bool isDoctor;
+
 
   _ECGScreenState createState() => _ECGScreenState();
 }
@@ -29,9 +29,11 @@ class _ECGScreenState extends State<ECGScreen> {
 
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
+    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     return Scaffold(
       drawer: SideMenu(
-        isDoctor: widget.isDoctor,
+        isDoctor: args.isDoctor,
+        userData: args.userData,
       ),
       body: SafeArea(
         child: Row(
@@ -39,49 +41,38 @@ class _ECGScreenState extends State<ECGScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: widget.isDoctor),
+                child: SideMenu(isDoctor: args.isDoctor,userData: args.userData,),
               ),
 
             Expanded(
               flex: 5,
               child: Padding(
                 padding:  EdgeInsets.all(defaultPadding),
-                child: Column(
-                  children: [
-                    Header(isDoctor: widget.isDoctor,),
-                    SizedBox(height: _size.height*0.1 ,),
-                    SingleChildScrollView(
-                      child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Header(isDoctor: args.isDoctor,userData: args.userData,),
+                      SizedBox(height: _size.height*0.1 ,),
+                      Center(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 5,
-                              child: Column(
-                                children: [
-                                  Text(
-                                      "ECG Graph",
-                                      style: Theme.of(context).textTheme.headline5
-                                  ),
-                                  SizedBox(
-                                    height: _size.height * 0.05,
-                                  ),
-                                  mqttClientWrapper.connectionState ==
-                                      MqttCurrentConnectionState.CONNECTED
-                                      ? ECGGraph(
-                                    ecg : data != null ? data["ecg"] : [],
-                                  )
-                                      : ECGGraph(
-                                    ecg :[]
-                                  ),
-                                ],
+                              child: mqttClientWrapper.connectionState ==
+                                  MqttCurrentConnectionState.CONNECTED
+                                  ? ECGGraph(
+                                ecg : data != null ? data["ecg"] : [],
+                              )
+                                  : ECGGraph(
+                                ecg :[]
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

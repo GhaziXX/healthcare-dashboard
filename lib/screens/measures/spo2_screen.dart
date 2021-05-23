@@ -5,17 +5,17 @@ import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:admin/main.dart';
 
 import '../../responsive.dart';
+import '../ScreenArgs.dart';
 
 class SPO2Screen extends StatefulWidget {
   @override
   const SPO2Screen({
     Key key,
-    @required this.isDoctor,
+
   }) : super(key: key);
-  final bool isDoctor;
+
 
   _SPO2ScreenState createState() => _SPO2ScreenState();
 }
@@ -23,10 +23,12 @@ class SPO2Screen extends StatefulWidget {
 
 class _SPO2ScreenState extends State<SPO2Screen> {
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
-        isDoctor: widget.isDoctor,
+        isDoctor: args.isDoctor,
+        userData: args.userData,
       ),
       body: SafeArea(
         child: Row(
@@ -34,7 +36,7 @@ class _SPO2ScreenState extends State<SPO2Screen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: widget.isDoctor),
+                child: SideMenu(isDoctor: args.isDoctor,userData: args.userData,),
               ),
 
             Expanded(
@@ -44,7 +46,7 @@ class _SPO2ScreenState extends State<SPO2Screen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Header(isDoctor: widget.isDoctor,),
+                      Header(isDoctor: args.isDoctor,userData: args.userData),
                       SizedBox(height: _size.height*0.1,),
                       Center(
                         child: Row(
@@ -52,19 +54,13 @@ class _SPO2ScreenState extends State<SPO2Screen> {
                           children: [
                             Expanded(
                               flex: 5,
-                              child: Column(
-                                children: [
-                                  Text("Oxygen Saturation",style:Theme.of(context).textTheme.headline5),
-                                  SizedBox(height: _size.height*0.05,),
-                                  mqttClientWrapper.connectionState ==
-                                          MqttCurrentConnectionState.CONNECTED
-                                      ? SPO2Radial(
-                                          data != null ? data["spo2"] : 0)
-                                      : SPO2Radial(
-                                          0
-                                        ),
-                                ],
-                              ),
+                              child: mqttClientWrapper.connectionState ==
+                                      MqttCurrentConnectionState.CONNECTED
+                                  ? SPO2Radial(
+                                      data != null ? data["spo2"] : 0)
+                                  : SPO2Radial(
+                                      0
+                                    ),
                             ),
                           ],
                         ),

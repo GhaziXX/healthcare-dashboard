@@ -1,4 +1,3 @@
-import 'package:admin/main.dart';
 import 'package:admin/models/UserData.dart';
 import 'package:admin/mqtt/mqtt_wrapper.dart';
 import 'package:admin/responsive.dart';
@@ -75,17 +74,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       flex: 5,
                       child: Column(
                         children: [
-                          MyGraph(),
-                          SizedBox(height: defaultPadding),
-                          RealtimeGraphs(),
-                          SizedBox(height: defaultPadding),
-                          Report(),
+                          if (Responsive.isMobile(context))
+                            GeneralDetails(),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
-                          if (Responsive.isMobile(context))
-                            GeneralDetails(
-                              connected: true,
-                            )
+                          MyGraph(isDoctor: widget.isDoctor,userData: widget.userData,),
+                          SizedBox(height: defaultPadding),
+                          RealtimeGraphs(isDoctor: widget.isDoctor,userData: widget.userData,),
+                          SizedBox(height: defaultPadding),
+                          Report(),
+
                         ],
                       ),
                     ),
@@ -96,9 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     if (!Responsive.isMobile(context))
                       Expanded(
                         flex: 2,
-                        child: GeneralDetails(
-                          connected: true,
-                        ),
+                        child: GeneralDetails(),
                       )
                   ],
                 )

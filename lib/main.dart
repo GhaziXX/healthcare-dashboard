@@ -1,17 +1,15 @@
-import 'package:admin/backend/firebase/authentification_wrapper.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
+import 'package:admin/screens/measures/tempgraph_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'backend/firebase/authentification_services.dart';
 import 'backend/firebase/firestore_services.dart';
 import 'models/UserData.dart';
-import 'mqtt/mqtt_wrapper.dart';
 import 'screens/authentification/auth_screen.dart';
 import 'screens/measures/ecg_screen.dart';
 import 'screens/measures/heartrate_screen.dart';
@@ -57,16 +55,17 @@ class _MyAppState extends State<MyApp> {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: secondaryColor,
           ),
-          routes: {
+         routes: {
             '/mainScreen': (context) => MainScreen(
                   isDoctor: isDoctor,
                   userData: userData,
                 ),
-            '/spo2': (context) => SPO2Screen(isDoctor: isDoctor),
-            '/temperature': (context) => TempScreen(isDoctor: isDoctor),
-            '/heartrate': (context) => HeartScreen(isDoctor: isDoctor),
-            '/ECG': (context) => ECGScreen(isDoctor: isDoctor),
-            '/all': (context) => AllinOneScreen(isDoctor: isDoctor),
+            '/spo2': (context) => SPO2Screen(),
+            '/temperature': (context) => TempScreen(),
+            '/heartrate': (context) => HeartScreen(),
+            '/ECG': (context) => ECGScreen(),
+           '/tempGraph' : (context) =>TempGraphScreen(),
+            '/all': (context) => AllinOneScreen(),
             '/auth': (context) => AuthScreen()
           },
           home: Consumer<AuthNotifier>(

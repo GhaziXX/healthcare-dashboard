@@ -1,5 +1,7 @@
 import 'package:admin/models/TDLRGraph.dart';
+import 'package:admin/models/UserData.dart';
 import 'package:admin/responsive.dart';
+import 'package:admin/screens/ScreenArgs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,18 +10,24 @@ import '../../../constants/constants.dart';
 class GraphInfoCard extends StatelessWidget {
   const GraphInfoCard({
     @required this.info,
+    @required this.isDoctor,
+    @required this.userData,
     Key key,
   }) : super(key: key);
 
   final TDLRGraph info;
+  final bool isDoctor;
+  final UserData userData;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (Responsive.isMobile(context)) {
-          Navigator.of(context).pushNamed(info.route);
+          Navigator.of(context).pushNamed(info.route,arguments: ScreenArguments(isDoctor, userData));
+
         } else
-          Navigator.pushNamed(context, '/all');
+          Navigator.pushNamed(context, '/all',arguments: ScreenArguments(isDoctor, userData));
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => AllinOneScreen(isDoctor: isDoctor,userData: userData,)));
       },
       child: Container(
         padding: EdgeInsets.all(defaultPadding),

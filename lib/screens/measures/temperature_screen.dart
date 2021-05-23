@@ -6,16 +6,15 @@ import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../main.dart';
 import '../../responsive.dart';
+import '../ScreenArgs.dart';
 
 class TempScreen extends StatefulWidget {
   @override
   const TempScreen({
     Key key,
-    @required this.isDoctor,
   }) : super(key: key);
-  final bool isDoctor;
+
 
   _TempScreenState createState() => _TempScreenState();
 }
@@ -24,10 +23,12 @@ class TempScreen extends StatefulWidget {
 class _TempScreenState extends State<TempScreen> {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
-        isDoctor: widget.isDoctor,
+        isDoctor: args.isDoctor,
+        userData: args.userData,
       ),
       body: SafeArea(
         child: Row(
@@ -35,44 +36,39 @@ class _TempScreenState extends State<TempScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: widget.isDoctor),
+                child: SideMenu(isDoctor: args.isDoctor,
+                userData : args.userData),
               ),
 
             Expanded(
               flex: 5,
               child: Padding(
                 padding:  EdgeInsets.all(defaultPadding),
-                child: Column(
-                  children: [
-                    Header(isDoctor: widget.isDoctor,),
-                    SizedBox(height: _size.height*0.1 ,),
-                    SingleChildScrollView(
-                      child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Header(isDoctor: args.isDoctor,userData: args.userData,),
+                      SizedBox(height: _size.height*0.1 ,),
+                      Center(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 5,
-                              child: Column(
-                                children: [
-                                  Text("Temperature",style:Theme.of(context).textTheme.headline5),
-                                  SizedBox(height: _size.height*0.05,),
-                                  mqttClientWrapper.connectionState ==
-                                      MqttCurrentConnectionState.CONNECTED
-                                      ? TempGauge(
-                                    data != null ? data["temperature"] : 0
-                                  )
-                                      : TempGauge(
-                                    0
-                                  ),
-                                ],
+                              child: mqttClientWrapper.connectionState ==
+                                  MqttCurrentConnectionState.CONNECTED
+                                  ? TempGauge(
+                                data != null ? data["temperature"] : 0
+                              )
+                                  : TempGauge(
+                                0
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

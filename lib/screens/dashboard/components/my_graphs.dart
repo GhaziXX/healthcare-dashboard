@@ -1,4 +1,5 @@
 import 'package:admin/models/TDLRGraph.dart';
+import 'package:admin/models/UserData.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,12 @@ import 'graph_info_card.dart';
 
 class MyGraph extends StatelessWidget {
   const MyGraph({
+    @required this.isDoctor,
+    @required this.userData,
     Key key,
   }) : super(key: key);
-
+  final bool isDoctor;
+  final UserData userData;
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -25,11 +29,15 @@ class MyGraph extends StatelessWidget {
         SizedBox(height: defaultPadding),
         Responsive(
             mobile: GraphInfoCardGridView(
+              isDoctor: isDoctor,
+              userData: userData,
               crossAxisCount: _size.width < 650 ? 2 : 4,
               childAspectRatio: _size.width < 650 ? 1.3 : 1,
             ),
-            tablet: GraphInfoCardGridView(),
+            tablet: GraphInfoCardGridView(userData: userData,isDoctor: isDoctor,),
             desktop: GraphInfoCardGridView(
+              isDoctor: isDoctor,
+              userData: userData,
               childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
             ))
       ],
@@ -42,10 +50,15 @@ class GraphInfoCardGridView extends StatefulWidget {
     Key key,
     this.crossAxisCount = 4,
     this.childAspectRatio = 1,
+    @required this.userData,
+    @required this.isDoctor,
+
   }) : super(key: key);
 
   final int crossAxisCount;
   final double childAspectRatio;
+  final UserData userData;
+  final bool isDoctor;
 
   @override
   _GraphInfoCardGridViewState createState() => _GraphInfoCardGridViewState();
@@ -63,7 +76,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: primaryColor,
           percentage: 0,
           route: '/spo2',
-          unit: "%"),
+          unit: "%",),
       TDLRGraph(
           title: "Heartrate",
           currentValue: 0,
@@ -72,7 +85,8 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: Color(0xFFFFA113),
           percentage: 0,
           route: '/heartrate',
-          unit: 'bpm' ),
+          unit: 'bpm',
+      ),
       TDLRGraph(
           title: "Stress",
           currentValue: 0,
@@ -81,7 +95,8 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: Color(0xFFA4CDFF),
           percentage: 0,
           route: '/stress',
-          unit:'' ),
+          unit:'',
+           ),
       TDLRGraph(
           title: "Temperature",
           currentValue: 0,
@@ -90,7 +105,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: Color(0xFF007EE5),
           percentage: 0,
           route: '/temperature',
-          unit: '°C'),
+          unit: '°C',),
     ];
     List myGraphs = [
       TDLRGraph(
@@ -101,7 +116,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: primaryColor,
           percentage: data != null ? data["spo2"] * 1.0 : 0,
           route: '/spo2',
-          unit: "%"),
+          unit: "%",),
       TDLRGraph(
           title: "Heartrate",
           currentValue: data != null ? data["heartrate"] * 1.0 : 0,
@@ -119,7 +134,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: Color(0xFFA4CDFF),
           percentage: 10,
           route: '/stress',
-          unit: ''),
+          unit: '',),
       TDLRGraph(
           title: "Temperature",
           currentValue: data != null ? data["temperature"] * 1.0 : 0,
@@ -128,7 +143,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           color: Color(0xFF007EE5),
           percentage: data != null ? data["temperature"] * 100 / 41 : 0,
           route: '/temperature',
-          unit: '°C'),
+          unit: '°C',),
     ];
     return mqttClientWrapper.connectionState ==
             MqttCurrentConnectionState.CONNECTED
@@ -141,7 +156,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 childAspectRatio: widget.childAspectRatio),
-            itemBuilder: (context, index) => GraphInfoCard(
+            itemBuilder: (context, index) => GraphInfoCard(isDoctor: widget.isDoctor,userData: widget.userData,
               info: myGraphs[index],
             ),
           )
@@ -154,7 +169,7 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 childAspectRatio: widget.childAspectRatio),
-            itemBuilder: (context, index) => GraphInfoCard(
+            itemBuilder: (context, index) => GraphInfoCard(isDoctor: widget.isDoctor,userData: widget.userData,
               info: zeros[index],
             ),
           );

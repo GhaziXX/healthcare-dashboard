@@ -13,5 +13,6 @@ class TDLRGraph {
       this.percentage,
       this.color,
       this.route,
-      this.unit});
+      this.unit,
+      });
 }

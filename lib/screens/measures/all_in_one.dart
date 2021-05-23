@@ -10,25 +10,25 @@ import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
 import '../../responsive.dart';
+import '../ScreenArgs.dart';
 
 class AllinOneScreen extends StatefulWidget {
   @override
   const AllinOneScreen({
     Key key,
-    @required this.isDoctor,
   }) : super(key: key);
-  final bool isDoctor;
-
   _AllinOneScreenState createState() => _AllinOneScreenState();
 }
 
 class _AllinOneScreenState extends State<AllinOneScreen> {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
-        isDoctor: widget.isDoctor,
+        isDoctor: args.isDoctor,
+        userData: args.userData,
       ),
       body: SafeArea(
         child: Row(
@@ -36,7 +36,7 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: widget.isDoctor),
+                child: SideMenu(isDoctor: args.isDoctor,userData: args.userData,),
               ),
             Expanded(
               flex: 5,
@@ -50,7 +50,8 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
                         child: Column(
                           children: [
                             Header(
-                              isDoctor: widget.isDoctor,
+                              isDoctor: args.isDoctor,
+                              userData: args.userData,
                             ),
                             SizedBox(
                               height: _size.height * 0.1,

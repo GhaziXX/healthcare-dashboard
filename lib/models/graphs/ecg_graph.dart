@@ -36,7 +36,15 @@ class _ECGGraphState extends State<ECGGraph> {
     Size _size = MediaQuery.of(context).size;
     return Column(
       children: [
+        Text(
+            "ECG",
+            style: Theme.of(context).textTheme.headline5
+        ),
+        SizedBox(
+          height: _size.height * 0.05,
+        ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.download_rounded),
