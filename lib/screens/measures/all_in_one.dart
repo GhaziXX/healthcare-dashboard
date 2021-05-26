@@ -4,8 +4,9 @@ import 'package:admin/models/graphs/heartrate.dart';
 import 'package:admin/models/graphs/spo2_gauge.dart';
 import 'package:admin/models/graphs/temperature_gauge.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
+import 'package:admin/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
-import 'package:admin/screens/dashboard/dashboard_screen.dart';
+
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +21,33 @@ class AllinOneScreen extends StatefulWidget {
   _AllinOneScreenState createState() => _AllinOneScreenState();
 }
 
+var data;
+MQTTWrapper mqttClientWrapper;
+bool shouldInit = true;
+ScreenArguments args;
+
 class _AllinOneScreenState extends State<AllinOneScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
+    if (shouldInit) {
+      args = ModalRoute.of(context).settings.arguments as ScreenArguments;
+      mqttClientWrapper = MQTTWrapper(
+          onDataReceivedCallback: (newDataJson) {
+            setState(() {
+              data = newDataJson;
+            });
+          },
+          isPublish: false,
+          onConnectedCallback: () {},
+          user: "Healthcare/" + args.userData.id + args.userData.gid);
+      mqttClientWrapper.prepareMqttClient();
+      shouldInit = false;
+    }
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
@@ -36,7 +60,10 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: args.isDoctor,userData: args.userData,),
+                child: SideMenu(
+                  isDoctor: args.isDoctor,
+                  userData: args.userData,
+                ),
               ),
             Expanded(
               flex: 5,
@@ -115,6 +142,7 @@ class GraphGridView extends StatefulWidget {
 class _GraphGridViewState extends State<GraphGridView> {
   @override
   Widget build(BuildContext context) {
+    print("data fel all $data");
     List<Widget> children = [
       SPO2Radial(data != null ? data["spo2"] : 0),
       HeartRate(

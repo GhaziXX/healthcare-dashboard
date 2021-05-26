@@ -6,7 +6,6 @@ class SPO2Radial extends StatefulWidget {
   SPO2Radial(this.spo2);
   double spo2;
 
-
   @override
   _SPO2RadialState createState() => _SPO2RadialState();
 }
@@ -24,8 +23,11 @@ class _SPO2RadialState extends State<SPO2Radial> {
     return FittedBox(
       child: Column(
         children: [
-          Text("Oxygen Saturation",style:Theme.of(context).textTheme.headline5),
-          SizedBox(height: _size.height*0.05,),
+          Text("Oxygen Saturation",
+              style: Theme.of(context).textTheme.headline5),
+          SizedBox(
+            height: _size.height * 0.05,
+          ),
           SfRadialGauge(
             enableLoadingAnimation: true,
             axes: <RadialAxis>[
@@ -66,7 +68,7 @@ class _SPO2RadialState extends State<SPO2Radial> {
                   ],
                   pointers: <GaugePointer>[
                     RangePointer(
-                      value: widget.spo2,
+                      value: widget.spo2.toDouble(),
                       onValueChanged: _onValueChanged,
                       width: 18,
                       pointerOffset: -6,

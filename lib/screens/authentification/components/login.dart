@@ -33,9 +33,6 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    //AuthNotifier authNotifier = context.read<AuthNotifier>();
-    // print("---------------- INIT LOGIN ----------------------");
-    // initCurrentUser(authNotifier);
     Future.delayed(Duration.zero, () => context.read<AuthNotifier>())
         .then((value) => initCurrentUser(value));
     super.initState();

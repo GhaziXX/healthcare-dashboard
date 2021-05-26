@@ -12,7 +12,8 @@ class CustomDropdown extends StatefulWidget {
       @required this.itemIcons,
       @required this.itemTitles,
       @required this.itemColor,
-      @required this.isFullSize})
+      @required this.isFullSize,
+      @required this.itemCallbacks})
       : super(key: key);
   final String headerTitle;
   final IconData headerIcon;
@@ -21,6 +22,7 @@ class CustomDropdown extends StatefulWidget {
   final List<String> itemTitles;
   final List<Color> itemColor;
   final bool isFullSize;
+  final List<VoidCallback> itemCallbacks;
 
   @override
   CustomDropdownState createState() => CustomDropdownState();
@@ -48,11 +50,15 @@ class CustomDropdownState extends State<CustomDropdown> {
     yPosition = offset.dy;
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
+  }
+
   OverlayEntry _createFloatingDropdown() {
     return OverlayEntry(builder: (context) {
       return GestureDetector(
         onTap: () {
-          setState(() {
+          setStateIfMounted(() {
             if (isDropdownOpened) {
               floatingDropdown.remove();
             }
@@ -79,6 +85,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                     titles: widget.itemTitles,
                     colors: widget.itemColor,
                     isFullSize: widget.isFullSize,
+                    callbacks: widget.itemCallbacks,
                   ),
                 ],
               ),
@@ -97,7 +104,7 @@ class CustomDropdownState extends State<CustomDropdown> {
           behavior: HitTestBehavior.translucent,
           key: actionKey,
           onTap: () {
-            setState(() {
+            setStateIfMounted(() {
               if (isDropdownOpened) {
                 floatingDropdown.remove();
               } else {
@@ -144,6 +151,7 @@ class DropDown extends StatefulWidget {
   final List<String> titles;
   final List<Color> colors;
   final bool isFullSize;
+  final List<VoidCallback> callbacks;
 
   const DropDown(
       {Key key,
@@ -151,7 +159,8 @@ class DropDown extends StatefulWidget {
       @required this.icons,
       @required this.titles,
       @required this.colors,
-      @required this.isFullSize})
+      @required this.isFullSize,
+      @required this.callbacks})
       : super(key: key);
 
   @override
@@ -173,20 +182,20 @@ class _DropDownState extends State<DropDown> {
           child: Column(
             children: <Widget>[
               DropDownItem(
-                text: widget.titles[0],
-                iconData: widget.icons[0],
-                color: widget.colors[0],
-                isFullSize: widget.isFullSize,
-              ),
+                  text: widget.titles[0],
+                  iconData: widget.icons[0],
+                  color: widget.colors[0],
+                  isFullSize: widget.isFullSize,
+                  callback: widget.callbacks[0]),
               SizedBox(
                 height: defaultPadding,
               ),
               DropDownItem(
-                text: widget.titles[1],
-                iconData: widget.icons[1],
-                color: widget.colors[1],
-                isFullSize: widget.isFullSize,
-              ),
+                  text: widget.titles[1],
+                  iconData: widget.icons[1],
+                  color: widget.colors[1],
+                  isFullSize: widget.isFullSize,
+                  callback: widget.callbacks[1]),
             ],
           ),
         ),
@@ -200,13 +209,15 @@ class DropDownItem extends StatelessWidget {
   final IconData iconData;
   final Color color;
   final bool isFullSize;
+  final VoidCallback callback;
 
   const DropDownItem(
       {Key key,
       @required this.text,
       @required this.iconData,
       @required this.color,
-      @required this.isFullSize})
+      @required this.isFullSize,
+      @required this.callback})
       : super(key: key);
 
   @override
@@ -226,7 +237,7 @@ class DropDownItem extends StatelessWidget {
               Icon(iconData, color: this.color, size: 18),
             ]))
         : TextButton(
-            onPressed: () {},
+            onPressed: callback,
             child: Row(children: <Widget>[
               Text(
                 text,

@@ -1,8 +1,8 @@
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/graphs/ecg_graph.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
+import 'package:admin/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
-import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -13,23 +13,33 @@ class ECGScreen extends StatefulWidget {
   @override
   const ECGScreen({
     Key key,
-
   }) : super(key: key);
-
 
   _ECGScreenState createState() => _ECGScreenState();
 }
 
+var data;
+MQTTWrapper mqttClientWrapper;
+bool shouldInit = true;
+ScreenArguments args;
+
 class _ECGScreenState extends State<ECGScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
+    if (shouldInit) {
+      args = ModalRoute.of(context).settings.arguments as ScreenArguments;
+      mqttClientWrapper = MQTTWrapper(
+          onDataReceivedCallback: (newDataJson) {
+            setState(() {
+              data = newDataJson;
+            });
+          },
+          isPublish: false,
+          onConnectedCallback: () {},
+          user: "Healthcare/" + args.userData.id + args.userData.gid);
+      mqttClientWrapper.prepareMqttClient();
+      shouldInit = false;
+    }
     Size _size = MediaQuery.of(context).size;
-    final args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     return Scaffold(
       drawer: SideMenu(
         isDoctor: args.isDoctor,
@@ -41,18 +51,25 @@ class _ECGScreenState extends State<ECGScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(isDoctor: args.isDoctor,userData: args.userData,),
+                child: SideMenu(
+                  isDoctor: args.isDoctor,
+                  userData: args.userData,
+                ),
               ),
-
             Expanded(
               flex: 5,
               child: Padding(
-                padding:  EdgeInsets.all(defaultPadding),
+                padding: EdgeInsets.all(defaultPadding),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Header(isDoctor: args.isDoctor,userData: args.userData,),
-                      SizedBox(height: _size.height*0.1 ,),
+                      Header(
+                        isDoctor: args.isDoctor,
+                        userData: args.userData,
+                      ),
+                      SizedBox(
+                        height: _size.height * 0.1,
+                      ),
                       Center(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,13 +77,11 @@ class _ECGScreenState extends State<ECGScreen> {
                             Expanded(
                               flex: 5,
                               child: mqttClientWrapper.connectionState ==
-                                  MqttCurrentConnectionState.CONNECTED
+                                      MqttCurrentConnectionState.CONNECTED
                                   ? ECGGraph(
-                                ecg : data != null ? data["ecg"] : [],
-                              )
-                                  : ECGGraph(
-                                ecg :[]
-                              ),
+                                      ecg: data != null ? data["ecg"] : [],
+                                    )
+                                  : ECGGraph(ecg: []),
                             ),
                           ],
                         ),

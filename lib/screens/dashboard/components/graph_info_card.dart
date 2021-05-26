@@ -18,16 +18,18 @@ class GraphInfoCard extends StatelessWidget {
   final TDLRGraph info;
   final bool isDoctor;
   final UserData userData;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (Responsive.isMobile(context)) {
-          Navigator.of(context).pushNamed(info.route,arguments: ScreenArguments(isDoctor, userData));
-
+          Navigator.of(context).pushNamed(info.route,
+              arguments: ScreenArguments(isDoctor, userData));
         } else
-          Navigator.pushNamed(context, '/all',arguments: ScreenArguments(isDoctor, userData));
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => AllinOneScreen(isDoctor: isDoctor,userData: userData,)));
+          Navigator.pushNamed(context, '/all',
+              arguments: ScreenArguments(isDoctor, userData));
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => AllinOneScreen(isDoctor: isDoctor,userData: userData,)));
       },
       child: Container(
         padding: EdgeInsets.all(defaultPadding),

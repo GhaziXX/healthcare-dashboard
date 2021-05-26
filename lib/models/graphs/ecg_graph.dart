@@ -18,6 +18,7 @@ class _ECGGraphState extends State<ECGGraph> {
   }
 
   Timer timer;
+  List<dynamic> old;
 
   List<_ChartData> chartData = <_ChartData>[];
   ChartSeriesController _chartSeriesController;
@@ -27,7 +28,7 @@ class _ECGGraphState extends State<ECGGraph> {
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -36,10 +37,7 @@ class _ECGGraphState extends State<ECGGraph> {
     Size _size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Text(
-            "ECG",
-            style: Theme.of(context).textTheme.headline5
-        ),
+        Text("ECG", style: Theme.of(context).textTheme.headline5),
         SizedBox(
           height: _size.height * 0.05,
         ),
@@ -100,33 +98,63 @@ class _ECGGraphState extends State<ECGGraph> {
 
   void _updateDataSource(Timer timer) {
     if (widget.ecg != null) {
-      if (!pause) {
-        if (mounted) {
-          //print(chartData.length);
-          int l = widget.ecg.length;
-          setState(() {
-            if (chartData.length > 80) {
-              chartData.removeRange(0, l);
-              for (int i = 0; i <= l - 1; i++) {
-                chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
-              }
-              _chartSeriesController.updateDataSource(
-                addedDataIndexes: List<int>.generate(
-                    l, (index) => chartData.length - 1 + index),
-                removedDataIndexes: List<int>.generate(l, (index) => index),
-              );
-            } else {
-              for (int i = 0; i <= l - 1; i++) {
-                chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
-              }
-              _chartSeriesController.updateDataSource(
-                addedDataIndexes: List<int>.generate(
-                    l, (index) => chartData.length - 1 + index),
-              );
+      if (mounted) {
+        if (!pause) {
+          if (chartData.length > 1) {
+            int l = widget.ecg.length;
+            if (old != widget.ecg) {
+              setState(() {
+                if (chartData.length > 80) {
+                  chartData.removeRange(0, l);
+                  for (int i = 0; i <= l - 1; i++) {
+                    chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+                  }
+                  _chartSeriesController.updateDataSource(
+                    addedDataIndexes: List<int>.generate(
+                        l, (index) => chartData.length - 1 + index),
+                    removedDataIndexes: List<int>.generate(l, (index) => index),
+                  );
+                } else {
+                  for (int i = 0; i <= l - 1; i++) {
+                    chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+                  }
+                  _chartSeriesController.updateDataSource(
+                    addedDataIndexes: List<int>.generate(
+                        l, (index) => chartData.length - 1 + index),
+                  );
+                }
+                //count += 199;
+                start++;
+              });
+              old = widget.ecg;
             }
-            //count += 199;
-            start++;
-          });
+          } else {
+            int l = widget.ecg.length;
+
+            setState(() {
+              if (chartData.length > 80) {
+                chartData.removeRange(0, l);
+                for (int i = 0; i <= l - 1; i++) {
+                  chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+                }
+                _chartSeriesController.updateDataSource(
+                  addedDataIndexes: List<int>.generate(
+                      l, (index) => chartData.length - 1 + index),
+                  removedDataIndexes: List<int>.generate(l, (index) => index),
+                );
+              } else {
+                for (int i = 0; i <= l - 1; i++) {
+                  chartData.add(_ChartData(start + (i / l), widget.ecg[i]));
+                }
+                _chartSeriesController.updateDataSource(
+                  addedDataIndexes: List<int>.generate(
+                      l, (index) => chartData.length - 1 + index),
+                );
+              }
+              //count += 199;
+              start++;
+            });
+          }
         }
       }
     }

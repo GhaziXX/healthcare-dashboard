@@ -32,11 +32,6 @@ bool isDoctor = true;
 UserData userData;
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return MultiProvider(
@@ -55,7 +50,7 @@ class _MyAppState extends State<MyApp> {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: secondaryColor,
           ),
-         routes: {
+          routes: {
             '/mainScreen': (context) => MainScreen(
                   isDoctor: isDoctor,
                   userData: userData,
@@ -64,7 +59,7 @@ class _MyAppState extends State<MyApp> {
             '/temperature': (context) => TempScreen(),
             '/heartrate': (context) => HeartScreen(),
             '/ECG': (context) => ECGScreen(),
-           '/tempGraph' : (context) =>TempGraphScreen(),
+            '/tempGraph': (context) => TempGraphScreen(),
             '/all': (context) => AllinOneScreen(),
             '/auth': (context) => AuthScreen()
           },
@@ -78,10 +73,10 @@ class _MyAppState extends State<MyApp> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
-                      UserData data = snapshot.data;
+                      UserData userData = snapshot.data;
                       return MainScreen(
-                        isDoctor: data.isDoctor,
-                        userData: data,
+                        isDoctor: userData.isDoctor,
+                        userData: userData,
                       );
                     } else if (!snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {

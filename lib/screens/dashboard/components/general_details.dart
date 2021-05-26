@@ -1,3 +1,4 @@
+import 'package:admin/models/UserData.dart';
 import 'package:admin/mqtt/mqtt_model.dart';
 import 'package:admin/screens/dashboard/components/dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +12,16 @@ import 'general_info_card.dart';
 class GeneralDetails extends StatelessWidget {
   const GeneralDetails({
     Key key,
+    @required this.userData,
   }) : super(key: key);
+
+  final UserData userData;
+
   @override
   Widget build(BuildContext context) {
-    bool connected = mqttClientWrapper.connectionState == MqttCurrentConnectionState.CONNECTED;
+
+    bool connected = mqttClientWrapper.connectionState ==
+        MqttCurrentConnectionState.CONNECTED;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,9 +30,14 @@ class GeneralDetails extends StatelessWidget {
           "Gadget",
           style: Theme.of(context).textTheme.subtitle1,
         ),
-        SizedBox(height: defaultPadding,),
+        SizedBox(
+          height: defaultPadding,
+        ),
         Container(
-          padding: EdgeInsets.only(left: defaultPadding,right: defaultPadding,bottom: defaultPadding),
+          padding: EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              bottom: defaultPadding),
           decoration: BoxDecoration(
             color: secondaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -35,24 +47,44 @@ class GeneralDetails extends StatelessWidget {
             children: [
               GeneralInfoCard(
                 title: "Connection",
-                details: connected ? "Connected": "Disconnected",
-                icon: connected ? Icons.check_circle_outline : Icons.cancel_outlined,
+                details: connected ? "Connected" : "Disconnected",
+                icon: connected
+                    ? Icons.check_circle_outline
+                    : Icons.cancel_outlined,
                 color: connected ? Colors.green : Colors.red,
               ),
               GeneralInfoCard(
                   title: "Battery",
                   details: "charged",
                   icon: Icons.battery_std_rounded,
-                  color : Colors.blue
-              ),
+                  color: Colors.blue),
               GeneralInfoCard(
                   title: 'Temperature',
-                  details: data != null ? data["cpu_temp"].toString()+" °C": "0°C",
+                  details: data != null
+                      ? data["gadget_temperature"].toString() + " °C"
+                      : "0°C",
                   icon: FontAwesomeIcons.thermometerHalf,
                   color: Colors.orangeAccent),
               SizedBox(height: defaultPadding),
-              CustomDropdown(isFullSize : true ,headerTitle: "Power", headerIcon: Icons.bolt,headerIconSize : 20, itemIcons: [Icons.power_settings_new,Icons.refresh], itemTitles: ["Turn off","Reboot"],itemColor: [Colors.redAccent,Colors.greenAccent]),
-
+              CustomDropdown(
+                isFullSize: true,
+                headerTitle: "Power",
+                headerIcon: Icons.bolt,
+                headerIconSize: 20,
+                itemIcons: [Icons.power_settings_new, Icons.refresh],
+                itemTitles: ["Turn off", "Reboot"],
+                itemColor: [Colors.redAccent, Colors.greenAccent],
+                itemCallbacks: [
+                  // MQTTWrapper(() {}, (_) {}, false, "", true).publishMessage(
+                  //     topic:
+                  //         "Healthcare/${userData.id}${userData.gid}/commands",
+                  //     command: "s"),
+                  // MQTTWrapper(() {}, (_) {}, false, "", true).publishMessage(
+                  //     topic:
+                  //         "Healthcare/${userData.id}${userData.gid}/commands",
+                  //     command: "r")
+                ],
+              ),
             ],
           ),
         ),

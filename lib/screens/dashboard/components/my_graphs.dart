@@ -5,6 +5,7 @@ import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
+import '../../../main.dart';
 import '../dashboard_screen.dart';
 import 'graph_info_card.dart';
 
@@ -34,7 +35,10 @@ class MyGraph extends StatelessWidget {
               crossAxisCount: _size.width < 650 ? 2 : 4,
               childAspectRatio: _size.width < 650 ? 1.3 : 1,
             ),
-            tablet: GraphInfoCardGridView(userData: userData,isDoctor: isDoctor,),
+            tablet: GraphInfoCardGridView(
+              userData: userData,
+              isDoctor: isDoctor,
+            ),
             desktop: GraphInfoCardGridView(
               isDoctor: isDoctor,
               userData: userData,
@@ -52,7 +56,6 @@ class GraphInfoCardGridView extends StatefulWidget {
     this.childAspectRatio = 1,
     @required this.userData,
     @required this.isDoctor,
-
   }) : super(key: key);
 
   final int crossAxisCount;
@@ -69,54 +72,57 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
   Widget build(BuildContext context) {
     List zeros = [
       TDLRGraph(
-          title: "Spo2",
-          currentValue: 0,
-          svgSrc: "assets/icons/oxygen.svg",
-          maxValue: "100",
-          color: primaryColor,
-          percentage: 0,
-          route: '/spo2',
-          unit: "%",),
-      TDLRGraph(
-          title: "Heartrate",
-          currentValue: 0,
-          svgSrc: "assets/icons/heartbeat.svg",
-          maxValue: "140",
-          color: Color(0xFFFFA113),
-          percentage: 0,
-          route: '/heartrate',
-          unit: 'bpm',
+        title: "Spo2",
+        currentValue: 0,
+        svgSrc: "assets/icons/oxygen.svg",
+        maxValue: "100",
+        color: primaryColor,
+        percentage: 0,
+        route: '/spo2',
+        unit: "%",
       ),
       TDLRGraph(
-          title: "Stress",
-          currentValue: 0,
-          svgSrc: "assets/icons/stress.svg",
-          maxValue: "100",
-          color: Color(0xFFA4CDFF),
-          percentage: 0,
-          route: '/stress',
-          unit:'',
-           ),
+        title: "Heartrate",
+        currentValue: 0,
+        svgSrc: "assets/icons/heartbeat.svg",
+        maxValue: "140",
+        color: Color(0xFFFFA113),
+        percentage: 0,
+        route: '/heartrate',
+        unit: 'bpm',
+      ),
       TDLRGraph(
-          title: "Temperature",
-          currentValue: 0,
-          svgSrc: "assets/icons/temperature.svg",
-          maxValue: "41",
-          color: Color(0xFF007EE5),
-          percentage: 0,
-          route: '/temperature',
-          unit: '°C',),
+        title: "Stress",
+        currentValue: 0,
+        svgSrc: "assets/icons/stress.svg",
+        maxValue: "100",
+        color: Color(0xFFA4CDFF),
+        percentage: 0,
+        route: '/stress',
+        unit: '',
+      ),
+      TDLRGraph(
+        title: "Temperature",
+        currentValue: 0,
+        svgSrc: "assets/icons/temperature.svg",
+        maxValue: "41",
+        color: Color(0xFF007EE5),
+        percentage: 0,
+        route: '/temperature',
+        unit: '°C',
+      ),
     ];
     List myGraphs = [
       TDLRGraph(
-          title: "Spo2",
-          currentValue: data != null ? data["spo2"] * 1.0 : 0,
-          svgSrc: "assets/icons/oxygen.svg",
-          maxValue: "100",
-          color: primaryColor,
-          percentage: data != null ? data["spo2"] * 1.0 : 0,
-          route: '/spo2',
-          unit: "%",),
+        title: "Spo2",
+        currentValue: data != null ? data["spo2"] * 1.0 : 0,
+        svgSrc: "assets/icons/oxygen.svg",
+        maxValue: "100",
+        color: primaryColor,
+        percentage: data != null ? data["spo2"] * 1.0 : 0,
+        route: '/spo2',
+        unit: "%",
+      ),
       TDLRGraph(
           title: "Heartrate",
           currentValue: data != null ? data["heartrate"] * 1.0 : 0,
@@ -127,23 +133,25 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
           route: '/heartrate',
           unit: 'bpm'),
       TDLRGraph(
-          title: "Stress",
-          currentValue: 10,
-          svgSrc: "assets/icons/stress.svg",
-          maxValue: "100",
-          color: Color(0xFFA4CDFF),
-          percentage: 10,
-          route: '/stress',
-          unit: '',),
+        title: "Stress",
+        currentValue: data != null ? data["stress"] * 1.0 : 0,
+        svgSrc: "assets/icons/stress.svg",
+        maxValue: "100",
+        color: Color(0xFFA4CDFF),
+        percentage: data != null ? data["stress"] * 1.0 : 0,
+        route: '/stress',
+        unit: '',
+      ),
       TDLRGraph(
-          title: "Temperature",
-          currentValue: data != null ? data["temperature"] * 1.0 : 0,
-          svgSrc: "assets/icons/temperature.svg",
-          maxValue: "41",
-          color: Color(0xFF007EE5),
-          percentage: data != null ? data["temperature"] * 100 / 41 : 0,
-          route: '/temperature',
-          unit: '°C',),
+        title: "Temperature",
+        currentValue: data != null ? data["temperature"] * 1.0 : 0,
+        svgSrc: "assets/icons/temperature.svg",
+        maxValue: "41",
+        color: Color(0xFF007EE5),
+        percentage: data != null ? data["temperature"] * 100 / 41 : 0,
+        route: '/temperature',
+        unit: '°C',
+      ),
     ];
     return mqttClientWrapper.connectionState ==
             MqttCurrentConnectionState.CONNECTED
@@ -156,7 +164,9 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 childAspectRatio: widget.childAspectRatio),
-            itemBuilder: (context, index) => GraphInfoCard(isDoctor: widget.isDoctor,userData: widget.userData,
+            itemBuilder: (context, index) => GraphInfoCard(
+              isDoctor: widget.isDoctor,
+              userData: widget.userData,
               info: myGraphs[index],
             ),
           )
@@ -169,7 +179,9 @@ class _GraphInfoCardGridViewState extends State<GraphInfoCardGridView> {
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 childAspectRatio: widget.childAspectRatio),
-            itemBuilder: (context, index) => GraphInfoCard(isDoctor: widget.isDoctor,userData: widget.userData,
+            itemBuilder: (context, index) => GraphInfoCard(
+              isDoctor: widget.isDoctor,
+              userData: widget.userData,
               info: zeros[index],
             ),
           );

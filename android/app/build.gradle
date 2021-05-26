@@ -61,3 +61,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
 }
+android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+}

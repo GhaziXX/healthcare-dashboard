@@ -1,8 +1,11 @@
+import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
+import 'package:provider/provider.dart';
 
 import 'dropdown.dart';
 
@@ -17,6 +20,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthNotifier authNotifier = context.watch<AuthNotifier>();
     return Container(
       color: bgColor.withOpacity(0.9),
       padding:
@@ -61,6 +65,7 @@ class Header extends StatelessWidget {
             itemTitles: ["Profile", "Logout"],
             itemColor: [Colors.white, Colors.white],
             headerTitle: userData.firstName,
+            itemCallbacks: [() => signOut(authNotifier), () => print('second')],
           )
         ],
       ),

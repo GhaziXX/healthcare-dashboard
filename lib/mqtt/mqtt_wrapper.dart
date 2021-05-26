@@ -20,8 +20,12 @@ class MQTTWrapper {
   MqttCurrentConnectionState connectionState = MqttCurrentConnectionState.IDLE;
   MqttSubscriptionState subscriptionState = MqttSubscriptionState.IDLE;
 
-  MQTTWrapper(this.onConnectedCallback, this.onDataReceivedCallback, this.debug,
-      this.user, this.isPublish);
+  MQTTWrapper(
+      {this.onConnectedCallback,
+      this.onDataReceivedCallback,
+      this.debug = false,
+      this.user,
+      this.isPublish});
 
   void prepareMqttClient() async {
     if (!isPublish) {
@@ -31,6 +35,7 @@ class MQTTWrapper {
     }
   }
 
+
   void _subscribeToTopic(String topic) {
     if (connectionState == MqttCurrentConnectionState.CONNECTED) {
       print('MQTTWrapper::Subscribing to ${topic.trim()}...');
@@ -39,15 +44,19 @@ class MQTTWrapper {
     }
   }
 
-  publishUid({String uid, String gid}) {
+  publishMessage(
+      {String uid, String gid, @required String topic, String command}) {
     MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
-    builder.addString("$uid,$gid");
+    if (uid != null) {
+      builder.addString("$uid,$gid");
+    } else {
+      builder.addString("$command");
+    }
     _sendSetupMqttClient();
     _connectClient().then((_) {
-      client.subscribe("Healthcare/userids", MqttQos.exactlyOnce);
+      client.subscribe(topic, MqttQos.exactlyOnce);
       try {
-        client.publishMessage(
-            "Healthcare/userids", MqttQos.exactlyOnce, builder.payload);
+        client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload);
       } on Exception catch (e) {
         print(e);
       }
@@ -60,7 +69,9 @@ class MQTTWrapper {
         MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
     if (debug) print("MQTTWrapper::GOT A NEW MESSAGE $message");
     var out = json.decode(message);
-    if (out != null) onDataReceivedCallback(out);
+    if (out != null) {
+      onDataReceivedCallback(out);
+    }
   }
 
   Future<void> _connectClient() async {

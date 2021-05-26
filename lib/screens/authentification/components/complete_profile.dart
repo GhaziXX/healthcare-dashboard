@@ -113,10 +113,15 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
                               AuthNotifier authNotifier =
                                   context.read<AuthNotifier>();
-                              MQTTWrapper(() {}, (_) {}, false, "", true)
-                                  .publishUid(
+                              MQTTWrapper(
+                                      onConnectedCallback: () {},
+                                      onDataReceivedCallback: (_) {},
+                                      isPublish: true,
+                                      user: "")
+                                  .publishMessage(
                                       uid: authNotifier.user.uid,
-                                      gid: _gidController.text);
+                                      gid: _gidController.text,
+                                      topic: "Healthcare/userids");
                               await FirestoreServices().createUser(UserData(
                                   firstName: _nameController.text,
                                   lastName: _lastController.text,
@@ -224,8 +229,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
           controller: _gidController,
           style: TextStyle(color: Colors.white, fontSize: 10.sp),
           keyboardType: TextInputType.streetAddress,
-          validator: FieldValidator.required(
-              message: "Please enter your product id"),
+          validator:
+              FieldValidator.required(message: "Please enter your product id"),
           decoration: const InputDecoration(
             labelText: "product id",
             prefixIcon: Icon(

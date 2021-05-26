@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'dart:async';
 
 class TempGraph extends StatefulWidget {
   final double temp;
@@ -35,10 +34,7 @@ class _TempGraphState extends State<TempGraph> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Column(children: <Widget>[
-      Text(
-          "Temperature",
-          style: Theme.of(context).textTheme.headline5
-      ),
+      Text("Temperature", style: Theme.of(context).textTheme.headline5),
       SizedBox(
         height: _size.height * 0.05,
       ),
@@ -96,21 +92,41 @@ class _TempGraphState extends State<TempGraph> {
   }
 
   void _updateDataSource(Timer timer) {
-    if (!pause) {
-      if (mounted) {
-        setState(() {
-          if (chartData.length > 30) {
-            chartData.removeAt(0);
-            chartData.add(_ChartData(DateTime.now(), widget.temp));
-            _chartSeriesController.updateDataSource(
-                addedDataIndexes: <int>[count++], removedDataIndexes: <int>[0]);
-          } else {
-            chartData.add(_ChartData(DateTime.now(), widget.temp));
-            _chartSeriesController.updateDataSource(
-              addedDataIndexes: <int>[count++],
-            );
+    if (mounted) {
+      if (!pause) {
+        if (chartData.length > 1) {
+          if (chartData.last.y != widget.temp) {
+            setState(() {
+              if (chartData.length > 30) {
+                chartData.removeAt(0);
+                chartData.add(_ChartData(DateTime.now(), widget.temp));
+                _chartSeriesController.updateDataSource(
+                    addedDataIndexes: <int>[count++],
+                    removedDataIndexes: <int>[0]);
+              } else {
+                chartData.add(_ChartData(DateTime.now(), widget.temp));
+                _chartSeriesController.updateDataSource(
+                  addedDataIndexes: <int>[count++],
+                );
+              }
+            });
           }
-        });
+        } else {
+          setState(() {
+            if (chartData.length > 30) {
+              chartData.removeAt(0);
+              chartData.add(_ChartData(DateTime.now(), widget.temp));
+              _chartSeriesController.updateDataSource(
+                  addedDataIndexes: <int>[count++],
+                  removedDataIndexes: <int>[0]);
+            } else {
+              chartData.add(_ChartData(DateTime.now(), widget.temp));
+              _chartSeriesController.updateDataSource(
+                addedDataIndexes: <int>[count++],
+              );
+            }
+          });
+        }
       }
     }
   }

@@ -27,9 +27,23 @@ class RealtimeGraphs extends StatelessWidget {
         SizedBox(
           height: defaultPadding,
         ),
-        Responsive(mobile: RealtimeGraphGridView(childAspectRatio: 3.5,isDoctor: isDoctor,userData: userData,),
-          tablet: RealtimeGraphGridView(childAspectRatio: 3,isDoctor: isDoctor,userData: userData,) ,
-          desktop: RealtimeGraphGridView(childAspectRatio: 4,isDoctor: isDoctor,userData: userData,),),
+        Responsive(
+          mobile: RealtimeGraphGridView(
+            childAspectRatio: 3.5,
+            isDoctor: isDoctor,
+            userData: userData,
+          ),
+          tablet: RealtimeGraphGridView(
+            childAspectRatio: 3,
+            isDoctor: isDoctor,
+            userData: userData,
+          ),
+          desktop: RealtimeGraphGridView(
+            childAspectRatio: 4,
+            isDoctor: isDoctor,
+            userData: userData,
+          ),
+        ),
       ],
     );
   }
@@ -37,14 +51,16 @@ class RealtimeGraphs extends StatelessWidget {
 
 class RealtimeGraphGridView extends StatelessWidget {
   final double childAspectRatio;
-  const RealtimeGraphGridView({
-    Key key,
-    this.childAspectRatio,
-    @required this.isDoctor,
-    @required this.userData,
-  }) : super(key: key);
+  const RealtimeGraphGridView(
+      {Key key,
+      this.childAspectRatio,
+      @required this.isDoctor,
+      @required this.userData,
+      this.data})
+      : super(key: key);
   final bool isDoctor;
   final UserData userData;
+  final data;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +75,8 @@ class RealtimeGraphGridView extends StatelessWidget {
       children: [
         GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed('/ECG',arguments: ScreenArguments(isDoctor, userData));
+              Navigator.of(context).pushNamed('/ECG',
+                  arguments: ScreenArguments(isDoctor, userData));
             },
             child: Container(
               padding: EdgeInsets.all(defaultPadding),
@@ -83,7 +100,9 @@ class RealtimeGraphGridView extends StatelessWidget {
                       color: Colors.redAccent,
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   FittedBox(
                     child: Container(
                       child: Text(
@@ -95,11 +114,11 @@ class RealtimeGraphGridView extends StatelessWidget {
                   ),
                 ],
               ),
-            )
-        ),
+            )),
         GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed('/tempGraph',arguments: ScreenArguments(isDoctor, userData));
+              Navigator.of(context).pushNamed('/tempGraph',
+                  arguments: ScreenArguments(isDoctor, userData));
             },
             child: Container(
               padding: EdgeInsets.all(defaultPadding),
@@ -123,7 +142,9 @@ class RealtimeGraphGridView extends StatelessWidget {
                       color: Colors.yellowAccent,
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Container(
                     child: FittedBox(
                       child: Text(
@@ -135,10 +156,8 @@ class RealtimeGraphGridView extends StatelessWidget {
                   ),
                 ],
               ),
-            )
-        )
+            ))
       ],
     );
   }
 }
-

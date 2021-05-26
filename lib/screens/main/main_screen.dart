@@ -17,7 +17,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(userData);
     return Scaffold(
       drawer: SideMenu(
         userData: userData,

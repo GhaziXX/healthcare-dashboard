@@ -17,6 +17,7 @@ class DashboardScreen extends StatefulWidget {
     @required this.isDoctor,
     @required this.userData,
   }) : super(key: key);
+
   final bool isDoctor;
   final UserData userData;
 
@@ -30,13 +31,15 @@ MQTTWrapper mqttClientWrapper;
 class _DashboardScreenState extends State<DashboardScreen> {
   void setup() {
     mqttClientWrapper = MQTTWrapper(
-        () => print("Connected"),
-        (newDataJson) => setState(() {
+        onConnectedCallback: () => print("connected"),
+        onDataReceivedCallback: (newDataJson) {
+          if (mounted)
+            setState(() {
               data = newDataJson;
-            }),
-        false,
-        "Healthcare/" + widget.userData.id + widget.userData.gid,
-        false);
+            });
+        },
+        isPublish: false,
+        user: "Healthcare/" + widget.userData.id + widget.userData.gid);
     mqttClientWrapper.prepareMqttClient();
   }
 
@@ -46,7 +49,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setup();
   }
 
-  @override
   Widget build(BuildContext context) {
     ScrollController _scrollController = ScrollController();
     return SafeArea(
@@ -75,15 +77,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         children: [
                           if (Responsive.isMobile(context))
-                            GeneralDetails(),
+                            GeneralDetails(
+                              userData: widget.userData,
+                            ),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
-                          MyGraph(isDoctor: widget.isDoctor,userData: widget.userData,),
+                          MyGraph(
+                            isDoctor: widget.isDoctor,
+                            userData: widget.userData,
+                          ),
                           SizedBox(height: defaultPadding),
-                          RealtimeGraphs(isDoctor: widget.isDoctor,userData: widget.userData,),
+                          RealtimeGraphs(
+                            isDoctor: widget.isDoctor,
+                            userData: widget.userData,
+                          ),
                           SizedBox(height: defaultPadding),
                           Report(),
-
                         ],
                       ),
                     ),
@@ -94,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     if (!Responsive.isMobile(context))
                       Expanded(
                         flex: 2,
-                        child: GeneralDetails(),
+                        child: GeneralDetails(userData: widget.userData),
                       )
                   ],
                 )
