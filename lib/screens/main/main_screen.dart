@@ -1,4 +1,4 @@
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 

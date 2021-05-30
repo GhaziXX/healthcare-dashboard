@@ -1,75 +1,75 @@
-class DoctorsCat {
+class DoctorsCategories {
   final String icon, title;
 
-  DoctorsCat({this.icon, this.title});
+  DoctorsCategories({this.icon, this.title});
 }
 
-List<DoctorsCat> doctorsTypes = [
-  DoctorsCat(
+List<DoctorsCategories> doctorsTypes = [
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/allergy.svg",
     title: "Allergy and immunology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/anesthesiology.svg",
     title: "Anesthesiology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/dermatology.svg",
     title: "Dermatology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/radiology.svg",
     title: "Diagnostic radiology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/emergency.svg",
     title: "Emergency medicine",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/family.svg",
     title: "Family medicine",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/internal.svg",
     title: "Internal medicine",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/genetics.svg",
     title: "Medical genetics",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/neurology.svg",
     title: "Neurology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/obstetrics.svg",
     title: "Obstetrics and gynecology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/ophthalmology.svg",
     title: "Ophthalmology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/pathology.svg",
     title: "Pathology",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/pediatrics.svg",
     title: "Pediatrics",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/rehabilitation.svg",
     title: "Rehabilitation",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/psychiatry.svg",
     title: "Psychiatry",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/surgery.svg",
     title: "Surgery",
   ),
-  DoctorsCat(
+  DoctorsCategories(
     icon: "assets/icons/doctors_types/urology.svg",
     title: "Urology",
   ),

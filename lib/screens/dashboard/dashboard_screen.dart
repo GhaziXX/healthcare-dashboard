@@ -1,5 +1,5 @@
-import 'package:admin/models/UserData.dart';
-import 'package:admin/mqtt/mqtt_wrapper.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -45,8 +45,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
-    super.initState();
     setup();
+    super.initState();
   }
 
   Widget build(BuildContext context) {
@@ -92,7 +92,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             userData: widget.userData,
                           ),
                           SizedBox(height: defaultPadding),
-                          Report(),
+                          Report(
+                            userData: widget.userData,
+                          ),
                         ],
                       ),
                     ),

@@ -18,8 +18,8 @@ class GeneralInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: defaultPadding),
-      padding: EdgeInsets.all(defaultPadding),
+      margin: EdgeInsets.only(top: defaultPadding / 2),
+      padding: EdgeInsets.all(defaultPadding / 2),
       decoration: BoxDecoration(
           border: Border.all(width: 2, color: primaryColor.withOpacity(0.15)),
           borderRadius:

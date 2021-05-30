@@ -9,9 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'backend/firebase/firestore_services.dart';
-import 'models/UserData.dart';
+import 'models/data_models/UserData.dart';
 import 'screens/authentification/auth_screen.dart';
 import 'screens/measures/ecg_screen.dart';
+import 'screens/measures/filter_card.dart';
 import 'screens/measures/heartrate_screen.dart';
 import 'screens/measures/spo2_screen.dart';
 import 'screens/measures/temperature_screen.dart';
@@ -63,7 +64,9 @@ class _MyAppState extends State<MyApp> {
             '/all': (context) => AllinOneScreen(),
             '/auth': (context) => AuthScreen()
           },
-          home: Consumer<AuthNotifier>(
+          home:
+              //FilterCard(),
+              Consumer<AuthNotifier>(
             builder: (context, notifier, child) {
               //print("el notif rahi ${notifier.user}");
               if (notifier.user != null) {
@@ -93,7 +96,6 @@ class _MyAppState extends State<MyApp> {
               return AuthScreen();
             },
           ),
-          // home: AuthScreen(),
         ),
       );
     });

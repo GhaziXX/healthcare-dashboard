@@ -1,14 +1,15 @@
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/graphs/ecg_graph.dart';
-import 'package:admin/models/graphs/heartrate.dart';
-import 'package:admin/models/graphs/spo2_gauge.dart';
-import 'package:admin/models/graphs/temperature_gauge.dart';
-import 'package:admin/mqtt/mqtt_model.dart';
-import 'package:admin/mqtt/mqtt_wrapper.dart';
+import 'package:admin/models/graphs_models/ecg_graph.dart';
+import 'package:admin/models/graphs_models/heartrate.dart';
+import 'package:admin/models/graphs_models/spo2_gauge.dart';
+import 'package:admin/models/graphs_models/temperature_gauge.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
+import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../../responsive.dart';
 import '../ScreenArgs.dart';
@@ -38,9 +39,10 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
       args = ModalRoute.of(context).settings.arguments as ScreenArguments;
       mqttClientWrapper = MQTTWrapper(
           onDataReceivedCallback: (newDataJson) {
-            setState(() {
-              data = newDataJson;
-            });
+            if (mounted)
+              setState(() {
+                data = newDataJson;
+              });
           },
           isPublish: false,
           onConnectedCallback: () {},
@@ -48,6 +50,7 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
       mqttClientWrapper.prepareMqttClient();
       shouldInit = false;
     }
+    ScrollController _scrollController = ScrollController();
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
@@ -67,53 +70,63 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
               ),
             Expanded(
               flex: 5,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Column(children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          children: [
-                            Header(
-                              isDoctor: args.isDoctor,
-                              userData: args.userData,
-                            ),
-                            SizedBox(
-                              height: _size.height * 0.1,
-                            ),
-                            Responsive(
-                                mobile: GraphGridView(
-                                  crossAxisCount: _size.width < 650 ? 1 : 2,
-                                  childAspectRatio: _size.width < 650 ? 1.1 : 1,
+              child: Scrollbar(
+                controller: _scrollController,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: StickyHeader(
+                    header: Header(
+                      isDoctor: args.isDoctor,
+                      userData: args.userData,
+                    ),
+                    content: Column(children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: _size.height * 0.1,
                                 ),
-                                tablet: GraphGridView(),
-                                desktop: GraphGridView(
-                                  crossAxisCount: _size.width < 1400 ? 3 : 2,
-                                  childAspectRatio: _size.width < 1400 ? 1 : 4,
-                                )),
-                            SizedBox(
-                              height: defaultPadding,
+                                Responsive(
+                                    mobile: GraphGridView(
+                                      crossAxisCount: _size.width < 650 ? 1 : 2,
+                                      childAspectRatio:
+                                          _size.width < 650 ? 1.1 : 1,
+                                    ),
+                                    tablet: GraphGridView(),
+                                    desktop: GraphGridView(
+                                      crossAxisCount:
+                                          _size.width < 1400 ? 3 : 2,
+                                      childAspectRatio:
+                                          _size.width < 1400 ? 1 : 4,
+                                    )),
+                                SizedBox(
+                                  height: defaultPadding,
+                                ),
+                                if (!Responsive.isMobile(context))
+                                  Responsive(
+                                      mobile: Container(),
+                                      tablet: GraphHolder(
+                                          child: ECGGraph(
+                                              ecg: data != null
+                                                  ? data["ecg"]
+                                                  : [])),
+                                      desktop: GraphHolder(
+                                          child: ECGGraph(
+                                              ecg: data != null
+                                                  ? data["ecg"]
+                                                  : []))),
+                              ],
                             ),
-                            if (!Responsive.isMobile(context))
-                              Responsive(
-                                  mobile: Container(),
-                                  tablet: GraphHolder(
-                                      child: ECGGraph(
-                                          ecg:
-                                              data != null ? data["ecg"] : [])),
-                                  desktop: GraphHolder(
-                                      child: ECGGraph(
-                                          ecg: data != null
-                                              ? data["ecg"]
-                                              : []))),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ]),
                   ),
-                ]),
+                ),
               ),
             ),
           ],
@@ -142,7 +155,6 @@ class GraphGridView extends StatefulWidget {
 class _GraphGridViewState extends State<GraphGridView> {
   @override
   Widget build(BuildContext context) {
-    print("data fel all $data");
     List<Widget> children = [
       SPO2Radial(data != null ? data["spo2"] : 0),
       HeartRate(

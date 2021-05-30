@@ -1,7 +1,7 @@
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/graphs/temperature_graph.dart';
-import 'package:admin/mqtt/mqtt_model.dart';
-import 'package:admin/mqtt/mqtt_wrapper.dart';
+import 'package:admin/models/graphs_models/temperature_graph.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
+import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +29,10 @@ class _TempGraphScreenState extends State<TempGraphScreen> {
       args = ModalRoute.of(context).settings.arguments as ScreenArguments;
       mqttClientWrapper = MQTTWrapper(
           onDataReceivedCallback: (newDataJson) {
-            setState(() {
-              data = newDataJson;
-            });
+            if (mounted)
+              setState(() {
+                data = newDataJson;
+              });
           },
           isPublish: false,
           onConnectedCallback: () {},

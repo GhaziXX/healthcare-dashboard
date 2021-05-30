@@ -1,5 +1,6 @@
 import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 class CustomTimeRangeSelector extends StatelessWidget {
@@ -7,10 +8,12 @@ class CustomTimeRangeSelector extends StatelessWidget {
     Key key,
     @required this.timeRangeNotifier,
     @required this.timeController,
+    @required this.onClicked,
   }) : super(key: key);
 
   final ValueNotifier<TimeRange> timeRangeNotifier;
   final TextEditingController timeController;
+  final Function(String, String) onClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +80,18 @@ class CustomTimeRangeSelector extends StatelessWidget {
                   },
                 );
                 if (timeRangeNotifier.value != null) {
-                  print('okkk');
                   value = timeRangeNotifier.value;
+
                   timeController.text = value.startTime.format(context) +
                       " - " +
                       value.endTime.format(context);
+                  final first = timeController.text.split("-")[0].trim();
+                  final second = timeController.text.split("-")[1].trim();
+                  onClicked(
+                      DateFormat("HH:mm:ss:S")
+                          .format(DateFormat.jm().parse(first)),
+                      DateFormat("HH:mm:ss:S")
+                          .format(DateFormat.jm().parse(second)));
                 }
               },
               readOnly: true,

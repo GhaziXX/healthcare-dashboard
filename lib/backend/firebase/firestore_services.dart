@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 
 class FirestoreServices {
   final CollectionReference _usersCollectionReference =

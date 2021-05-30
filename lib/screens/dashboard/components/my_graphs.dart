@@ -1,6 +1,6 @@
 import 'package:admin/models/TDLRGraph.dart';
-import 'package:admin/models/UserData.dart';
-import 'package:admin/mqtt/mqtt_model.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 

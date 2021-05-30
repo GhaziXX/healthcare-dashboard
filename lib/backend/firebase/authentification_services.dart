@@ -1,5 +1,7 @@
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 signOut(AuthNotifier authNotifier) async {
   await FirebaseAuth.instance.signOut();
@@ -42,9 +44,11 @@ notifyUser(AuthNotifier authNotifier) async {
 Future<String> signUp(
     {String email, String password, AuthNotifier authNotifier}) async {
   try {
-    await FirebaseAuth.instance
+    UserCredential uc = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     authNotifier.setUserWithoutNotif(FirebaseAuth.instance.currentUser);
+    await FirebaseChatCore.instance
+        .createUserInFirestore(types.User(id: uc.user.uid));
     return "Signed Up";
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {

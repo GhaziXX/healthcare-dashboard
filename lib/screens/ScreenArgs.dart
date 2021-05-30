@@ -1,4 +1,4 @@
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 
 class ScreenArguments {
   final bool isDoctor;

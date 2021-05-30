@@ -1,4 +1,4 @@
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -106,7 +106,7 @@ class RealtimeGraphGridView extends StatelessWidget {
                   FittedBox(
                     child: Container(
                       child: Text(
-                        "ECG Graph",
+                        "ECG",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -148,7 +148,7 @@ class RealtimeGraphGridView extends StatelessWidget {
                   Container(
                     child: FittedBox(
                       child: Text(
-                        "Temperature Graph",
+                        "Temperature",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

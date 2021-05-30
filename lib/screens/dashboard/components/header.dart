@@ -1,6 +1,6 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

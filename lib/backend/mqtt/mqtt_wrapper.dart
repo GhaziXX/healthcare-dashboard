@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:admin/mqtt/mqtt_model.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:admin/backend/mqtt/app.dart'
     if (dart.library.html) 'package:admin/backend/mqtt/web.dart' as mqttsetup;

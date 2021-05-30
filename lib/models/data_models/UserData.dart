@@ -12,6 +12,7 @@ class UserData {
   final bool isDoctor;
   final String birthdate;
   final String gid;
+  final String otherId;
   UserData(
       {this.firstName,
       this.lastName,
@@ -25,7 +26,8 @@ class UserData {
       this.address,
       this.isDoctor,
       this.birthdate,
-      this.gid});
+      this.gid,
+      this.otherId});
 
   UserData.fromJson(Map<String, dynamic> data)
       : this(
@@ -41,7 +43,8 @@ class UserData {
             isDoctor: data['isDoctor'] as bool,
             birthdate: data['birthdate'] as String,
             address: data['address'] as String,
-            gid: data['gid'] as String);
+            gid: data['gid'] as String,
+            otherId: data['otherId'] as String);
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -57,6 +60,7 @@ class UserData {
       'address': address,
       'birthdate': birthdate,
       'gid': gid,
+      'otherId': otherId,
     };
   }
 }

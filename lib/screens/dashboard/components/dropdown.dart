@@ -224,7 +224,7 @@ class DropDownItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return this.isFullSize
         ? TextButton(
-            onPressed: () {},
+            onPressed: callback,
             child: Row(children: <Widget>[
               Text(
                 text,

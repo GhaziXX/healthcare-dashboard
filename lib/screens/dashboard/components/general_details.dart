@@ -1,15 +1,18 @@
-import 'package:admin/models/UserData.dart';
-import 'package:admin/mqtt/mqtt_model.dart';
+import 'package:admin/backend/chat/chat.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/screens/dashboard/components/dropdown.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../constants/constants.dart';
-import '../../../main.dart';
 import '../dashboard_screen.dart';
 import 'general_info_card.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-class GeneralDetails extends StatelessWidget {
+class GeneralDetails extends StatefulWidget {
   const GeneralDetails({
     Key key,
     @required this.userData,
@@ -18,11 +21,37 @@ class GeneralDetails extends StatelessWidget {
   final UserData userData;
 
   @override
-  Widget build(BuildContext context) {
+  _GeneralDetailsState createState() => _GeneralDetailsState();
+}
 
+class _GeneralDetailsState extends State<GeneralDetails> {
+  //Future<types.Room> _future;
+  String id;
+  createRoom(types.User otherUser, BuildContext context) async {
+    FirebaseChatCore.instance
+        .createRoom(otherUser)
+        .then((value) => setState(() {
+              id = value.id;
+            }));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      createRoom(
+          types.User(
+              id: widget.userData.otherId,
+              firstName: widget.userData.firstName,
+              lastName: widget.userData.lastName),
+          context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     bool connected = mqttClientWrapper.connectionState ==
         MqttCurrentConnectionState.CONNECTED;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,6 +117,13 @@ class GeneralDetails extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: defaultPadding),
+        if (widget.userData.otherId != null)
+          SizedBox(
+              height: 400,
+              child: ChatRoom(
+                roomId: id,
+              ))
       ],
     );
   }

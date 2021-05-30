@@ -1,11 +1,10 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
-import 'package:admin/models/DoctorsCat.dart';
-import 'package:admin/models/UserData.dart';
-import 'package:admin/mqtt/mqtt_wrapper.dart';
+import 'package:admin/models/DoctorsCategories.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:jiffy/jiffy.dart';

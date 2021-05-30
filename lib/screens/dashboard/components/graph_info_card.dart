@@ -1,5 +1,5 @@
 import 'package:admin/models/TDLRGraph.dart';
-import 'package:admin/models/UserData.dart';
+import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/ScreenArgs.dart';
 import 'package:flutter/material.dart';

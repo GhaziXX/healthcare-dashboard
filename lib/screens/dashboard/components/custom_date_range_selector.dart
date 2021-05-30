@@ -7,10 +7,12 @@ class CustomDateRangeSelector extends StatelessWidget {
     Key key,
     @required this.dateRangeNotifier,
     @required this.dateController,
+    @required this.onClicked,
   }) : super(key: key);
 
   final ValueNotifier<DateTimeRange> dateRangeNotifier;
   final TextEditingController dateController;
+  final Function(String, String) onClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class CustomDateRangeSelector extends StatelessWidget {
           value = null;
           return Flexible(
             child: TextField(
+              
               controller: dateController,
               decoration: InputDecoration(
                   fillColor: secondaryColor,
@@ -47,6 +50,13 @@ class CustomDateRangeSelector extends StatelessWidget {
                   dateController.text = DateFormat.yMd().format(value.start) +
                       " - " +
                       DateFormat.yMd().format(value.end);
+                  final first =
+                      dateController.text.split("-")[0].trim().split('/');
+                  final second =
+                      dateController.text.split("-")[1].trim().split("/");
+
+                  onClicked(first[2] + "-" + first[0] + "-" + first[1],
+                      second[2] + '-' + second[0] + '-' + second[1]);
                 }
               },
               readOnly: true,
