@@ -76,7 +76,7 @@ class RealtimeGraphGridView extends StatelessWidget {
         GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed('/ECG',
-                  arguments: ScreenArguments(isDoctor, userData));
+                  arguments: ScreenArguments(isDoctor, userData, null, null));
             },
             child: Container(
               padding: EdgeInsets.all(defaultPadding),
@@ -118,7 +118,7 @@ class RealtimeGraphGridView extends StatelessWidget {
         GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed('/tempGraph',
-                  arguments: ScreenArguments(isDoctor, userData));
+                  arguments: ScreenArguments(isDoctor, userData, null, null));
             },
             child: Container(
               padding: EdgeInsets.all(defaultPadding),

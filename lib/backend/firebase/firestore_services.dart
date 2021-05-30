@@ -41,4 +41,36 @@ class FirestoreServices {
     }
     return data;
   }
+
+  Future<UserData> getUserData({String uid}) async {
+    UserData data;
+    try {
+      searchUser(uid).then((value) async {
+        if (value == true) {
+          await _usersCollectionReference.doc(uid).get().then((doc) {
+            Map<String, dynamic> d = doc.data();
+            data = UserData.fromJson(d);
+          });
+        } else {
+          data = null;
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return data;
+  }
+
+  Future<bool> addOtherId({String currentUserId, String otherID}) async {
+    try {
+      await _usersCollectionReference.doc(currentUserId).update({
+        'otherIds': FieldValue.arrayUnion([otherID])
+      }).then((value) {
+        return true;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
 }

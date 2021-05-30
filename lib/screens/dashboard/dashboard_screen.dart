@@ -94,6 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           SizedBox(height: defaultPadding),
                           Report(
                             userData: widget.userData,
+                            isDoctor: widget.isDoctor,
                           ),
                         ],
                       ),

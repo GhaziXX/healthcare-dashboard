@@ -2,6 +2,7 @@ import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
+import 'package:admin/screens/measures/temperature_filter_screen.dart';
 import 'package:admin/screens/measures/tempgraph_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'backend/firebase/firestore_services.dart';
 import 'models/data_models/UserData.dart';
 import 'screens/authentification/auth_screen.dart';
+import 'screens/measures/all_in_one_filter_screen.dart';
 import 'screens/measures/ecg_screen.dart';
 import 'screens/measures/filter_card.dart';
+import 'screens/measures/heartrate_filter_screen.dart';
 import 'screens/measures/heartrate_screen.dart';
+import 'screens/measures/spo2_filter_screen.dart';
 import 'screens/measures/spo2_screen.dart';
+import 'screens/measures/stress_filter_screen.dart';
 import 'screens/measures/temperature_screen.dart';
 
 Future<void> main() async {
@@ -62,7 +67,13 @@ class _MyAppState extends State<MyApp> {
             '/ECG': (context) => ECGScreen(),
             '/tempGraph': (context) => TempGraphScreen(),
             '/all': (context) => AllinOneScreen(),
-            '/auth': (context) => AuthScreen()
+            '/auth': (context) => AuthScreen(),
+            '/allFilter': (context) => AllinOneFilterScreen(),
+            '/filteredTemperature': (context) => TemperatureFilterScreen(),
+            '/filteredSpo2': (context) => Spo2FilterScreen(),
+            '/filteredStress': (context) => StressFilterScreen(),
+            '/filteredHeartrate': (context) => HeartrateFilterScreen(),
+
           },
           home:
               //FilterCard(),

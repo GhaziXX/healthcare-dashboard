@@ -1,15 +1,31 @@
 import 'package:admin/constants/constants.dart';
+import 'package:admin/models/data_models/APIData.dart';
 import 'package:admin/models/data_models/GeneralReadingData.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../ScreenArgs.dart';
 
 class TLDRFiltercard extends StatefulWidget {
   @override
   _TLDRFiltercardState createState() => _TLDRFiltercardState();
-  const TLDRFiltercard({Key key, @required this.title, this.data})
+  const TLDRFiltercard(
+      {Key key,
+      @required this.title,
+      @required this.data,
+      @required this.userData,
+      @required this.isDoctor,
+      @required this.apiData,
+      @required this.route})
       : super(key: key);
   final String title;
   final GeneralReadingData data;
+  final APIData apiData;
+  final UserData userData;
+  final bool isDoctor;
+  final String route;
 }
 
 class _TLDRFiltercardState extends State<TLDRFiltercard> {
@@ -21,7 +37,17 @@ class _TLDRFiltercardState extends State<TLDRFiltercard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (Responsive.isMobile(context)) {
+          Navigator.of(context).pushNamed(widget.route,
+              arguments: ScreenArguments(
+                  widget.isDoctor, widget.userData, null, widget.data));
+        } else {
+          Navigator.pushNamed(context, '/allFilter',
+              arguments: ScreenArguments(
+                  widget.isDoctor, widget.userData, widget.apiData, null));
+        }
+      },
       child: Container(
         padding: EdgeInsets.all(defaultPadding / 2),
         decoration: BoxDecoration(

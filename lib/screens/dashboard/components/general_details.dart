@@ -41,7 +41,7 @@ class _GeneralDetailsState extends State<GeneralDetails> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       createRoom(
           types.User(
-              id: widget.userData.otherId,
+              id: widget.userData.otherIds[0],
               firstName: widget.userData.firstName,
               lastName: widget.userData.lastName),
           context);
@@ -118,7 +118,7 @@ class _GeneralDetailsState extends State<GeneralDetails> {
           ),
         ),
         SizedBox(height: defaultPadding),
-        if (widget.userData.otherId != null)
+        if (widget.userData.otherIds != null)
           SizedBox(
               height: 400,
               child: ChatRoom(

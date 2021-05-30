@@ -1,4 +1,5 @@
 import 'package:admin/api/api_services.dart';
+import 'package:admin/main.dart';
 import 'package:admin/models/data_models/APIData.dart';
 import 'package:admin/models/data_models/GeneralReadingData.dart';
 import 'package:admin/models/data_models/UserData.dart';
@@ -20,9 +21,11 @@ class Report extends StatefulWidget {
   const Report({
     Key key,
     @required this.userData,
+    @required this.isDoctor,
   }) : super(key: key);
 
   final UserData userData;
+  final bool isDoctor;
 
   @override
   _ReportState createState() => _ReportState();
@@ -99,19 +102,27 @@ class _ReportState extends State<Report> {
                       crossAxisCount: _size.width < 650 ? 2 : 4,
                       childAspectRatio: _size.width < 650 ? 1.3 : 1,
                       apiData: snapshot.data,
+                      isDoctor: widget.isDoctor,
+                      userData: widget.userData,
                     ),
                     tablet: GraphTLDRFilterCardGridView(
                       apiData: snapshot.data,
+                      isDoctor: widget.isDoctor,
+                      userData: widget.userData,
                     ),
                     desktop: GraphTLDRFilterCardGridView(
                       apiData: snapshot.data,
                       childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
+                      isDoctor: widget.isDoctor,
+                      userData: widget.userData,
                     ));
               }
               return Responsive(
                   mobile: GraphTLDRFilterCardGridView(
                     crossAxisCount: _size.width < 650 ? 2 : 4,
                     childAspectRatio: _size.width < 650 ? 1.3 : 1,
+                    isDoctor: widget.isDoctor,
+                    userData: widget.userData,
                     child: Container(
                       padding: EdgeInsets.all(defaultPadding / 2),
                       decoration: BoxDecoration(
@@ -123,6 +134,8 @@ class _ReportState extends State<Report> {
                     ),
                   ),
                   tablet: GraphTLDRFilterCardGridView(
+                    isDoctor: widget.isDoctor,
+                    userData: widget.userData,
                     child: Container(
                       padding: EdgeInsets.all(defaultPadding / 2),
                       decoration: BoxDecoration(
@@ -134,6 +147,8 @@ class _ReportState extends State<Report> {
                     ),
                   ),
                   desktop: GraphTLDRFilterCardGridView(
+                    isDoctor: widget.isDoctor,
+                    userData: widget.userData,
                     childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
                     child: Container(
                       padding: EdgeInsets.all(defaultPadding / 2),
@@ -159,12 +174,16 @@ class GraphTLDRFilterCardGridView extends StatefulWidget {
     this.childAspectRatio = 1,
     this.child,
     this.apiData,
+    this.isDoctor,
+    this.userData,
   }) : super(key: key);
 
   final int crossAxisCount;
   final double childAspectRatio;
   final APIData apiData;
   final Widget child;
+  final bool isDoctor;
+  final UserData userData;
 
   @override
   _GraphTLDRFilterCardGridViewState createState() =>
@@ -174,6 +193,12 @@ class GraphTLDRFilterCardGridView extends StatefulWidget {
 class _GraphTLDRFilterCardGridViewState
     extends State<GraphTLDRFilterCardGridView> {
   List<String> filterGraphs = ['Temperature', 'SPO2', 'Stress', 'Heartrate'];
+  List<String> filterRoutes = [
+    '/filteredTemperature',
+    '/filteredSpo2',
+    '/filteredStress',
+    '/filteredHeartrate'
+  ];
   List<GeneralReadingData> filterData = [];
 
   @override
@@ -199,6 +224,10 @@ class _GraphTLDRFilterCardGridViewState
             : TLDRFiltercard(
                 data: filterData[index],
                 title: filterGraphs[index],
+                apiData: widget.apiData,
+                isDoctor: widget.isDoctor,
+                userData: widget.userData,
+                route: filterRoutes[index],
               ));
   }
 }
