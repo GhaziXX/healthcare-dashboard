@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../ScreenArgs.dart';
+
 class SideMenu extends StatelessWidget {
   const SideMenu({
     Key key,
@@ -39,7 +41,7 @@ class SideMenu extends StatelessWidget {
             isDoctor
                 ? DrawerListTile(
                     title: "Patients",
-                    svgSrc: "assets/icons/menu_patient.svg",
+                    svgSrc: "assets/icons/patient.svg",
                     press: () {},
                     usePath: true,
                   )
@@ -73,7 +75,9 @@ class SideMenu extends StatelessWidget {
             DrawerListTile(
               title: "Profile",
               icon: Icons.account_circle_outlined,
-              press: () {},
+              press: () {
+                Navigator.pushNamed(context,'/profile',arguments: ScreenArguments(isDoctor, userData,null,null));
+              },
               usePath: false,
             ),
             // DrawerListTile(

@@ -1,17 +1,15 @@
-class RealtimeGraph {
-  final String icon, title, details, route;
+class Patients {
+  final title, details, route;
 
-  RealtimeGraph({this.icon,this.title,this.details,this.route});
+  Patients({this.title,this.details,this.route});
 }
 
-List realtimeGraphs = [
-  RealtimeGraph(
-      icon: "assets/icons/temperature.svg",
+List patientsList = [
+  Patients(
       title: "Temperature",
       details: "More Details",
       route: '/tempGraph'),
-  RealtimeGraph(
-      icon: "assets/icons/ecg.svg",
+  Patients(
       title: "ECG",
       details: "More Details",
       route: "/ECG"),

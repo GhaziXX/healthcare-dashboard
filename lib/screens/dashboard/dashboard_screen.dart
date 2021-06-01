@@ -65,7 +65,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             content: Column(
               children: [
-                //Header(),
                 SizedBox(
                   height: defaultPadding,
                 ),

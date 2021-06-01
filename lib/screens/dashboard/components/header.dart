@@ -2,6 +2,7 @@ import 'package:admin/backend/firebase/authentification_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/responsive.dart';
+import 'package:admin/screens/ScreenArgs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
@@ -65,7 +66,10 @@ class Header extends StatelessWidget {
             itemTitles: ["Profile", "Logout"],
             itemColor: [Colors.white, Colors.white],
             headerTitle: userData.firstName,
-            itemCallbacks: [() => signOut(authNotifier), () => print('second')],
+            itemCallbacks: [
+              () => Navigator.pushNamed(context, '/profile',arguments: ScreenArguments(isDoctor, userData,null,null))
+              ,() => signOut(authNotifier)
+            ],
           )
         ],
       ),

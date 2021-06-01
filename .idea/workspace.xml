@@ -20,34 +20,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3806bd37-35db-4268-be40-d2930bdc31af" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/screens/ScreenArgs.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/communication.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/patient.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/my_patients.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/patients_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/dashboard/doctor_dashboard.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/profile_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/healthcare-dashboard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/healthcare-dashboard.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/constants/mqtt_constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants/mqtt_constants.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/generated_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated_plugin_registrant.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/TDLRGraph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/TDLRGraph.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs/ecg_graph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs/ecg_graph.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs/heartrate.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs/heartrate.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs/spo2_gauge.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs/spo2_gauge.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs/temperature_gauge.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs/temperature_gauge.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs/temperature_graph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs/temperature_graph.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/chart.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/RealtimeGraph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/RealtimeGraph.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/graphs_models/heartrate.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs_models/heartrate.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/dropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/dropdown.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/general_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/general_details.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/graph_info_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/graph_info_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/header.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/my_graphs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/my_graphs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/realtime_graph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/realtime_graph.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/dashboard_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/dashboard_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/measures/all_in_one.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/all_in_one.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/measures/ecg_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/ecg_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/main/components/side_menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/main/components/side_menu.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/main/main_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/main/main_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/measures/heartrate_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/heartrate_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/measures/spo2_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/spo2_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/measures/temperature_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/temperature_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/measures/tempgraph_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/measures/tempgraph_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,12 +71,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../healthcare-dashboard - Copy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/icons" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\assets\icons" />
+      <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\assets" />
+      <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\lib\screens" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\assets\icons" />
       <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\lib\constants" />
       <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\lib\models" />
       <recent name="C:\Users\PC\Documents\GitHub\healthcare-dashboard\lib" />
@@ -142,22 +144,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1620605936517" />
-    <state width="1323" height="194" key="GridCell.Tab.0.bottom" timestamp="1621769166415">
+    <state width="1323" height="194" key="GridCell.Tab.0.bottom" timestamp="1622486060738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1621769166415" />
-    <state width="1323" height="194" key="GridCell.Tab.0.center" timestamp="1621769166415">
+    <state width="1323" height="194" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1622486060738" />
+    <state width="1323" height="194" key="GridCell.Tab.0.center" timestamp="1622486060738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1621769166415" />
-    <state width="1323" height="194" key="GridCell.Tab.0.left" timestamp="1621769166363">
+    <state width="1323" height="194" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1622486060738" />
+    <state width="1323" height="194" key="GridCell.Tab.0.left" timestamp="1622486060738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1621769166363" />
-    <state width="1323" height="194" key="GridCell.Tab.0.right" timestamp="1621769166415">
+    <state width="1323" height="194" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1622486060738" />
+    <state width="1323" height="194" key="GridCell.Tab.0.right" timestamp="1622486060738">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1621769166415" />
+    <state width="1323" height="194" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1622486060738" />
     <state x="263" y="107" key="IDE.errors.dialog" timestamp="1620617622335">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -178,10 +180,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="324" y="89" width="700" height="530" key="recent.locations.popup/0.0.1366.728@0.0.1366.728" timestamp="1620667718747" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1621688460370">
+    <state x="339" y="162" key="run.anything.popup" timestamp="1622327976363">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1621688460370" />
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1622327976363" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1620446363683">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

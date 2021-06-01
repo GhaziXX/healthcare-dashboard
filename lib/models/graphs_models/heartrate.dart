@@ -1,4 +1,5 @@
 import 'package:admin/constants/constants.dart';
+import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -18,7 +19,7 @@ class _HeartRateState extends State<HeartRate> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _heartAnimationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1200));
+        vsync: this, duration: Duration(milliseconds: 1000));
     _heartAnimation = Tween(begin: 150.0, end: 160.0).animate(CurvedAnimation(
         curve: Curves.bounceOut, parent: _heartAnimationController));
 
@@ -37,35 +38,37 @@ class _HeartRateState extends State<HeartRate> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     if (widget.heartRate != 0) _heartAnimationController.forward();
-
     return FittedBox(
       child: Column(
         children: [
           Text("Heart Rate", style: Theme.of(context).textTheme.headline5),
-          SizedBox(
-            height: _size.height * 0.05,
-          ),
           Center(
             child: Align(
-              child: Stack(alignment: AlignmentDirectional.center, children: [
+              child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
                 AnimatedBuilder(
                   animation: _heartAnimationController,
                   builder: (context, child) {
-                    return Container(
-                      child: Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: [
-                            Icon(
-                              Icons.favorite,
-                              color: primaryColor,
-                              size: 2.25 * _heartAnimation.value,
-                            ),
-                            Icon(
-                              Icons.favorite,
-                              color: secondaryColor,
-                              size: 2.2 * _heartAnimation.value,
-                            ),
-                          ]),
+                    return Center(
+                      child: SizedBox(
+                        child: Center(
+                          child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                Icon(
+                                  Icons.favorite,
+                                  color: primaryColor,
+                                  size: Responsive.isMobile(context) ? 2.05 * _heartAnimation.value : 1.45* _heartAnimation.value,
+                                ),
+                                Icon(
+                                  Icons.favorite,
+                                  color: secondaryColor,
+                                  size: Responsive.isMobile(context) ? 2.0 * _heartAnimation.value : 1.4* _heartAnimation.value,
+                                ),
+                              ]),
+                        ),
+                      ),
                     );
                   },
                 ),

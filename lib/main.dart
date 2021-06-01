@@ -4,17 +4,18 @@ import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
 import 'package:admin/screens/measures/temperature_filter_screen.dart';
 import 'package:admin/screens/measures/tempgraph_screen.dart';
+import 'package:admin/screens/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'backend/firebase/firestore_services.dart';
 import 'models/data_models/UserData.dart';
 import 'screens/authentification/auth_screen.dart';
 import 'screens/measures/all_in_one_filter_screen.dart';
 import 'screens/measures/ecg_screen.dart';
-import 'screens/measures/filter_card.dart';
 import 'screens/measures/heartrate_filter_screen.dart';
 import 'screens/measures/heartrate_screen.dart';
 import 'screens/measures/spo2_filter_screen.dart';
@@ -37,9 +38,9 @@ class MyApp extends StatefulWidget {
 bool isDoctor = true;
 UserData userData;
 
+
 class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
-    return ResponsiveSizer(builder: (context, orientation, screenType) {
       return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -51,13 +52,16 @@ class _MyAppState extends State<MyApp> {
           title: 'Healthcare dashboard',
           theme: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: bgColor,
-            textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+            textTheme: GoogleFonts.poppinsTextTheme(Theme
+                .of(context)
+                .textTheme)
                 .apply(bodyColor: Colors.white),
             visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: secondaryColor,
           ),
           routes: {
-            '/mainScreen': (context) => MainScreen(
+            '/mainScreen': (context) =>
+                MainScreen(
                   isDoctor: isDoctor,
                   userData: userData,
                 ),
@@ -73,11 +77,11 @@ class _MyAppState extends State<MyApp> {
             '/filteredSpo2': (context) => Spo2FilterScreen(),
             '/filteredStress': (context) => StressFilterScreen(),
             '/filteredHeartrate': (context) => HeartrateFilterScreen(),
-
+            '/profile': (context) => ProfileScreen()
           },
           home:
-              //FilterCard(),
-              Consumer<AuthNotifier>(
+          //FilterCard(),
+          Consumer<AuthNotifier>(
             builder: (context, notifier, child) {
               //print("el notif rahi ${notifier.user}");
               if (notifier.user != null) {
@@ -88,9 +92,11 @@ class _MyAppState extends State<MyApp> {
                     if (snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
                       UserData userData = snapshot.data;
-                      return MainScreen(
-                        isDoctor: userData.isDoctor,
-                        userData: userData,
+                      return ResponsiveSizer(builder: (context, orientation, screenType){
+                        return MainScreen(
+                          isDoctor: userData.isDoctor,
+                          userData: userData,
+                        );}
                       );
                     } else if (!snapshot.hasData &&
                         snapshot.connectionState == ConnectionState.done) {
@@ -109,6 +115,5 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       );
-    });
   }
 }

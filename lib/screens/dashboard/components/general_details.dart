@@ -2,7 +2,6 @@ import 'package:admin/backend/chat/chat.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/screens/dashboard/components/dropdown.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
@@ -11,6 +10,7 @@ import '../../../constants/constants.dart';
 import '../dashboard_screen.dart';
 import 'general_info_card.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 
 class GeneralDetails extends StatefulWidget {
   const GeneralDetails({
@@ -104,14 +104,10 @@ class _GeneralDetailsState extends State<GeneralDetails> {
                 itemTitles: ["Turn off", "Reboot"],
                 itemColor: [Colors.redAccent, Colors.greenAccent],
                 itemCallbacks: [
-                  // MQTTWrapper(() {}, (_) {}, false, "", true).publishMessage(
-                  //     topic:
-                  //         "Healthcare/${userData.id}${userData.gid}/commands",
-                  //     command: "s"),
-                  // MQTTWrapper(() {}, (_) {}, false, "", true).publishMessage(
-                  //     topic:
-                  //         "Healthcare/${userData.id}${userData.gid}/commands",
-                  //     command: "r")
+                 /* mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
+                      command: "s" ),
+                  mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
+                      command: "r"  ),*/
                 ],
               ),
             ],

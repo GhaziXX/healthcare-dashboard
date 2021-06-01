@@ -1,5 +1,6 @@
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
+import 'package:admin/screens/dashboard/doctor_dashboard.dart';
 import 'package:flutter/material.dart';
 
 import '../../responsive.dart';
@@ -35,10 +36,8 @@ class MainScreen extends StatelessWidget {
               ),
             Expanded(
               flex: 5,
-              child: DashboardScreen(
-                isDoctor: isDoctor,
-                userData: userData,
-              ),
+              child: isDoctor ? DoctorDashboard(isDoctor: isDoctor, userData: userData) :
+              DashboardScreen(isDoctor: isDoctor, userData: userData),
             )
           ],
         ),

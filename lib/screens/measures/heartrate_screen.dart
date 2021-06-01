@@ -67,10 +67,10 @@ class _HeartScreenState extends State<HeartScreen> {
                     children: [
                       Header(
                         isDoctor: args.isDoctor,
-                        userData: args.userData,
+                        userData: args.userData
                       ),
                       SizedBox(
-                        height: _size.height * 0.1,
+                        height: _size.height * 0.1
                       ),
                       Center(
                         child: Row(
