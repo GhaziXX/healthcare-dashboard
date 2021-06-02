@@ -13,6 +13,10 @@ class UserData {
   final String birthdate;
   final String gid;
   final List<dynamic> otherIds;
+  final bool isConnected;
+  final String emergencyPhoneNumber;
+  final String officePhoneNumber;
+  final String officeAddress;
   UserData(
       {this.firstName,
       this.lastName,
@@ -27,7 +31,11 @@ class UserData {
       this.isDoctor,
       this.birthdate,
       this.gid,
-      this.otherIds});
+      this.otherIds,
+      this.isConnected,
+      this.emergencyPhoneNumber,
+      this.officeAddress,
+      this.officePhoneNumber});
 
   UserData.fromJson(Map<String, dynamic> data)
       : this(
@@ -44,7 +52,12 @@ class UserData {
             birthdate: data['birthdate'] as String,
             address: data['address'] as String,
             gid: data['gid'] as String,
-            otherIds: data['otherIds'] as List<dynamic>);
+            otherIds: data['otherIds'] as List<dynamic>,
+            isConnected: data['isConnected'] as bool,
+            emergencyPhoneNumber: data['emergencyPhoneNumber'] as String,
+            officeAddress: data['officeAddress'] as String,
+            officePhoneNumber: data['officePhoneNumber'] as String);
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -60,7 +73,11 @@ class UserData {
       'address': address,
       'birthdate': birthdate,
       'gid': gid,
-      'otherId': otherIds,
+      'otherIds': otherIds,
+      'isConnected': isConnected,
+      'emergencyPhoneNumber': emergencyPhoneNumber,
+      "officeAddress": officeAddress,
+      "officePhoneNumber": officePhoneNumber
     };
   }
 }

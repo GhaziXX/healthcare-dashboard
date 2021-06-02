@@ -45,20 +45,24 @@ class FirestoreServices {
   Future<UserData> getUserData({String uid}) async {
     UserData data;
     try {
-      searchUser(uid).then((value) async {
-        if (value == true) {
-          await _usersCollectionReference.doc(uid).get().then((doc) {
-            Map<String, dynamic> d = doc.data();
-            data = UserData.fromJson(d);
-          });
-        } else {
-          data = null;
-        }
+      await _usersCollectionReference.doc(uid).get().then((doc) {
+        Map<String, dynamic> d = doc.data();
+        data = UserData.fromJson(d);
       });
     } catch (e) {
       print(e.toString());
     }
     return data;
+  }
+
+  Future<void> setConnectionStatus({String userId, bool isConnected}) async {
+    try {
+      await _usersCollectionReference
+          .doc(userId)
+          .update({'isConnected': isConnected});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<bool> addOtherId({String currentUserId, String otherID}) async {

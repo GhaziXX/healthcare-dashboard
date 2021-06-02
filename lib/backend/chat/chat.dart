@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -29,46 +30,49 @@ class _ChatRoomState extends State<ChatRoom> {
   bool _isAttachmentUploading = false;
 
   void _handleAtachmentPress() {
-    showMaterialModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 120,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _showFilePicker();
-                },
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text('Open file picker'),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _showImagePicker();
-                },
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text('Open image picker'),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text('Cancel'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    if (!kIsWeb) {
+      showAdaptiveActionSheet<void>(
+        context: context,
+        actions: [
+          BottomSheetAction(
+              title: const Text('Open file picker'),
+              onPressed: () {
+                Navigator.pop(context);
+                _showFilePicker();
+              },
+              leading: Icon(Icons.file_upload)),
+          BottomSheetAction(
+              title: const Text('Open image picker'),
+              onPressed: () {
+                Navigator.pop(context);
+                _showImagePicker();
+              },
+              leading: Icon(Icons.image)),
+        ],
+        cancelAction: CancelAction(
+          title: const Text('Cancel'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      );
+    } else {
+      showAdaptiveActionSheet<void>(
+        context: context,
+        actions: [
+          BottomSheetAction(
+              title: const Text(
+                  'This feature is not supported yet for web platform'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              leading: Icon(
+                Icons.error,
+                color: Colors.red,
+              )),
+        ],
+      );
+    }
   }
 
   void _handleMessageTap(types.Message message) async {

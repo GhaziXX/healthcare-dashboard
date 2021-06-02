@@ -136,7 +136,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
                                   email: authNotifier.user.email,
                                   birthdate: _birthdateController.text,
                                   speciality: _doctorType,
-                                  gid: _gidController.text));
+                                  gid: _gidController.text,
+                                  isConnected: true,
+                                  emergencyPhoneNumber: "",
+                                  officeAddress: "",
+                                  officePhoneNumber: ""));
                               notifyUser(authNotifier);
                               //Navigator.of(context).pushNamed("/mainScreen");
                             }

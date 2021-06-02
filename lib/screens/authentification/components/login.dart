@@ -111,7 +111,6 @@ class _LoginState extends State<Login> {
                               _formKey.currentState.save();
                               AuthNotifier authNotifier =
                                   context.read<AuthNotifier>();
-
                               signIn(
                                 email: _emailController.text,
                                 password: _passwordController.text,
@@ -126,6 +125,13 @@ class _LoginState extends State<Login> {
                                     ).showMessage(
                                       context,
                                     );
+                                  } else {
+                                    FirestoreServices()
+                                        .setConnectionStatus(
+                                            userId: FirebaseAuth
+                                                .instance.currentUser.uid,
+                                            isConnected: true)
+                                        .then((value) => print('connected'));
                                   }
                                 },
                               );

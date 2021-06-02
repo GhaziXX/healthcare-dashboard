@@ -11,7 +11,6 @@ import '../dashboard_screen.dart';
 import 'general_info_card.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-
 class GeneralDetails extends StatefulWidget {
   const GeneralDetails({
     Key key,
@@ -39,12 +38,15 @@ class _GeneralDetailsState extends State<GeneralDetails> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      createRoom(
-          types.User(
-              id: widget.userData.otherIds[0],
-              firstName: widget.userData.firstName,
-              lastName: widget.userData.lastName),
-          context);
+      if (widget.userData.otherIds != null) {
+        if (widget.userData.otherIds.length > 1)
+          createRoom(
+              types.User(
+                  id: widget.userData.otherIds[0],
+                  firstName: widget.userData.firstName,
+                  lastName: widget.userData.lastName),
+              context);
+      }
     });
   }
 
@@ -104,7 +106,7 @@ class _GeneralDetailsState extends State<GeneralDetails> {
                 itemTitles: ["Turn off", "Reboot"],
                 itemColor: [Colors.redAccent, Colors.greenAccent],
                 itemCallbacks: [
-                 /* mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
+                  /* mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
                       command: "s" ),
                   mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
                       command: "r"  ),*/
