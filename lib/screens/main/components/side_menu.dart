@@ -1,4 +1,5 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,7 +77,8 @@ class SideMenu extends StatelessWidget {
               title: "Profile",
               icon: Icons.account_circle_outlined,
               press: () {
-                Navigator.pushNamed(context,'/profile',arguments: ScreenArguments(isDoctor, userData,null,null));
+                Navigator.pushNamed(context, '/profile',
+                    arguments: ScreenArguments(isDoctor, userData, null, null));
               },
               usePath: false,
             ),
@@ -90,7 +92,15 @@ class SideMenu extends StatelessWidget {
               title: "Logout",
               icon: Icons.logout,
               press: () {
-                signOut(authNotifier);
+                FirestoreServices()
+                    .setConnectionStatus(
+                        userId: FirebaseAuth.instance.currentUser.uid,
+                        isConnected: false)
+                    .then((value) {
+                  signOut(authNotifier);
+                  print('disconnected');
+                });
+
                 // Navigator.popUntil(context, ModalRoute.withName('/'));
                 // context.read<AuthenticationServices>().signOut();
               },

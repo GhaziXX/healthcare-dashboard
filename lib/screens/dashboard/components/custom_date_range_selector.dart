@@ -22,7 +22,6 @@ class CustomDateRangeSelector extends StatelessWidget {
           value = null;
           return Flexible(
             child: TextField(
-              
               controller: dateController,
               decoration: InputDecoration(
                   fillColor: secondaryColor,

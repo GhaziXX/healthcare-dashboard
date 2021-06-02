@@ -261,7 +261,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-
 class CustomDropdown extends StatefulWidget {
   const CustomDropdown(
       {Key key,
@@ -353,7 +352,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                           children: <Widget>[
                             widget.isFullSize
                                 ? TextButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         if (isDropdownOpened) {
                                           floatingDropdown.remove();
@@ -369,15 +368,16 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 10.sp),
+                                              .copyWith(fontSize: 8.sp),
                                         ),
                                       ),
                                       Spacer(),
                                       Icon(widget.itemIcons[0],
-                                          color: widget.itemColor[0], size: 18),
+                                          color: widget.itemColor[0],
+                                          size: 8.sp),
                                     ]))
                                 : TextButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         if (isDropdownOpened) {
                                           floatingDropdown.remove();
@@ -402,7 +402,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                             ),
                             widget.isFullSize
                                 ? TextButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         if (isDropdownOpened) {
                                           floatingDropdown.remove();
@@ -418,15 +418,16 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 10.sp),
+                                              .copyWith(fontSize: 8.sp),
                                         ),
                                       ),
                                       Spacer(),
                                       Icon(widget.itemIcons[1],
-                                          color: widget.itemColor[1], size: 18),
+                                          color: widget.itemColor[1],
+                                          size: 8.sp),
                                     ]))
                                 : TextButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         if (isDropdownOpened) {
                                           floatingDropdown.remove();

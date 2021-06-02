@@ -27,7 +27,7 @@ class MQTTWrapper {
       this.user,
       this.isPublish});
 
-  void prepareMqttClient() async {
+  Future<void> prepareMqttClient() async {
     if (!isPublish) {
       _setupMqttClient();
       await _connectClient();

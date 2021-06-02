@@ -1,8 +1,10 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/ScreenArgs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
@@ -63,12 +65,22 @@ class Header extends StatelessWidget {
             headerIcon: Icons.face,
             headerIconSize: 38,
             itemIcons: [Icons.person_outline, Icons.logout],
-            itemTitles: ["Profile", "Logout"],
+            itemTitles: [userData.firstName, "Logout"],
             itemColor: [Colors.white, Colors.white],
             headerTitle: userData.firstName,
             itemCallbacks: [
-              () => Navigator.pushNamed(context, '/profile',arguments: ScreenArguments(isDoctor, userData,null,null))
-              ,() => signOut(authNotifier)
+              () => Navigator.pushNamed(context, '/profile',
+                  arguments: ScreenArguments(isDoctor, userData, null, null)),
+              () {
+                FirestoreServices()
+                    .setConnectionStatus(
+                        userId: FirebaseAuth.instance.currentUser.uid,
+                        isConnected: false)
+                    .then((value) {
+                  signOut(authNotifier);
+                  print('disconnected');
+                });
+              }
             ],
           )
         ],

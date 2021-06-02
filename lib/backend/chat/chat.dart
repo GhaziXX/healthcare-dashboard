@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:html' as dh;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,49 +31,31 @@ class _ChatRoomState extends State<ChatRoom> {
   bool _isAttachmentUploading = false;
 
   void _handleAtachmentPress() {
-    if (!kIsWeb) {
-      showAdaptiveActionSheet<void>(
-        context: context,
-        actions: [
-          BottomSheetAction(
-              title: const Text('Open file picker'),
-              onPressed: () {
-                Navigator.pop(context);
-                _showFilePicker();
-              },
-              leading: Icon(Icons.file_upload)),
-          BottomSheetAction(
-              title: const Text('Open image picker'),
-              onPressed: () {
-                Navigator.pop(context);
-                _showImagePicker();
-              },
-              leading: Icon(Icons.image)),
-        ],
-        cancelAction: CancelAction(
-          title: const Text('Cancel'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      );
-    } else {
-      showAdaptiveActionSheet<void>(
-        context: context,
-        actions: [
-          BottomSheetAction(
-              title: const Text(
-                  'This feature is not supported yet for web platform'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              leading: Icon(
-                Icons.error,
-                color: Colors.red,
-              )),
-        ],
-      );
-    }
+    showAdaptiveActionSheet<void>(
+      context: context,
+      actions: [
+        BottomSheetAction(
+            title: const Text('Open file picker'),
+            onPressed: () {
+              Navigator.pop(context);
+              _showFilePicker();
+            },
+            leading: Icon(Icons.file_upload)),
+        BottomSheetAction(
+            title: const Text('Open image picker'),
+            onPressed: () {
+              Navigator.pop(context);
+              _showImagePicker();
+            },
+            leading: Icon(Icons.image)),
+      ],
+      cancelAction: CancelAction(
+        title: const Text('Cancel'),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 
   void _handleMessageTap(types.Message message) async {
@@ -119,81 +102,156 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void _showFilePicker() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-    );
+    if (kIsWeb) {
+      dh.InputElement uploadInput = dh.FileUploadInputElement();
+      uploadInput.click();
+      uploadInput.onChange.listen((event) {
+        final file = uploadInput.files.first;
+        if (file != null) {
+          _setAttachmentUploading(true);
+          final reader = dh.FileReader();
+          reader.readAsDataUrl(file);
+          reader.onLoadEnd.listen((event) async {
+            final fileName = file.relativePath.split('/').last;
+            final path = file.relativePath;
+            final blob = DateTime.now();
+            try {
+              final reference = FirebaseStorage.instance.ref(fileName);
+              await reference.child("$blob").putBlob(file);
+              final uri = await reference.child("$blob").getDownloadURL();
+              final message = types.PartialFile(
+                fileName: fileName ?? '',
+                mimeType: lookupMimeType(path ?? ''),
+                size: file.size ?? 0,
+                uri: uri,
+              );
 
-    if (result != null) {
-      _setAttachmentUploading(true);
-      final fileName = result.files.single.name;
-      final filePath = result.files.single.path;
-      final file = File(filePath ?? '');
-
-      try {
-        final reference = FirebaseStorage.instance.ref(fileName);
-        await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
-
-        final message = types.PartialFile(
-          fileName: fileName ?? '',
-          mimeType: lookupMimeType(filePath ?? ''),
-          size: result.files.single.size ?? 0,
-          uri: uri,
-        );
-
-        FirebaseChatCore.instance.sendMessage(
-          message,
-          widget.roomId,
-        );
-        _setAttachmentUploading(false);
-      } on FirebaseException catch (e) {
-        _setAttachmentUploading(false);
-        print(e);
-      }
+              FirebaseChatCore.instance.sendMessage(
+                message,
+                widget.roomId,
+              );
+              _setAttachmentUploading(false);
+            } on FirebaseException catch (e) {
+              _setAttachmentUploading(false);
+              print("error $e");
+            }
+          });
+        }
+      });
     } else {
-      // User canceled the picker
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.any,
+      );
+
+      if (result != null) {
+        _setAttachmentUploading(true);
+        final fileName = result.files.single.name;
+        final filePath = result.files.single.path;
+        final file = File(filePath ?? '');
+
+        try {
+          final reference = FirebaseStorage.instance.ref(fileName);
+          await reference.putFile(file);
+          final uri = await reference.getDownloadURL();
+
+          final message = types.PartialFile(
+            fileName: fileName ?? '',
+            mimeType: lookupMimeType(filePath ?? ''),
+            size: result.files.single.size ?? 0,
+            uri: uri,
+          );
+
+          FirebaseChatCore.instance.sendMessage(
+            message,
+            widget.roomId,
+          );
+          _setAttachmentUploading(false);
+        } on FirebaseException catch (e) {
+          _setAttachmentUploading(false);
+          print(e);
+        }
+      } else {
+        // User canceled the picker
+      }
     }
   }
 
   void _showImagePicker() async {
-    final result = await ImagePicker().getImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
+    if (kIsWeb) {
+      dh.InputElement uploadInput = dh.FileUploadInputElement()
+        ..accept = "image/*";
+      uploadInput.click();
+      uploadInput.onChange.listen((event) {
+        final file = uploadInput.files.first;
+        if (file != null) {
+          _setAttachmentUploading(true);
+          final reader = dh.FileReader();
+          reader.readAsDataUrl(file);
+          reader.onLoadEnd.listen((event) async {
+            final imageName = file.relativePath.split('/').last;
+            final size = file.size;
+            final blob = DateTime.now();
+            try {
+              final reference = FirebaseStorage.instance.ref(imageName);
+              await reference.child("$blob").putBlob(file);
+              final uri = await reference.child("$blob").getDownloadURL();
+              final message = types.PartialImage(
+                imageName: imageName,
+                size: size,
+                uri: uri,
+              );
 
-    if (result != null) {
-      _setAttachmentUploading(true);
-      final file = File(result.path);
-      final size = file.lengthSync();
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
-      final imageName = result.path.split('/').last;
-
-      try {
-        final reference = FirebaseStorage.instance.ref(imageName);
-        await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
-
-        final message = types.PartialImage(
-          height: image.height.toDouble(),
-          imageName: imageName,
-          size: size,
-          uri: uri,
-          width: image.width.toDouble(),
-        );
-
-        FirebaseChatCore.instance.sendMessage(
-          message,
-          widget.roomId,
-        );
-        _setAttachmentUploading(false);
-      } on FirebaseException catch (e) {
-        _setAttachmentUploading(false);
-        print(e);
-      }
+              FirebaseChatCore.instance.sendMessage(
+                message,
+                widget.roomId,
+              );
+              _setAttachmentUploading(false);
+            } on FirebaseException catch (e) {
+              print("error $e");
+            }
+          });
+        }
+      });
     } else {
-      // User canceled the picker
+      final result = await ImagePicker().getImage(
+        imageQuality: 70,
+        maxWidth: 1440,
+        source: ImageSource.gallery,
+      );
+
+      if (result != null) {
+        _setAttachmentUploading(true);
+        final file = File(result.path);
+        final size = file.lengthSync();
+        final bytes = await result.readAsBytes();
+        final image = await decodeImageFromList(bytes);
+        final imageName = result.path.split('/').last;
+
+        try {
+          final reference = FirebaseStorage.instance.ref(imageName);
+          await reference.putFile(file);
+          final uri = await reference.getDownloadURL();
+
+          final message = types.PartialImage(
+            height: image.height.toDouble(),
+            imageName: imageName,
+            size: size,
+            uri: uri,
+            width: image.width.toDouble(),
+          );
+
+          FirebaseChatCore.instance.sendMessage(
+            message,
+            widget.roomId,
+          );
+          _setAttachmentUploading(false);
+        } on FirebaseException catch (e) {
+          _setAttachmentUploading(false);
+          print(e);
+        }
+      } else {
+        // User canceled the picker
+      }
     }
   }
 

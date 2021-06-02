@@ -4,7 +4,7 @@ import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
 import 'package:admin/screens/measures/temperature_filter_screen.dart';
 import 'package:admin/screens/measures/tempgraph_screen.dart';
-import 'package:admin/screens/profile_screen.dart';
+import 'package:admin/screens/profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,82 +38,86 @@ class MyApp extends StatefulWidget {
 bool isDoctor = true;
 UserData userData;
 
-
 class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
-      return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => AuthNotifier(),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Healthcare dashboard',
-          theme: ThemeData.dark().copyWith(
-            scaffoldBackgroundColor: bgColor,
-            textTheme: GoogleFonts.poppinsTextTheme(Theme
-                .of(context)
-                .textTheme)
-                .apply(bodyColor: Colors.white),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            canvasColor: secondaryColor,
-          ),
-          routes: {
-            '/mainScreen': (context) =>
-                MainScreen(
-                  isDoctor: isDoctor,
-                  userData: userData,
-                ),
-            '/spo2': (context) => SPO2Screen(),
-            '/temperature': (context) => TempScreen(),
-            '/heartrate': (context) => HeartScreen(),
-            '/ECG': (context) => ECGScreen(),
-            '/tempGraph': (context) => TempGraphScreen(),
-            '/all': (context) => AllinOneScreen(),
-            '/auth': (context) => AuthScreen(),
-            '/allFilter': (context) => AllinOneFilterScreen(),
-            '/filteredTemperature': (context) => TemperatureFilterScreen(),
-            '/filteredSpo2': (context) => Spo2FilterScreen(),
-            '/filteredStress': (context) => StressFilterScreen(),
-            '/filteredHeartrate': (context) => HeartrateFilterScreen(),
-            '/profile': (context) => ProfileScreen()
-          },
-          home:
-          //FilterCard(),
-          Consumer<AuthNotifier>(
-            builder: (context, notifier, child) {
-              //print("el notif rahi ${notifier.user}");
-              if (notifier.user != null) {
-                //print(notifier.user);
-                return FutureBuilder(
-                  future: FirestoreServices().getCurrentUser(notifier.user.uid),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
-                      UserData userData = snapshot.data;
-                      return ResponsiveSizer(builder: (context, orientation, screenType){
-                        return MainScreen(
-                          isDoctor: userData.isDoctor,
-                          userData: userData,
-                        );}
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthNotifier(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Healthcare dashboard',
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: bgColor,
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+              .apply(bodyColor: Colors.white),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          canvasColor: secondaryColor,
+        ),
+        routes: {
+          '/mainScreen': (context) => MainScreen(
+                isDoctor: isDoctor,
+                userData: userData,
+              ),
+          '/spo2': (context) => SPO2Screen(),
+          '/temperature': (context) => TempScreen(),
+          '/heartrate': (context) => HeartScreen(),
+          '/ECG': (context) => ECGScreen(),
+          '/tempGraph': (context) => TempGraphScreen(),
+          '/all': (context) => AllinOneScreen(),
+          '/auth': (context) => AuthScreen(),
+          '/allFilter': (context) => AllinOneFilterScreen(),
+          '/filteredTemperature': (context) => TemperatureFilterScreen(),
+          '/filteredSpo2': (context) => Spo2FilterScreen(),
+          '/filteredStress': (context) => StressFilterScreen(),
+          '/filteredHeartrate': (context) => HeartrateFilterScreen(),
+          '/profile': (context) => ProfileScreen()
+        },
+        home:
+            Consumer<AuthNotifier>(
+          builder: (context, notifier, child) {
+            //print("el notif rahi ${notifier.user}");
+            if (notifier.user != null) {
+              //print(notifier.user);
+              return FutureBuilder(
+                future: FirestoreServices().getCurrentUser(notifier.user.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    UserData userData = snapshot.data;
+                    return ResponsiveSizer(
+                        builder: (context, orientation, screenType) {
+                      return MainScreen(
+                        isDoctor: userData.isDoctor,
+                        userData: userData,
                       );
-                    } else if (!snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done) {
+                    });
+                  } else if (!snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    return ResponsiveSizer(
+                        builder: (context, orientation, screenType) {
                       return MainScreen(
                         isDoctor: false,
                         userData: UserData(
                             firstName: "Not Specified", id: notifier.user.uid),
                       );
-                    }
+                    });
+                  }
+                  return ResponsiveSizer(
+                      builder: (context, orientation, screenType) {
                     return Container(color: bgColor);
-                  },
-                );
-              }
+                  });
+                },
+              );
+            }
+            return ResponsiveSizer(builder: (context, orientation, screenType) {
               return AuthScreen();
-            },
-          ),
+            });
+          },
         ),
-      );
+      ),
+    );
   }
 }

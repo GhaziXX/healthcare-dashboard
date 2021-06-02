@@ -46,6 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     setup();
+    print("mqttstate is ${mqttClientWrapper.connectionState}");
     super.initState();
   }
 

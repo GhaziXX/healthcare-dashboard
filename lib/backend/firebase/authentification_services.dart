@@ -26,6 +26,51 @@ Future<String> signIn(
   }
 }
 
+Future<bool> checkSignIn({String email, String password}) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    return true;
+  } on FirebaseAuthException catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future<bool> updateProfile({String imageURI}) async {
+  User currentUser = FirebaseAuth.instance.currentUser;
+  try {
+    await currentUser.updateProfile(photoURL: imageURI);
+    return true;
+  } on FirebaseAuthException catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+bool updateEmail({String email}) {
+  bool result;
+  User currentUser = FirebaseAuth.instance.currentUser;
+
+  currentUser.updateEmail(email).then((value) {
+    result = true;
+  }).catchError((onError) {
+    result = false;
+    print("value is $onError");
+  });
+  return result;
+}
+
+bool resetPassword(String password) {
+  bool result;
+  User currentUser = FirebaseAuth.instance.currentUser;
+  currentUser
+      .updatePassword(password)
+      .then((value) => result = true)
+      .catchError((onError) => result = false);
+  return result;
+}
+
 initCurrentUser(AuthNotifier authNotifier) {
   User user = FirebaseAuth.instance.currentUser;
   if (user != null) {

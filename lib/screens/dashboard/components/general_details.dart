@@ -38,6 +38,8 @@ class _GeneralDetailsState extends State<GeneralDetails> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("state is ${mqttClientWrapper.connectionState}");
+
       if (widget.userData.otherIds != null) {
         if (widget.userData.otherIds.length > 1)
           createRoom(
@@ -52,6 +54,7 @@ class _GeneralDetailsState extends State<GeneralDetails> {
 
   @override
   Widget build(BuildContext context) {
+    print("state is ${mqttClientWrapper.connectionState}");
     bool connected = mqttClientWrapper.connectionState ==
         MqttCurrentConnectionState.CONNECTED;
     return Column(
