@@ -1,12 +1,10 @@
 import 'package:admin/backend/firebase/authentification_services.dart';
-import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/data_models/UserData.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
+import 'package:admin/backend/firebase/firestore_services.dart';
 import '../../ScreenArgs.dart';
 
 class SideMenu extends StatelessWidget {
@@ -18,10 +16,11 @@ class SideMenu extends StatelessWidget {
 
   final bool isDoctor;
   final UserData userData;
-
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = context.watch<AuthNotifier>();
+    UserData doctorData;
+    if (userData.otherIds != null && userData.otherIds.length>0) FirestoreServices().getUserData(uid : userData.otherIds[0]).then((value) => doctorData = value);
     return Drawer(
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -39,70 +38,40 @@ class SideMenu extends StatelessWidget {
               },
               usePath: false,
             ),
-            isDoctor
-                ? DrawerListTile(
-                    title: "Patients",
-                    svgSrc: "assets/icons/patient.svg",
-                    press: () {},
-                    usePath: true,
-                  )
-                : DrawerListTile(
-                    title: "Doctor",
-                    svgSrc: "assets/icons/menu_doctor.svg",
-                    press: () {},
-                    usePath: true),
+            if (!isDoctor)
+              DrawerListTile(
+                  title: "Doctor",
+                  svgSrc: "assets/icons/menu_doctor.svg",
+                  press: () {
+                    if (userData.otherIds != null && userData.otherIds.length>0) {
+                    Navigator.pushNamed(context, '/doctorInfo',
+                        arguments: ScreenArguments(isDoctor, userData, doctorData,null, null));}
+                    else Navigator.pushNamed(context, '/doctorInfo',
+                        arguments: ScreenArguments(isDoctor, userData, null,null, null));
+                  },
+                  usePath: true),
             DrawerListTile(
               title: "Report",
               svgSrc: "assets/icons/menu_report.svg",
-              press: () {},
+              press: () {
+              },
               usePath: true,
             ),
-            /*
-            DrawerListTile(
-              title: "Documents",
-              icon: Icons.description_outlined,
-              press: () {},
-              usePath: false,
-            ),
-*/
-            /*
-            DrawerListTile(
-              title: "Notifications",
-              icon: Icons.notifications_outlined,
-              press: () {},
-              usePath: false,
-            ),
-*/
             DrawerListTile(
               title: "Profile",
               icon: Icons.account_circle_outlined,
               press: () {
                 Navigator.pushNamed(context, '/profile',
-                    arguments: ScreenArguments(isDoctor, userData, null, null));
+                    arguments: ScreenArguments(isDoctor, userData, null, null, null));
               },
               usePath: false,
             ),
-            // DrawerListTile(
-            //   title: "Settings",
-            //   icon: Icons.settings_outlined,
-            //   press: () {},
-            //   usePath: false,
-            // ),
             DrawerListTile(
               title: "Logout",
               icon: Icons.logout,
               press: () {
-                FirestoreServices()
-                    .setConnectionStatus(
-                        userId: FirebaseAuth.instance.currentUser.uid,
-                        isConnected: false)
-                    .then((value) {
-                  signOut(authNotifier);
-                  print('disconnected');
-                });
-
-                // Navigator.popUntil(context, ModalRoute.withName('/'));
-                // context.read<AuthenticationServices>().signOut();
+                signOut(authNotifier);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               usePath: false,
             ),

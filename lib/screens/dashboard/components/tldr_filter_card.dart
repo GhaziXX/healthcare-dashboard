@@ -41,11 +41,11 @@ class _TLDRFiltercardState extends State<TLDRFiltercard> {
         if (Responsive.isMobile(context)) {
           Navigator.of(context).pushNamed(widget.route,
               arguments: ScreenArguments(
-                  widget.isDoctor, widget.userData, null, widget.data));
+                  widget.isDoctor, widget.userData, null,null, widget.data));
         } else {
           Navigator.pushNamed(context, '/allFilter',
               arguments: ScreenArguments(
-                  widget.isDoctor, widget.userData, widget.apiData, null));
+                  widget.isDoctor, widget.userData,null, widget.apiData, null));
         }
       },
       child: Container(

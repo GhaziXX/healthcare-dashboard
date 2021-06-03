@@ -54,6 +54,22 @@ class FirestoreServices {
     }
     return data;
   }
+  Future<List<UserData>> getUsersData({List<String> uid}) async {
+    List<UserData> datas;
+    UserData data;
+    try {
+      uid.forEach((uid) {
+        _usersCollectionReference.doc(uid).get().then((doc) {
+          Map<String, dynamic> d = doc.data();
+          data = UserData.fromJson(d);
+          datas.add(data);
+        });});
+    } catch (e) {
+      print(e.toString());
+    }
+    return datas;
+  }
+
 
   Future<void> setConnectionStatus({String userId, bool isConnected}) async {
     try {

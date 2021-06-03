@@ -368,13 +368,13 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 8.sp),
+                                              .copyWith(fontSize: 6.sp),
                                         ),
                                       ),
                                       Spacer(),
                                       Icon(widget.itemIcons[0],
                                           color: widget.itemColor[0],
-                                          size: 8.sp),
+                                          size: 6.sp),
                                     ]))
                                 : TextButton(
                                     onPressed: () {
@@ -393,7 +393,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 10.sp),
+                                              .copyWith(fontSize: 6.sp),
                                         ),
                                       ),
                                     ])),
@@ -418,13 +418,13 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 8.sp),
+                                              .copyWith(fontSize: 6.sp),
                                         ),
                                       ),
                                       Spacer(),
                                       Icon(widget.itemIcons[1],
                                           color: widget.itemColor[1],
-                                          size: 8.sp),
+                                          size: 6.sp),
                                     ]))
                                 : TextButton(
                                     onPressed: () {
@@ -443,7 +443,7 @@ class CustomDropdownState extends State<CustomDropdown> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5
-                                              .copyWith(fontSize: 10.sp),
+                                              .copyWith(fontSize: 6.sp),
                                         ),
                                       ),
                                     ]))

@@ -1,5 +1,8 @@
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
+import 'package:admin/screens/Doctor/doctorInfo.dart';
+import 'package:admin/screens/Patients/infos.dart';
+import 'package:admin/screens/Patients/patientDetails.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/all_in_one.dart';
 import 'package:admin/screens/measures/temperature_filter_screen.dart';
@@ -73,9 +76,13 @@ class _MyAppState extends State<MyApp> {
           '/filteredSpo2': (context) => Spo2FilterScreen(),
           '/filteredStress': (context) => StressFilterScreen(),
           '/filteredHeartrate': (context) => HeartrateFilterScreen(),
-          '/profile': (context) => ProfileScreen()
+          '/profile': (context) => ProfileScreen(),
+          '/patientDetails' : (context) => PatientDetails(),
+          '/patientInfo' : (context) => PatientInfo(),
+          '/doctorInfo' : (context) => DoctorInfo(),
         },
         home:
+            //FilterCard(),
             Consumer<AuthNotifier>(
           builder: (context, notifier, child) {
             //print("el notif rahi ${notifier.user}");
@@ -87,6 +94,7 @@ class _MyAppState extends State<MyApp> {
                   if (snapshot.hasData &&
                       snapshot.connectionState == ConnectionState.done) {
                     UserData userData = snapshot.data;
+                    //print(userData.id);
                     return ResponsiveSizer(
                         builder: (context, orientation, screenType) {
                       return MainScreen(
@@ -105,10 +113,7 @@ class _MyAppState extends State<MyApp> {
                       );
                     });
                   }
-                  return ResponsiveSizer(
-                      builder: (context, orientation, screenType) {
-                    return Container(color: bgColor);
-                  });
+                  return Container(color: bgColor);
                 },
               );
             }

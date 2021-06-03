@@ -1,4 +1,3 @@
-import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:admin/screens/profile/patient_profile.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,8 @@ class ProfileScreen extends StatelessWidget {
     args = ModalRoute.of(context).settings.arguments as ScreenArguments;
     return Scaffold(
       drawer: SideMenu(
-        userData: UserData(firstName: "Ghazi"), //args.userData,
-        isDoctor: false, //args.isDoctor,
+        userData: args.userData,
+        isDoctor: args.isDoctor,
       ),
       body: SafeArea(
         child: Row(

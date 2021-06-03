@@ -56,7 +56,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             userData: widget.userData,
                           ),
                           SizedBox(height: defaultPadding),
-                          PatientList(),
+                          PatientList(userData: widget.userData,),
                         ],
                       ),
                     ),

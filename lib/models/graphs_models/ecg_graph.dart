@@ -35,64 +35,66 @@ class _ECGGraphState extends State<ECGGraph> {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Text("ECG", style: Theme.of(context).textTheme.headline5),
-        SizedBox(
-          height: _size.height * 0.05,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.download_rounded),
-              onPressed: () {},
-              color: primaryColor,
-              splashRadius: 0.5,
-            ),
-            IconButton(
-              icon: !pause ? Icon(Icons.pause) : Icon(Icons.play_arrow),
-              onPressed: () {
-                setState(() {
-                  pause = !pause;
-                });
-              },
-              color: primaryColor,
-              splashRadius: 0.5,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: _size.height * 0.03,
-        ),
-        SfCartesianChart(
-          plotAreaBorderWidth: 0,
-          primaryXAxis: NumericAxis(
-            majorGridLines: MajorGridLines(width: 0),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Text("ECG", style: Theme.of(context).textTheme.headline5),
+          SizedBox(
+            height: _size.height * 0.05,
           ),
-          primaryYAxis: NumericAxis(
-              minimum: -1,
-              maximum: 2,
-              axisLine: AxisLine(width: 0),
-              edgeLabelPlacement: EdgeLabelPlacement.shift,
-              majorTickLines: MajorTickLines(size: 0)),
-          series: <SplineSeries<_ChartData, double>>[
-            SplineSeries<_ChartData, double>(
-              onRendererCreated: (ChartSeriesController controller) {
-                _chartSeriesController = controller;
-              },
-              dataSource: chartData,
-              color: primaryColor,
-              xValueMapper: (_ChartData ecg, _) => ecg.x,
-              yValueMapper: (_ChartData ecg, _) => ecg.y,
-              animationDuration: 0,
-              //markerSettings: MarkerSettings(isVisible: true),
-              name: 'ECG',
-            )
-          ],
-          tooltipBehavior: TooltipBehavior(enable: true),
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.download_rounded),
+                onPressed: () {},
+                color: primaryColor,
+                splashRadius: 0.5,
+              ),
+              IconButton(
+                icon: !pause ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+                onPressed: () {
+                  setState(() {
+                    pause = !pause;
+                  });
+                },
+                color: primaryColor,
+                splashRadius: 0.5,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: _size.height * 0.03,
+          ),
+          SfCartesianChart(
+            plotAreaBorderWidth: 0,
+            primaryXAxis: NumericAxis(
+              majorGridLines: MajorGridLines(width: 0),
+            ),
+            primaryYAxis: NumericAxis(
+                minimum: -1,
+                maximum: 2,
+                axisLine: AxisLine(width: 0),
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
+                majorTickLines: MajorTickLines(size: 0)),
+            series: <SplineSeries<_ChartData, double>>[
+              SplineSeries<_ChartData, double>(
+                onRendererCreated: (ChartSeriesController controller) {
+                  _chartSeriesController = controller;
+                },
+                dataSource: chartData,
+                color: primaryColor,
+                xValueMapper: (_ChartData ecg, _) => ecg.x,
+                yValueMapper: (_ChartData ecg, _) => ecg.y,
+                animationDuration: 0,
+                //markerSettings: MarkerSettings(isVisible: true),
+                name: 'ECG',
+              )
+            ],
+            tooltipBehavior: TooltipBehavior(enable: true),
+          ),
+        ],
+      ),
     );
   }
 

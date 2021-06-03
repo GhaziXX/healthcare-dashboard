@@ -25,10 +25,10 @@ class GraphInfoCard extends StatelessWidget {
       onTap: () {
         if (Responsive.isMobile(context)) {
           Navigator.of(context).pushNamed(info.route,
-              arguments: ScreenArguments(isDoctor, userData, null, null));
+              arguments: ScreenArguments(isDoctor, userData, null,null, null));
         } else
           Navigator.pushNamed(context, '/all',
-              arguments: ScreenArguments(isDoctor, userData, null,null));
+              arguments: ScreenArguments(isDoctor, userData,null, null,null));
         //Navigator.push(context, MaterialPageRoute(builder: (context) => AllinOneScreen(isDoctor: isDoctor,userData: userData,)));
       },
       child: Container(

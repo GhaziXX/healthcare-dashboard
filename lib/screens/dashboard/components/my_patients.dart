@@ -1,3 +1,4 @@
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/data_models/UserData.dart';import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class MyPatients extends StatelessWidget {
   }) : super(key: key);
   final bool isDoctor;
   final UserData userData;
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,30 @@ class PatientInfoCardGridView extends StatefulWidget {
 }
 
 class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
+
+  List patientsList(UserData userData) {
+    List list = [];
+    if (userData.otherIds != null){
+      userData.otherIds.forEach((user) {
+        list.add(FirestoreServices().getUserData(uid: user));
+      });
+    }
+    return list;
+  }
+  int onlinePatient(UserData userData) {
+    List<UserData> list = [];
+    int onlineNbre =0;
+    if (userData.otherIds != null){
+      FirestoreServices().getUsersData(uid: userData.otherIds).then((value) => list = value);
+      list.forEach((element) {
+        if (element.isConnected) onlineNbre++;
+      });
+    }
+    return onlineNbre;
+  }
   @override
   Widget build(BuildContext context) {
+    List list = patientsList(widget.userData);
     return GridView(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -99,12 +123,21 @@ class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Total Patients",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      FittedBox(
+                        child: !Responsive.isMobile(context) ?
+                        Text(
+                          "Total Patients",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ):
+                        Text(
+                          "Total\nPatients",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      Text("32",style :TextStyle(fontSize: 20)),
+                      list.isNotEmpty ? Text(list.length.toString(),style :TextStyle(fontSize: 20))
+                          :Text("0",style :TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),
@@ -140,12 +173,19 @@ class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Online Patients",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      FittedBox(
+                        child: !Responsive.isMobile(context)? Text(
+                          "Online Patients",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis
+                        ):
+                        Text(
+                            "Online\nPatients",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis
+                        ),
                       ),
-                      Text("32",style :TextStyle(fontSize: 20)),
+                      Text("0",style :TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),

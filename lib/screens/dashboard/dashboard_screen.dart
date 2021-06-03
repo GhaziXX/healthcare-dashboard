@@ -1,3 +1,4 @@
+import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/responsive.dart';
@@ -51,6 +52,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget build(BuildContext context) {
+    bool connected = mqttClientWrapper.subscriptionState ==
+        MqttSubscriptionState.SUBSCRIBED;
     ScrollController _scrollController = ScrollController();
     return SafeArea(
       child: Scrollbar(
@@ -79,6 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           if (Responsive.isMobile(context))
                             GeneralDetails(
                               userData: widget.userData,
+                              connected: connected,
                             ),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
@@ -106,7 +110,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     if (!Responsive.isMobile(context))
                       Expanded(
                         flex: 2,
-                        child: GeneralDetails(userData: widget.userData),
+                        child: GeneralDetails(userData: widget.userData,connected: connected,),
                       )
                   ],
                 )

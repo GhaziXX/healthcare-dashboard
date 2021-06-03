@@ -71,8 +71,8 @@ class DoctorProfile extends StatelessWidget {
           padding: EdgeInsets.all(defaultPadding),
           child: StickyHeader(
             header: Header(
-              isDoctor: false,
-              userData: UserData(firstName: "Ghazi"),
+              isDoctor: userData.isDoctor,
+              userData: userData,
             ),
             content: Column(
               children: <Widget>[
