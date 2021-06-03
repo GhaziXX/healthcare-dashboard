@@ -41,7 +41,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       createRoom(
           types.User(
-              id: args.userData.otherIds[0],
+              id: args.otherData.id,
               firstName: args.userData.firstName,
               lastName: args.userData.lastName),
           context);

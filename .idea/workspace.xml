@@ -20,28 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3806bd37-35db-4268-be40-d2930bdc31af" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/backend/firebase/firestore_services.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/backend/firebase/firestore_services.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/graphs_models/ecg_graph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/graphs_models/ecg_graph.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/ScreenArgs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/ScreenArgs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/dropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/dropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/general_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/general_details.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/graph_info_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/graph_info_card.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/header.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/my_patients.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/my_patients.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/patients_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/patients_list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/realtime_graph.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/realtime_graph.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/components/tldr_filter_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/components/tldr_filter_card.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/dashboard_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/dashboard_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/doctor_dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/doctor_dashboard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/main/components/side_menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/main/components/side_menu.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/profile/doctor_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/profile/doctor_profile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/profile/profile_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/profile/profile_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/Doctor/doctorInfo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/Doctor/doctorInfo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/Patients/infos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/Patients/infos.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
