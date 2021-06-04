@@ -33,62 +33,64 @@ class _TempGraphState extends State<TempGraph> {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-    return Column(children: <Widget>[
-      Text("Temperature", style: Theme.of(context).textTheme.headline5),
-      SizedBox(
-        height: _size.height * 0.05,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.download_rounded),
-            onPressed: () {},
-            color: Colors.blue,
-            splashRadius: 0.5,
-          ),
-          IconButton(
-            icon: !pause ? Icon(Icons.pause) : Icon(Icons.play_arrow),
-            onPressed: () {
-              setState(() {
-                pause = !pause;
-              });
-            },
-            color: Colors.blue,
-            splashRadius: 0.5,
-          ),
-        ],
-      ),
-      SfCartesianChart(
-        plotAreaBorderWidth: 0,
-        primaryXAxis: DateTimeAxis(
-          majorGridLines: MajorGridLines(width: 0),
-          dateFormat: DateFormat.Hms(),
-          intervalType: DateTimeIntervalType.seconds,
+    return SingleChildScrollView(
+      child: Column(children: <Widget>[
+        Text("Temperature", style: Theme.of(context).textTheme.headline5),
+        SizedBox(
+          height: _size.height * 0.05,
         ),
-        primaryYAxis: NumericAxis(
-            minimum: 30,
-            maximum: 44,
-            axisLine: AxisLine(width: 0),
-            edgeLabelPlacement: EdgeLabelPlacement.shift,
-            labelFormat: '{value}°C',
-            majorTickLines: MajorTickLines(size: 0)),
-        series: <SplineSeries<_ChartData, DateTime>>[
-          SplineSeries<_ChartData, DateTime>(
-            onRendererCreated: (ChartSeriesController controller) {
-              _chartSeriesController = controller;
-            },
-            dataSource: chartData,
-            color: Colors.red,
-            xValueMapper: (_ChartData temp, _) => temp.x,
-            yValueMapper: (_ChartData temp, _) => temp.y,
-            animationDuration: 0,
-            name: 'Temperature',
-          )
-        ],
-        tooltipBehavior: TooltipBehavior(enable: true),
-      ),
-    ]);
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.download_rounded),
+              onPressed: () {},
+              color: Colors.blue,
+              splashRadius: 0.5,
+            ),
+            IconButton(
+              icon: !pause ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+              onPressed: () {
+                setState(() {
+                  pause = !pause;
+                });
+              },
+              color: Colors.blue,
+              splashRadius: 0.5,
+            ),
+          ],
+        ),
+        SfCartesianChart(
+          plotAreaBorderWidth: 0,
+          primaryXAxis: DateTimeAxis(
+            majorGridLines: MajorGridLines(width: 0),
+            dateFormat: DateFormat.Hms(),
+            intervalType: DateTimeIntervalType.seconds,
+          ),
+          primaryYAxis: NumericAxis(
+              minimum: 30,
+              maximum: 44,
+              axisLine: AxisLine(width: 0),
+              edgeLabelPlacement: EdgeLabelPlacement.shift,
+              labelFormat: '{value}°C',
+              majorTickLines: MajorTickLines(size: 0)),
+          series: <SplineSeries<_ChartData, DateTime>>[
+            SplineSeries<_ChartData, DateTime>(
+              onRendererCreated: (ChartSeriesController controller) {
+                _chartSeriesController = controller;
+              },
+              dataSource: chartData,
+              color: Colors.red,
+              xValueMapper: (_ChartData temp, _) => temp.x,
+              yValueMapper: (_ChartData temp, _) => temp.y,
+              animationDuration: 0,
+              name: 'Temperature',
+            )
+          ],
+          tooltipBehavior: TooltipBehavior(enable: true),
+        ),
+      ]),
+    );
   }
 
   void _updateDataSource(Timer timer) {

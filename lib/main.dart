@@ -4,9 +4,10 @@ import 'package:admin/screens/Doctor/doctorInfo.dart';
 import 'package:admin/screens/Patients/infos.dart';
 import 'package:admin/screens/Patients/patientDetails.dart';
 import 'package:admin/screens/main/main_screen.dart';
-import 'package:admin/screens/measures/all_in_one.dart';
-import 'package:admin/screens/measures/temperature_filter_screen.dart';
-import 'package:admin/screens/measures/tempgraph_screen.dart';
+import 'package:admin/screens/measures/realtime/all_in_one.dart';
+import 'package:admin/screens/measures/filters/temperature_filter_screen.dart';
+import 'package:admin/screens/measures/realtime/stress_screen.dart';
+import 'package:admin/screens/measures/realtime/tempgraph_screen.dart';
 import 'package:admin/screens/profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'backend/firebase/firestore_services.dart';
 import 'models/data_models/UserData.dart';
 import 'screens/authentification/auth_screen.dart';
-import 'screens/measures/all_in_one_filter_screen.dart';
-import 'screens/measures/ecg_screen.dart';
-import 'screens/measures/heartrate_filter_screen.dart';
-import 'screens/measures/heartrate_screen.dart';
-import 'screens/measures/spo2_filter_screen.dart';
-import 'screens/measures/spo2_screen.dart';
-import 'screens/measures/stress_filter_screen.dart';
-import 'screens/measures/temperature_screen.dart';
+import 'screens/measures/filters/all_in_one_filter_screen.dart';
+import 'screens/measures/realtime/ecg_screen.dart';
+import 'screens/measures/filters/heartrate_filter_screen.dart';
+import 'screens/measures/realtime/heartrate_screen.dart';
+import 'screens/measures/filters/spo2_filter_screen.dart';
+import 'screens/measures/realtime/spo2_screen.dart';
+import 'screens/measures/filters/stress_filter_screen.dart';
+import 'screens/measures/realtime/temperature_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,6 +70,7 @@ class _MyAppState extends State<MyApp> {
           '/heartrate': (context) => HeartScreen(),
           '/ECG': (context) => ECGScreen(),
           '/tempGraph': (context) => TempGraphScreen(),
+          '/stress' : (context) => StressScreen(),
           '/all': (context) => AllinOneScreen(),
           '/auth': (context) => AuthScreen(),
           '/allFilter': (context) => AllinOneFilterScreen(),
@@ -80,6 +82,7 @@ class _MyAppState extends State<MyApp> {
           '/patientDetails' : (context) => PatientDetails(),
           '/patientInfo' : (context) => PatientInfo(),
           '/doctorInfo' : (context) => DoctorInfo(),
+
         },
         home:
             //FilterCard(),

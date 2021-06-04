@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import '../../responsive.dart';
 import '../ScreenArgs.dart';
 
-import '../measures/all_in_one.dart';
 import 'doctor_profile.dart';
-
+ScreenArguments args;
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     Key key,
