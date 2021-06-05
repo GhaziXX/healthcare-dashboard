@@ -2,25 +2,20 @@ import 'package:admin/constants/constants.dart';
 import 'package:admin/models/GraphHolder.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
-import 'package:admin/screens/measures/filter_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
+import 'filter_card.dart';
 
-class Spo2FilterScreen extends StatefulWidget {
+class StressFilterScreen extends StatefulWidget {
   @override
-  _Spo2FilterScreenState createState() => _Spo2FilterScreenState();
+  _StressFilterScreenState createState() => _StressFilterScreenState();
 }
 
 ScreenArguments args;
 
-class _Spo2FilterScreenState extends State<Spo2FilterScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _StressFilterScreenState extends State<StressFilterScreen> {
   @override
   Widget build(BuildContext context) {
     args = ModalRoute.of(context).settings.arguments as ScreenArguments;
@@ -62,9 +57,9 @@ class _Spo2FilterScreenState extends State<Spo2FilterScreen> {
                               child: GraphHolder(
                                 child: FilterCard(
                                   data: args.oneGraphData,
-                                  title: "SPO2",
-                                  labelFormat: "{value}%",
-                                  min: 40,
+                                  title: "Stress",
+                                  labelFormat: "{value}",
+                                  min: 0,
                                   max: 100,
                                   interval: 10,
                                 ),

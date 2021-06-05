@@ -4,8 +4,8 @@ import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
 import 'filter_card.dart';
 
 class HeartrateFilterScreen extends StatefulWidget {

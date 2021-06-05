@@ -1,21 +1,21 @@
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/graphs_models/spo2_gauge.dart';
+import 'package:admin/models/graphs_models/temperature_gauge.dart';
 import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
 
-class SPO2Screen extends StatefulWidget {
+class TempScreen extends StatefulWidget {
   @override
-  const SPO2Screen({
+  const TempScreen({
     Key key,
   }) : super(key: key);
 
-  _SPO2ScreenState createState() => _SPO2ScreenState();
+  _TempScreenState createState() => _TempScreenState();
 }
 
 var data;
@@ -23,12 +23,7 @@ MQTTWrapper mqttClientWrapper;
 bool shouldInit = true;
 ScreenArguments args;
 
-class _SPO2ScreenState extends State<SPO2Screen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _TempScreenState extends State<TempScreen> {
   @override
   Widget build(BuildContext context) {
     if (shouldInit) {
@@ -46,9 +41,7 @@ class _SPO2ScreenState extends State<SPO2Screen> {
       mqttClientWrapper.prepareMqttClient();
       shouldInit = false;
     }
-
     Size _size = MediaQuery.of(context).size;
-
     return Scaffold(
       drawer: SideMenu(
         isDoctor: args.isDoctor,
@@ -60,10 +53,8 @@ class _SPO2ScreenState extends State<SPO2Screen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child: SideMenu(
-                  isDoctor: args.isDoctor,
-                  userData: args.userData,
-                ),
+                child:
+                    SideMenu(isDoctor: args.isDoctor, userData: args.userData),
               ),
             Expanded(
               flex: 5,
@@ -72,7 +63,10 @@ class _SPO2ScreenState extends State<SPO2Screen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Header(isDoctor: args.isDoctor, userData: args.userData),
+                      Header(
+                        isDoctor: args.isDoctor,
+                        userData: args.userData,
+                      ),
                       SizedBox(
                         height: _size.height * 0.1,
                       ),
@@ -84,9 +78,9 @@ class _SPO2ScreenState extends State<SPO2Screen> {
                               flex: 5,
                               child: mqttClientWrapper.connectionState ==
                                       MqttCurrentConnectionState.CONNECTED
-                                  ? SPO2Radial(
-                                      data != null ? data["spo2"] : 0.0)
-                                  : SPO2Radial(0.0),
+                                  ? TempGauge(
+                                      data != null ? data["temperature"] : 0)
+                                  : TempGauge(0),
                             ),
                           ],
                         ),

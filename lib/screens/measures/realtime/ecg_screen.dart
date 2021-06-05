@@ -1,21 +1,21 @@
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/graphs_models/temperature_gauge.dart';
+import 'package:admin/models/graphs_models/ecg_graph.dart';
 import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
 
-class TempScreen extends StatefulWidget {
+class ECGScreen extends StatefulWidget {
   @override
-  const TempScreen({
+  const ECGScreen({
     Key key,
   }) : super(key: key);
 
-  _TempScreenState createState() => _TempScreenState();
+  _ECGScreenState createState() => _ECGScreenState();
 }
 
 var data;
@@ -23,8 +23,7 @@ MQTTWrapper mqttClientWrapper;
 bool shouldInit = true;
 ScreenArguments args;
 
-class _TempScreenState extends State<TempScreen> {
-  @override
+class _ECGScreenState extends State<ECGScreen> {
   Widget build(BuildContext context) {
     if (shouldInit) {
       args = ModalRoute.of(context).settings.arguments as ScreenArguments;
@@ -53,8 +52,10 @@ class _TempScreenState extends State<TempScreen> {
           children: [
             if (Responsive.isDesktop(context))
               Expanded(
-                child:
-                    SideMenu(isDoctor: args.isDoctor, userData: args.userData),
+                child: SideMenu(
+                  isDoctor: args.isDoctor,
+                  userData: args.userData,
+                ),
               ),
             Expanded(
               flex: 5,
@@ -78,9 +79,10 @@ class _TempScreenState extends State<TempScreen> {
                               flex: 5,
                               child: mqttClientWrapper.connectionState ==
                                       MqttCurrentConnectionState.CONNECTED
-                                  ? TempGauge(
-                                      data != null ? data["temperature"] : 0)
-                                  : TempGauge(0),
+                                  ? ECGGraph(
+                                      ecg: data != null ? data["ecg"] : [],
+                                    )
+                                  : ECGGraph(ecg: []),
                             ),
                           ],
                         ),

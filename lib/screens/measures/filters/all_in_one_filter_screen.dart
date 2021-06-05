@@ -5,8 +5,9 @@ import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
 import 'filter_card.dart';
 
 class AllinOneFilterScreen extends StatefulWidget {

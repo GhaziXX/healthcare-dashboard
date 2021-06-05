@@ -28,11 +28,17 @@ class DashboardScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
+MqttCurrentConnectionState state;
 
 class _DashboardScreenState extends State<DashboardScreen> {
   void setup() {
     mqttClientWrapper = MQTTWrapper(
-        onConnectedCallback: () => print("connected"),
+        onConnectedCallback: () {
+          setState(() {
+            state = MqttCurrentConnectionState.CONNECTED;
+          });
+          print("connected");
+        },
         onDataReceivedCallback: (newDataJson) {
           if (mounted)
             setState(() {
@@ -47,13 +53,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     setup();
-    print("mqttstate is ${mqttClientWrapper.connectionState}");
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    bool connected = mqttClientWrapper.subscriptionState ==
-        MqttSubscriptionState.SUBSCRIBED;
+    bool connected =
+        mqttClientWrapper.subscriptionState == MqttSubscriptionState.SUBSCRIBED;
     ScrollController _scrollController = ScrollController();
     return SafeArea(
       child: Scrollbar(
@@ -81,8 +86,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           if (Responsive.isMobile(context))
                             GeneralDetails(
+                              state: state,
                               userData: widget.userData,
-                              connected: connected,
                             ),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
@@ -110,7 +115,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     if (!Responsive.isMobile(context))
                       Expanded(
                         flex: 2,
-                        child: GeneralDetails(userData: widget.userData,connected: connected,),
+                        child: GeneralDetails(
+                          state: state,
+                          userData: widget.userData,
+                        ),
                       )
                   ],
                 )

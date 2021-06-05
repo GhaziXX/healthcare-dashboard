@@ -1,19 +1,20 @@
 import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/data_models/UserData.dart';import 'package:admin/responsive.dart';
+import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 class MyPatients extends StatelessWidget {
   const MyPatients({
     @required this.isDoctor,
     @required this.userData,
     Key key,
+    this.patientsList,
   }) : super(key: key);
   final bool isDoctor;
   final UserData userData;
-
+  final List<dynamic> patientsList;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +31,19 @@ class MyPatients extends StatelessWidget {
               isDoctor: isDoctor,
               userData: userData,
               childAspectRatio: 2,
+              patientsList: patientsList,
             ),
             tablet: PatientInfoCardGridView(
-                userData: userData, isDoctor: isDoctor, childAspectRatio: 3),
+              userData: userData,
+              isDoctor: isDoctor,
+              childAspectRatio: 3,
+              patientsList: patientsList,
+            ),
             desktop: PatientInfoCardGridView(
               isDoctor: isDoctor,
               userData: userData,
               childAspectRatio: 4,
+              patientsList: patientsList,
             ))
       ],
     );
@@ -49,11 +56,13 @@ class PatientInfoCardGridView extends StatefulWidget {
     this.childAspectRatio = 1,
     @required this.userData,
     @required this.isDoctor,
+    @required this.patientsList,
   }) : super(key: key);
 
   final double childAspectRatio;
   final UserData userData;
   final bool isDoctor;
+  final List<dynamic> patientsList;
 
   @override
   _PatientInfoCardGridViewState createState() =>
@@ -61,30 +70,30 @@ class PatientInfoCardGridView extends StatefulWidget {
 }
 
 class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
+  int onlineNbr = 0;
 
-  List patientsList(UserData userData) {
-    List list = [];
-    if (userData.otherIds != null){
-      userData.otherIds.forEach((user) {
-        list.add(FirestoreServices().getUserData(uid: user));
+  void onlinePatient(UserData userData, List<dynamic> patientsList) {
+    if (patientsList != null) {
+      patientsList.forEach((element) {
+        FirestoreServices().getUserData(uid: element).then((value) {
+          if (value.isConnected)
+            setState(() {
+              onlineNbr++;
+            });
+        });
       });
     }
-    return list;
   }
-  int onlinePatient(UserData userData) {
-    List<UserData> list = [];
-    int onlineNbre =0;
-    if (userData.otherIds != null){
-      FirestoreServices().getUsersData(uid: userData.otherIds).then((value) => list = value);
-      list.forEach((element) {
-        if (element.isConnected) onlineNbre++;
-      });
-    }
-    return onlineNbre;
+
+  @override
+  void initState() {
+    onlinePatient(widget.userData, widget.patientsList);
+
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    List list = patientsList(widget.userData);
     return GridView(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -124,20 +133,22 @@ class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       FittedBox(
-                        child: !Responsive.isMobile(context) ?
-                        Text(
-                          "Total Patients",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ):
-                        Text(
-                          "Total\nPatients",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: !Responsive.isMobile(context)
+                            ? Text(
+                                "Total Patients",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Text(
+                                "Total\nPatients",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
-                      list.isNotEmpty ? Text(list.length.toString(),style :TextStyle(fontSize: 20))
-                          :Text("0",style :TextStyle(fontSize: 20)),
+                      widget.patientsList.isNotEmpty
+                          ? Text(widget.patientsList.length.toString(),
+                              style: TextStyle(fontSize: 20))
+                          : Text("0", style: TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),
@@ -174,18 +185,14 @@ class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       FittedBox(
-                        child: !Responsive.isMobile(context)? Text(
-                          "Online Patients",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis
-                        ):
-                        Text(
-                            "Online\nPatients",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis
-                        ),
+                        child: !Responsive.isMobile(context)
+                            ? Text("Online Patients",
+                                maxLines: 2, overflow: TextOverflow.ellipsis)
+                            : Text("Online\nPatients",
+                                maxLines: 2, overflow: TextOverflow.ellipsis),
                       ),
-                      Text("0",style :TextStyle(fontSize: 20)),
+                      Text(onlineNbr.toString(),
+                          style: TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),

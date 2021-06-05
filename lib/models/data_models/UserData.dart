@@ -17,6 +17,7 @@ class UserData {
   final String emergencyPhoneNumber;
   final String officePhoneNumber;
   final String officeAddress;
+  final String photoURL;
   UserData(
       {this.firstName,
       this.lastName,
@@ -35,7 +36,8 @@ class UserData {
       this.isConnected,
       this.emergencyPhoneNumber,
       this.officeAddress,
-      this.officePhoneNumber});
+      this.officePhoneNumber,
+      this.photoURL});
 
   UserData.fromJson(Map<String, dynamic> data)
       : this(
@@ -56,7 +58,8 @@ class UserData {
             isConnected: data['isConnected'] as bool,
             emergencyPhoneNumber: data['emergencyPhoneNumber'] as String,
             officeAddress: data['officeAddress'] as String,
-            officePhoneNumber: data['officePhoneNumber'] as String);
+            officePhoneNumber: data['officePhoneNumber'] as String,
+            photoURL: data["photoURL"] as String);
 
   Map<String, dynamic> toJson() {
     return {
@@ -77,7 +80,8 @@ class UserData {
       'isConnected': isConnected,
       'emergencyPhoneNumber': emergencyPhoneNumber,
       "officeAddress": officeAddress,
-      "officePhoneNumber": officePhoneNumber
+      "officePhoneNumber": officePhoneNumber,
+      "photoURL": photoURL,
     };
   }
 }

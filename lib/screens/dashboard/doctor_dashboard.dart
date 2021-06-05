@@ -7,7 +7,6 @@ import 'components/header.dart';
 import 'components/my_patients.dart';
 import 'components/patients_list.dart';
 
-
 class DoctorDashboard extends StatefulWidget {
   const DoctorDashboard({
     Key key,
@@ -23,6 +22,13 @@ class DoctorDashboard extends StatefulWidget {
 }
 
 class _DoctorDashboardState extends State<DoctorDashboard> {
+  List<dynamic> patientsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    patientsList = widget.userData.otherIds;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +60,21 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                           MyPatients(
                             isDoctor: widget.isDoctor,
                             userData: widget.userData,
+                            patientsList: patientsList,
                           ),
                           SizedBox(height: defaultPadding),
-                          PatientList(userData: widget.userData,),
+                          PatientList(
+                            userData: widget.userData,
+                            patientsList: patientsList,
+                            onPressed: (value) {
+                              setState(() {
+                                patientsList.add(value);
+                              });
+                            },
+                            onRemove: (value) {
+                              patientsList.remove(value);
+                            },
+                          ),
                         ],
                       ),
                     ),

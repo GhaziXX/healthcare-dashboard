@@ -20,7 +20,10 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = context.watch<AuthNotifier>();
     UserData doctorData;
-    if (userData.otherIds != null && userData.otherIds.length>0) FirestoreServices().getUserData(uid : userData.otherIds[0]).then((value) => doctorData = value);
+    if (userData.otherIds != null && userData.otherIds.length > 0)
+      FirestoreServices()
+          .getUserData(uid: userData.otherIds[0])
+          .then((value) => doctorData = value);
     return Drawer(
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -43,18 +46,21 @@ class SideMenu extends StatelessWidget {
                   title: "Doctor",
                   svgSrc: "assets/icons/menu_doctor.svg",
                   press: () {
-                    if (userData.otherIds != null && userData.otherIds.length>0) {
-                    Navigator.pushNamed(context, '/doctorInfo',
-                        arguments: ScreenArguments(isDoctor, userData, doctorData,null, null));}
-                    else Navigator.pushNamed(context, '/doctorInfo',
-                        arguments: ScreenArguments(isDoctor, userData, null,null, null));
+                    if (userData.otherIds != null &&
+                        userData.otherIds.length > 0) {
+                      Navigator.pushNamed(context, '/doctorInfo',
+                          arguments: ScreenArguments(
+                              isDoctor, userData, doctorData, null, null));
+                    } else
+                      Navigator.pushNamed(context, '/doctorInfo',
+                          arguments: ScreenArguments(
+                              isDoctor, userData, null, null, null));
                   },
                   usePath: true),
             DrawerListTile(
               title: "Report",
               svgSrc: "assets/icons/menu_report.svg",
-              press: () {
-              },
+              press: () {},
               usePath: true,
             ),
             DrawerListTile(
@@ -62,7 +68,8 @@ class SideMenu extends StatelessWidget {
               icon: Icons.account_circle_outlined,
               press: () {
                 Navigator.pushNamed(context, '/profile',
-                    arguments: ScreenArguments(isDoctor, userData, null, null, null));
+                    arguments:
+                        ScreenArguments(isDoctor, userData, null, null, null));
               },
               usePath: false,
             ),
@@ -70,8 +77,13 @@ class SideMenu extends StatelessWidget {
               title: "Logout",
               icon: Icons.logout,
               press: () {
-                signOut(authNotifier);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+                FirestoreServices()
+                    .setConnectionStatus(
+                        userId: userData.id, isConnected: false)
+                    .then((value) {
+                  signOut(authNotifier);
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                });
               },
               usePath: false,
             ),

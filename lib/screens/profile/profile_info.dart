@@ -32,26 +32,28 @@ class ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment:
-          !isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-      children: [
-        if (isMobile) SizedBox(height: defaultPadding * 2),
-        Text(
-          "Profile Info",
-          style: Theme.of(context).textTheme.headline6,
-        ),
-        SizedBox(height: defaultPadding * 2),
-        Center(
-            child: buildForm(
-          context,
-          controllers: controllers,
-          labels: labels,
-          hints: hints,
-          icons: icons,
-          isMobile: isMobile,
-        )),
-      ],
+    return Center(
+      child: Column(
+        crossAxisAlignment:
+            !isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        children: [
+          if (isMobile) SizedBox(height: defaultPadding * 2),
+          Text(
+            "Profile Info",
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(height: defaultPadding * 2),
+          Center(
+              child: buildForm(
+            context,
+            controllers: controllers,
+            labels: labels,
+            hints: hints,
+            icons: icons,
+            isMobile: isMobile,
+          )),
+        ],
+      ),
     );
   }
 

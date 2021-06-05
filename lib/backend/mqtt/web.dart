@@ -4,5 +4,5 @@ import 'package:admin/constants/mqtt_constants.dart' as CONST;
 
 MqttClient setup() {
   return MqttBrowserClient.withPort(
-      "ws://" + CONST.broker, CONST.clientIdentifier, CONST.webPort);
+      "wss://" + CONST.broker, CONST.clientIdentifier, CONST.webPort);
 }

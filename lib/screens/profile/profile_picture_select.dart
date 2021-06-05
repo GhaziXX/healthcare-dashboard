@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:admin/backend/firebase/authentification_services.dart';
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -116,6 +117,8 @@ class _ProfilePictureSelectState extends State<ProfilePictureSelect> {
               final reference = FirebaseStorage.instance.ref(imageName);
               await reference.child("$blob").putBlob(file);
               final uri = await reference.child("$blob").getDownloadURL();
+              FirestoreServices().updatePhotoURL(
+                  userId: FirebaseAuth.instance.currentUser.uid, url: uri);
               updateProfile(imageURI: uri).then((value) {
                 if (value == true) {
                   setState(() {
@@ -149,6 +152,9 @@ class _ProfilePictureSelectState extends State<ProfilePictureSelect> {
               setState(() {
                 image = getImage();
               });
+
+              FirestoreServices().updatePhotoURL(
+                  userId: FirebaseAuth.instance.currentUser.uid, url: uri);
             }
           });
         } on FirebaseException catch (e) {

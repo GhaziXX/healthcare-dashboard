@@ -1,12 +1,14 @@
 import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/constants/constants.dart';
-import 'package:admin/screens/Doctor/doctorInfo.dart';
-import 'package:admin/screens/Patients/infos.dart';
-import 'package:admin/screens/Patients/patientDetails.dart';
+import 'package:admin/screens/Doctor/doctor_info.dart';
+import 'package:admin/screens/Patients/patient_info.dart';
+import 'package:admin/screens/Patients/patient_details.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/measures/realtime/all_in_one.dart';
 import 'package:admin/screens/measures/filters/temperature_filter_screen.dart';
+
 import 'package:admin/screens/measures/realtime/stress_screen.dart';
+
 import 'package:admin/screens/measures/realtime/tempgraph_screen.dart';
 import 'package:admin/screens/profile/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -46,13 +46,31 @@ class MainProfileScreen extends StatelessWidget {
             height: defaultPadding * 2,
           ),
         if (!isMobile)
-          Row(
+          !userData.isDoctor?Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfilePhoto(
+                userData: userData,
                 isMobile: false,
               ),
               SizedBox(width: 7 * defaultPadding),
+              ProfileInfo(
+                controllers: controllers,
+                labels: labels,
+                hints: hints,
+                icons: icons,
+                isMobile: false,
+                userData: userData,
+              ),
+            ],
+          ):Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProfilePhoto(
+                userData: userData,
+                isMobile: false,
+              ),
+              SizedBox(width: 14 * defaultPadding),
               ProfileInfo(
                 controllers: controllers,
                 labels: labels,
@@ -69,6 +87,7 @@ class MainProfileScreen extends StatelessWidget {
             children: [
               ProfilePhoto(
                 isMobile: true,
+                userData: userData,
               ),
               SizedBox(width: 7 * defaultPadding),
               ProfileInfo(

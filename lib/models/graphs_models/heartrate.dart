@@ -38,49 +38,54 @@ class _HeartRateState extends State<HeartRate> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     if (widget.heartRate != 0) _heartAnimationController.forward();
-    return FittedBox(
+    return SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
       child: Column(
         children: [
           Text("Heart Rate", style: Theme.of(context).textTheme.headline5),
-          Center(
-            child: Align(
-              child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                AnimatedBuilder(
-                  animation: _heartAnimationController,
-                  builder: (context, child) {
-                    return Center(
-                      child: SizedBox(
-                        child: Center(
-                          child: Stack(
-                              alignment: AlignmentDirectional.center,
-                              children: [
-                                Icon(
-                                  Icons.favorite,
-                                  color: primaryColor,
-                                  size: Responsive.isMobile(context) ? 2.05 * _heartAnimation.value : 1.45* _heartAnimation.value,
-                                ),
-                                Icon(
-                                  Icons.favorite,
-                                  color: secondaryColor,
-                                  size: Responsive.isMobile(context) ? 2.0 * _heartAnimation.value : 1.4* _heartAnimation.value,
-                                ),
-                              ]),
+          FittedBox(
+            child: Center(
+              child: Align(
+                child: Stack(alignment: AlignmentDirectional.center, children: [
+                  AnimatedBuilder(
+                    animation: _heartAnimationController,
+                    builder: (context, child) {
+                      return Center(
+                        child: SizedBox(
+                          child: Center(
+                            child: Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: primaryColor,
+                                    size: Responsive.isMobile(context)
+                                        ? 2.05 * _heartAnimation.value
+                                        : 1.45 * _heartAnimation.value,
+                                  ),
+                                  Icon(
+                                    Icons.favorite,
+                                    color: secondaryColor,
+                                    size: Responsive.isMobile(context)
+                                        ? 2.0 * _heartAnimation.value
+                                        : 1.4 * _heartAnimation.value,
+                                  ),
+                                ]),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-                Text(
-                  widget.heartRate.toString() + '\nbpm',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      .apply(color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ]),
+                      );
+                    },
+                  ),
+                  Text(
+                    widget.heartRate.toString() + '\nbpm',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        .apply(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ]),
+              ),
             ),
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:admin/backend/mqtt/mqtt_model.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:admin/screens/dashboard/components/dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,11 +12,11 @@ class GeneralDetails extends StatefulWidget {
   const GeneralDetails({
     Key key,
     @required this.userData,
-    @required this.connected
+    this.state,
   }) : super(key: key);
 
   final UserData userData;
-  final bool connected;
+  final MqttCurrentConnectionState state;
 
   @override
   _GeneralDetailsState createState() => _GeneralDetailsState();
@@ -29,6 +30,8 @@ class _GeneralDetailsState extends State<GeneralDetails> {
 
   @override
   Widget build(BuildContext context) {
+    //print("state is ${widget.state}");
+    bool connected = widget.state == MqttCurrentConnectionState.CONNECTED;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,11 +56,11 @@ class _GeneralDetailsState extends State<GeneralDetails> {
             children: [
               GeneralInfoCard(
                 title: "Connection",
-                details: widget.connected ? "Connected" : "Disconnected",
-                icon: widget.connected
+                details: connected ? "Connected" : "Disconnected",
+                icon: connected
                     ? Icons.check_circle_outline
                     : Icons.cancel_outlined,
-                color: widget.connected ? Colors.green : Colors.red,
+                color: connected ? Colors.green : Colors.red,
               ),
               GeneralInfoCard(
                   title: "Battery",
@@ -81,6 +84,15 @@ class _GeneralDetailsState extends State<GeneralDetails> {
                 itemTitles: ["Turn off", "Reboot"],
                 itemColor: [Colors.redAccent, Colors.greenAccent],
                 itemCallbacks: [
+                  // MQTTWrapper(
+                  //                     onConnectedCallback: () {},
+                  //                     onDataReceivedCallback: (_) {},
+                  //                     isPublish: true,
+                  //                     user: "")
+                  //                 .publishMessage(
+                  //                     uid: authNotifier.user.uid,
+                  //                     gid: _gidController.text,
+                  //                     topic: "Healthcare/userids"),
                   /* mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",
                       command: "s" ),
                   mqttClientWrapper.publishMessage(topic:"Healthcare/${widget.userData.id}${widget.userData.gid}/commands",

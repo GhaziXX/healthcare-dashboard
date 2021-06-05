@@ -15,18 +15,18 @@ class APIServices {
     http.Response response;
     if (startDate != null && startTime != null) {
       response = await http
-          .get(Uri.http('healthcare-api-server.herokuapp.com', '/users/$gid', {
+          .get(Uri.https('healthcare-api-server.herokuapp.com', '/users/$gid', {
         "start_date": startDate,
         "end_date": endDate,
         "start_time": startTime,
         "end_time": endTime
       }));
     } else if (startDate == null && startTime != null) {
-      response = await http.get(Uri.http('healthcare-api-server.herokuapp.com',
+      response = await http.get(Uri.https('healthcare-api-server.herokuapp.com',
           '/users/$gid', {"start_time": startTime, "end_time": endTime}));
     } else if (startDate != null && startTime == null) {
       response = await http
-          .get(Uri.http('healthcare-api-server.herokuapp.com', '/users/$gid', {
+          .get(Uri.https('healthcare-api-server.herokuapp.com', '/users/$gid', {
         "start_date": startDate,
         "end_date": endDate,
       }));

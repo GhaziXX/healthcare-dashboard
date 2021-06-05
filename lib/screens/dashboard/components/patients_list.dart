@@ -1,16 +1,25 @@
 import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/responsive.dart';
 import 'package:admin/screens/ScreenArgs.dart';
 import 'package:flutter/material.dart';
+import 'package:ndialog/ndialog.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PatientList extends StatefulWidget {
   const PatientList({
     @required this.userData,
     Key key,
+    this.onPressed,
+    @required this.patientsList,
+    @required this.onRemove,
   }) : super(key: key);
 
   final UserData userData;
+  final Function(String) onPressed;
+  final List<dynamic> patientsList;
+  final Function(String) onRemove;
 
   @override
   _PatientListState createState() => _PatientListState();
@@ -18,9 +27,14 @@ class PatientList extends StatefulWidget {
 
 class _PatientListState extends State<PatientList> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  TextEditingController _patientId = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    List list = widget.userData.otherIds;
-    TextEditingController _addPatient = TextEditingController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,40 +43,83 @@ class _PatientListState extends State<PatientList> {
           children: [
             Text("My patients", style: Theme.of(context).textTheme.subtitle1),
             Spacer(),
-            Expanded(
-              child: TextField(
-                controller: _addPatient,
-                decoration: InputDecoration(
-                    fillColor: secondaryColor,
-                    hintText: "Add Patient",
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    ),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        FirestoreServices()
-                            .addOtherId(
-                                currentUserId: widget.userData.id,
-                                otherID: _addPatient.text.toString())
-                            .then((value) => print("result is $value"));
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(defaultPadding * 0.5),
-                        margin: EdgeInsets.symmetric(
-                            horizontal: defaultPadding / 2,
-                            vertical: defaultPadding / 2),
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Icon(Icons.add),
-                      ),
-                    )),
+
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(defaultPadding * 0.5),
+                margin: EdgeInsets.symmetric(
+                    horizontal: defaultPadding / 2,
+                    vertical: defaultPadding / 2),
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                child: !Responsive.isMobile(context)
+                    ? Row(
+                        children: [Icon(Icons.add), Text('Add Patient')],
+                      )
+                    : Icon(Icons.add),
               ),
-            )
+              onTap: () {
+                NDialog(
+                  dialogStyle:
+                      DialogStyle(titleDivider: true, backgroundColor: bgColor),
+                  title: Center(child: Text("Add a patient")),
+                  content: TextFormField(
+                    controller: _patientId,
+                    style: TextStyle(color: Colors.white, fontSize: 8.sp),
+                    decoration: InputDecoration(
+                      fillColor: secondaryColor,
+                      prefixIcon: Icon(Icons.fingerprint),
+                      hintText: "Please enter your patient ID",
+                      labelText: "PatientID",
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      //filled: true
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.red,
+                      ),
+                      label: Text("Cancel"),
+                    ),
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          String id = "";
+                          FirestoreServices()
+                              .getUserId(
+                                  first4: _patientId.text.substring(0, 4),
+                                  gid: _patientId.text.substring(4))
+                              .then((value) {
+                            id = value;
+                            FirestoreServices()
+                                .addOtherId(
+                                    currentUserId: widget.userData.id,
+                                    otherID: value)
+                                .then((value) {
+                              setState(() {
+                                widget.onPressed(id);
+                              });
+                            });
+                          });
+
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.add_circle,
+                        ),
+                        label: Text("Add"))
+                  ],
+                ).show(context, transitionType: DialogTransitionType.Bubble);
+              },
+            ),
           ],
         ),
         SizedBox(height: defaultPadding),
@@ -72,33 +129,66 @@ class _PatientListState extends State<PatientList> {
             color: secondaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                  width: double.infinity,
-                  child: DataTable(
+          child: SizedBox(
+              width: double.infinity,
+              child: widget.patientsList != null
+                  ? DataTable(
+                      sortColumnIndex: 0,
+                      sortAscending: true,
                       columnSpacing: defaultPadding,
                       horizontalMargin: 0,
                       columns: [
                         DataColumn(label: Text("Name")),
                         DataColumn(label: Text("Gadget")),
                       ],
-                      rows: List.generate(
-                        list.length,
-                        (index) => realtimeGraphDataRow(list[index], widget.userData,context),
-                      )))
-            ],
-          ),
+                      rows: widget.patientsList.length == 0
+                          ? [
+                              DataRow(cells: [
+                                DataCell(
+                                  Text("No Available patients"),
+                                ),
+                                DataCell(Container()),
+                              ])
+                            ]
+                          : List.generate(
+                              widget.patientsList.length,
+                              (index) => patientDataRow(
+                                widget.patientsList[index],
+                                widget.userData,
+                                context,
+                              ),
+                            ),
+                    )
+                  : DataTable(
+                      columnSpacing: defaultPadding,
+                      horizontalMargin: 0,
+                      columns: [
+                          DataColumn(label: Text("Name")),
+                          DataColumn(label: Text("Gadget")),
+                        ],
+                      rows: [
+                          DataRow(cells: [
+                            DataCell(
+                              Text("No Available patients"),
+                            ),
+                            DataCell(Container()),
+                          ])
+                        ])),
         ),
       ],
     );
   }
 }
 
-DataRow realtimeGraphDataRow(String uid,UserData userData,BuildContext context) {
+DataRow patientDataRow(
+  String uid,
+  UserData userData,
+  BuildContext context,
+) {
   UserData patientData;
-  FirestoreServices().getUserData(uid :uid).then((value) => patientData = value);
+  FirestoreServices()
+      .getUserData(uid: uid)
+      .then((value) => patientData = value);
   return DataRow(cells: [
     DataCell(
       FutureBuilder(
@@ -117,12 +207,18 @@ DataRow realtimeGraphDataRow(String uid,UserData userData,BuildContext context) 
                 ],
               );
             }
-            return Text("No Available Patients");
+            if (!snapshot.hasData &&
+                snapshot.connectionState == ConnectionState.done) {
+              return Text("No Available Patients");
+            }
+            return CircularProgressIndicator();
           }),
       onTap: () {
         Navigator.pushNamed(context, '/patientInfo',
-            arguments: ScreenArguments(true, userData, patientData,null, null));
+            arguments:
+                ScreenArguments(true, userData, patientData, null, null));
       },
+      
     ),
     DataCell(
       FutureBuilder(
@@ -132,8 +228,22 @@ DataRow realtimeGraphDataRow(String uid,UserData userData,BuildContext context) 
                 snapshot.connectionState == ConnectionState.done) {
               return Text(snapshot.data.gid);
             }
-            return Container();
+            if (!snapshot.hasData &&
+                snapshot.connectionState == ConnectionState.done) {
+              return Text("No Available Patients");
+            }
+            return CircularProgressIndicator();
+            //return Container();
           }),
-    )
+      onTap: () {
+        Navigator.pushNamed(context, '/patientInfo',
+            arguments:
+                ScreenArguments(true, userData, patientData, null, null));
+      },
+      // onLongPress:()
+      // {
+
+      // }
+    ),
   ]);
 }

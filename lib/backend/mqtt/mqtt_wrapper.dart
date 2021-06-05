@@ -35,7 +35,6 @@ class MQTTWrapper {
     }
   }
 
-
   void _subscribeToTopic(String topic) {
     if (connectionState == MqttCurrentConnectionState.CONNECTED) {
       print('MQTTWrapper::Subscribing to ${topic.trim()}...');

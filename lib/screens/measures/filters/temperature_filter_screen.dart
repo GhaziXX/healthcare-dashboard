@@ -1,46 +1,26 @@
 import 'package:admin/constants/constants.dart';
-import 'package:admin/models/graphs_models/heartrate.dart';
-import 'package:admin/backend/mqtt/mqtt_model.dart';
-import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
+import 'package:admin/models/GraphHolder.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
+import 'filter_card.dart';
 
-class HeartScreen extends StatefulWidget {
+class TemperatureFilterScreen extends StatefulWidget {
   @override
-  const HeartScreen({
-    Key key,
-  }) : super(key: key);
-
-  _HeartScreenState createState() => _HeartScreenState();
+  _TemperatureFilterScreenState createState() =>
+      _TemperatureFilterScreenState();
 }
 
-var data;
-MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
 ScreenArguments args;
 
-class _HeartScreenState extends State<HeartScreen> {
+class _TemperatureFilterScreenState extends State<TemperatureFilterScreen> {
   @override
   Widget build(BuildContext context) {
-    if (shouldInit) {
-      args = ModalRoute.of(context).settings.arguments as ScreenArguments;
-      mqttClientWrapper = MQTTWrapper(
-          onDataReceivedCallback: (newDataJson) {
-            if (mounted)
-              setState(() {
-                data = newDataJson;
-              });
-          },
-          isPublish: false,
-          onConnectedCallback: () {},
-          user: "Healthcare/" + args.userData.id + args.userData.gid);
-      mqttClientWrapper.prepareMqttClient();
-      shouldInit = false;
-    }
+    args = ModalRoute.of(context).settings.arguments as ScreenArguments;
+
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: SideMenu(
@@ -65,12 +45,9 @@ class _HeartScreenState extends State<HeartScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Header(
-                        isDoctor: args.isDoctor,
-                        userData: args.userData
-                      ),
+                      Header(isDoctor: args.isDoctor, userData: args.userData),
                       SizedBox(
-                        height: _size.height * 0.1
+                        height: _size.height * 0.1,
                       ),
                       Center(
                         child: Row(
@@ -78,12 +55,16 @@ class _HeartScreenState extends State<HeartScreen> {
                           children: [
                             Expanded(
                               flex: 5,
-                              child: mqttClientWrapper.connectionState ==
-                                      MqttCurrentConnectionState.CONNECTED
-                                  ? HeartRate(
-                                      data != null ? data["heartrate"] : 0,
-                                    )
-                                  : HeartRate(0),
+                              child: GraphHolder(
+                                child: FilterCard(
+                                  data: args.oneGraphData,
+                                  title: "Temperature",
+                                  labelFormat: "{value}°C",
+                                  min: 30,
+                                  max: 44,
+                                  interval: 5,
+                                ),
+                              ),
                             ),
                           ],
                         ),
