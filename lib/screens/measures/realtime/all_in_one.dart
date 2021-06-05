@@ -1,5 +1,3 @@
-import 'package:admin/backend/mqtt/mqtt_model.dart';
-import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/GraphHolder.dart';
 import 'package:admin/models/graphs_models/ecg_graph.dart';
@@ -7,22 +5,24 @@ import 'package:admin/models/graphs_models/heartrate.dart';
 import 'package:admin/models/graphs_models/spo2_gauge.dart';
 import 'package:admin/models/graphs_models/stress_gauge.dart';
 import 'package:admin/models/graphs_models/temperature_gauge.dart';
+import 'package:admin/backend/mqtt/mqtt_model.dart';
+import 'package:admin/backend/mqtt/mqtt_wrapper.dart';
 import 'package:admin/models/graphs_models/temperature_graph.dart';
 import 'package:admin/screens/dashboard/components/header.dart';
-import 'package:admin/screens/dashboard/components/report.dart';
+
 import 'package:admin/screens/main/components/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
-import '../../responsive.dart';
-import '../ScreenArgs.dart';
 
-class PatientDetails extends StatefulWidget {
+import '../../../responsive.dart';
+import '../../ScreenArgs.dart';
+
+class AllinOneScreen extends StatefulWidget {
   @override
-  const PatientDetails({
+  const AllinOneScreen({
     Key key,
   }) : super(key: key);
-
-  _PatientDetailsState createState() => _PatientDetailsState();
+  _AllinOneScreenState createState() => _AllinOneScreenState();
 }
 
 var data;
@@ -30,7 +30,7 @@ MQTTWrapper mqttClientWrapper;
 bool shouldInit = true;
 ScreenArguments args;
 
-class _PatientDetailsState extends State<PatientDetails> {
+class _AllinOneScreenState extends State<AllinOneScreen> {
   @override
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _PatientDetailsState extends State<PatientDetails> {
           },
           isPublish: false,
           onConnectedCallback: () {},
-          user: "Healthcare/" + args.otherData.id + args.otherData.gid);
+          user: "Healthcare/" + args.userData.id + args.userData.gid);
       mqttClientWrapper.prepareMqttClient();
       shouldInit = false;
     }
@@ -88,56 +88,55 @@ class _PatientDetailsState extends State<PatientDetails> {
                         children: [
                           Expanded(
                             flex: 5,
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  SizedBox(height: _size.height * 0.1),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: _size.height * 0.1,
+                                ),
+                                Responsive(
+                                    mobile: GraphGridView(
+                                      crossAxisCount: _size.width < 650 ? 1 : 2,
+                                      childAspectRatio:
+                                          _size.width < 650 ? 1.1 : 1,
+                                    ),
+                                    tablet: GraphGridView(),
+                                    desktop: GraphGridView(
+                                      crossAxisCount: 2,
+                                      childAspectRatio:2 ,
+                                    )),
+                                SizedBox(
+                                  height: defaultPadding,
+                                ),
+                                if (!Responsive.isMobile(context))
                                   Responsive(
-                                      mobile: GraphGridView(
-                                        crossAxisCount: _size.width < 650 ? 1 : 2,
-                                        childAspectRatio:
-                                        _size.width < 650 ? 1.1 : 1,
-                                      ),
-                                      tablet: GraphGridView(),
-                                      desktop: GraphGridView(
-                                        crossAxisCount: 2,
-                                        childAspectRatio:2 ,
-                                      )),
-                                  SizedBox(
-                                    height: defaultPadding,
-                                  ),
-                                  if (!Responsive.isMobile(context))
-                                    Responsive(
-                                        mobile: Container(),
-                                        tablet: GraphHolder(
-                                            child: ECGGraph(
-                                                ecg: data != null
-                                                    ? data["ecg"]
-                                                    : [])),
-                                        desktop: GraphHolder(
-                                            child: ECGGraph(
-                                                ecg: data != null
-                                                    ? data["ecg"]
-                                                    : []))),
-                                  if (!Responsive.isMobile(context))
-                                    Responsive(
-                                        mobile: Container(),
-                                        tablet: GraphHolder(
-                                            child: TempGraph(
-                                                temp: data != null
-                                                    ? data["temperature"]
-                                                    : 0)),
-                                        desktop: GraphHolder(
-                                            child: TempGraph(
-                                                temp: data != null
-                                                    ? data["temperature"]
-                                                    : 0))),
-                                  Report(
-                                    userData: args.userData,
-                                    isDoctor: args.isDoctor,
-                                  ),
-                                ],
-                              ),
+                                      mobile: Container(),
+                                      tablet: GraphHolder(
+                                          child: ECGGraph(
+                                              ecg: data != null
+                                                  ? data["ecg"]
+                                                  : [])),
+                                      desktop: GraphHolder(
+                                          child: ECGGraph(
+                                              ecg: data != null
+                                                  ? data["ecg"]
+                                                  : []))),
+                                SizedBox(
+                                  height: defaultPadding,
+                                ),
+                                if (!Responsive.isMobile(context))
+                                  Responsive(
+                                      mobile: Container(),
+                                      tablet: GraphHolder(
+                                          child: TempGraph(
+                                              temp: data != null
+                                                  ? data["temperature"]
+                                                  : 0)),
+                                      desktop: GraphHolder(
+                                          child: TempGraph(
+                                              temp: data != null
+                                                  ? data["temperature"]
+                                                  : 0))),
+                              ],
                             ),
                           ),
                         ],
@@ -184,7 +183,6 @@ class _GraphGridViewState extends State<GraphGridView> {
         ECGGraph(ecg: data != null ? data["ecg"] : []),
       if (Responsive.isMobile(context))
         TempGraph(temp: data != null ? data["temperature"] : 0)
-
     ];
     List<Widget> zeros = [
       SPO2Radial(0),
@@ -193,7 +191,6 @@ class _GraphGridViewState extends State<GraphGridView> {
       StressGauge(0),
       if (Responsive.isMobile(context)) ECGGraph(ecg: []),
       if (Responsive.isMobile(context)) TempGraph(temp: 0)
-
     ];
     return mqttClientWrapper.connectionState ==
             MqttCurrentConnectionState.CONNECTED
@@ -225,3 +222,4 @@ class _GraphGridViewState extends State<GraphGridView> {
           );
   }
 }
+
