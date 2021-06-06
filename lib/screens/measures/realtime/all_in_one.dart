@@ -28,10 +28,11 @@ class AllinOneScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
 ScreenArguments args;
 
 class _AllinOneScreenState extends State<AllinOneScreen> {
+  bool shouldInit = true;
+
   @override
   void initState() {
     super.initState();
@@ -103,8 +104,7 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
                                     tablet: GraphGridView(),
                                     desktop: GraphGridView(
                                       crossAxisCount: 2,
-                                      childAspectRatio:2 ,
-
+                                      childAspectRatio: 2,
                                     )),
                                 SizedBox(
                                   height: defaultPadding,
@@ -138,7 +138,6 @@ class _AllinOneScreenState extends State<AllinOneScreen> {
                                               temp: data != null
                                                   ? data["temperature"]
                                                   : 0))),
-
                               ],
                             ),
                           ),
@@ -160,7 +159,6 @@ class GraphGridView extends StatefulWidget {
   const GraphGridView(
       {Key key,
       this.crossAxisCount = 2,
-
       this.childAspectRatio = 1,
       this.isDoctor})
       : super(key: key);
@@ -182,14 +180,11 @@ class _GraphGridViewState extends State<GraphGridView> {
         data != null ? data["heartrate"] : 0,
       ),
       TempGauge(data != null ? data["temperature"] : 0),
-
       StressGauge(data != null ? data["stress"] : 0),
       if (Responsive.isMobile(context))
         ECGGraph(ecg: data != null ? data["ecg"] : []),
       if (Responsive.isMobile(context))
         TempGraph(temp: data != null ? data["temperature"] : 0)
-
-
     ];
     List<Widget> zeros = [
       SPO2Radial(0),
@@ -198,7 +193,6 @@ class _GraphGridViewState extends State<GraphGridView> {
       StressGauge(0),
       if (Responsive.isMobile(context)) ECGGraph(ecg: []),
       if (Responsive.isMobile(context)) TempGraph(temp: 0)
-
     ];
     return mqttClientWrapper.connectionState ==
             MqttCurrentConnectionState.CONNECTED
@@ -230,4 +224,3 @@ class _GraphGridViewState extends State<GraphGridView> {
           );
   }
 }
-

@@ -115,6 +115,19 @@ class FirestoreServices {
     return datas;
   }
 
+  Future<bool> deleteIdInOthersId({String currentId, String otherId}) async {
+    try {
+      await _usersCollectionReference.doc(currentId).update({
+        'otherIds': FieldValue.arrayRemove([otherId])
+      }).then((value) {
+        return true;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
   Future<List<UserData>> getUsersDataFromCurrentUserId(
       {String currentUid}) async {
     List<UserData> userDatas;

@@ -57,12 +57,13 @@ class SideMenu extends StatelessWidget {
                           arguments: ScreenArguments(
                               isDoctor, userData, null, null, null));
                   },
-                  usePath: true),
+                  usePath: false),
             DrawerListTile(
               title: "Report",
               icon: FontAwesomeIcons.filePrescription,
+              
               press: () {},
-              usePath: true,
+              usePath: false,
             ),
             DrawerListTile(
               title: "Profile",

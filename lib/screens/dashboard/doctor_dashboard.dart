@@ -1,3 +1,4 @@
+import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -73,8 +74,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             },
                             onRemove: (value) {
                               setState(() {
-                                print(value);
                                 patientsList.remove(value);
+                                FirestoreServices().deleteIdInOthersId(
+                                    currentId: widget.userData.id,
+                                    otherId: value).then((value) => print(value));
                               });
                             },
                           ),

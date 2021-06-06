@@ -66,7 +66,6 @@ class _DoctorInfoState extends State<DoctorInfo> {
     _future1 = FirestoreServices().getUserData(uid: args.userData.id);
 
     ScrollController _scrollController = ScrollController();
-    Size _size = MediaQuery.of(context).size;
 
     return Scaffold(
       drawer: SideMenu(
@@ -176,208 +175,230 @@ class _DoctorInfoState extends State<DoctorInfo> {
                                   }
                                   if (snapshot.hasData) {
                                     print('snapshot ${snapshot.data.otherIds}');
-                                    if (snapshot.data.otherIds.isNotEmpty) {
-                                      return FutureBuilder<UserData>(
-                                          future: FirestoreServices()
-                                              .getUserData(
-                                                  uid: snapshot
-                                                      .data.otherIds[0]),
-                                          builder: (context, snapshot1) {
-                                            if (snapshot1.hasData) {
-                                              print("behiiiiii");
-                                              return Container(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                        height: defaultPadding),
-                                                    Stack(children: [
-                                                      CircleAvatar(
-                                                        radius: 70.0,
-                                                        backgroundImage: snapshot1
-                                                                    .data
-                                                                    .photoURL !=
-                                                                null
-                                                            ? NetworkImage(
-                                                                snapshot1.data
-                                                                    .photoURL)
-                                                            : AssetImage(
-                                                                "assets/images/user.png"),
-                                                      ),
-                                                      Positioned(
-                                                        right: 10,
-                                                        bottom: 10,
-                                                        child: Icon(
-                                                          Icons.circle,
-                                                          color: isConnected
-                                                              ? Colors.green
-                                                              : Colors.red,
-                                                        ),
-                                                      ),
-                                                    ]),
-                                                    SizedBox(
-                                                        height: defaultPadding),
-                                                    Text(
-                                                        snapshot1.data
-                                                                .firstName +
-                                                            ' ' +
-                                                            snapshot1
-                                                                .data.lastName,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline5
-                                                            .copyWith(
-                                                                fontSize: 30)),
-                                                    SizedBox(
-                                                        height:
-                                                            defaultPadding / 4),
-                                                    Text(
-                                                        snapshot1
-                                                            .data.speciality,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline5
-                                                            .copyWith(
-                                                                fontSize: 20)),
-                                                    SizedBox(
-                                                        height:
-                                                            defaultPadding * 2),
-                                                    Container(
-                                                      child: Center(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            if (Responsive
-                                                                .isMobile(
-                                                                    context))
-                                                              Info(
-                                                                  userData:
-                                                                      snapshot1
-                                                                          .data,
-                                                                  isMobile:
-                                                                      true),
-                                                            if (!Responsive
-                                                                .isMobile(
-                                                                    context))
-                                                              Info(
-                                                                  userData:
-                                                                      snapshot1
-                                                                          .data,
-                                                                  isMobile:
-                                                                      false),
-                                                            SizedBox(
-                                                                height:
-                                                                    defaultPadding),
-                                                            Text("Chat",
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .subtitle1),
-                                                            if (Responsive
-                                                                .isDesktop(
-                                                                    context))
-                                                              SizedBox(
-                                                                height: 400,
-                                                                width: 600,
-                                                                child: ChatRoom(
-                                                                  roomId: id,
-                                                                ),
-                                                              ),
-                                                            if (Responsive
-                                                                .isTablet(
-                                                                    context))
-                                                              SizedBox(
-                                                                height: 400,
-                                                                width: 600,
-                                                                child: ChatRoom(
-                                                                  roomId: id,
-                                                                ),
-                                                              ),
-                                                            if (Responsive
-                                                                .isMobile(
-                                                                    context))
-                                                              SizedBox(
-                                                                height: 400,
-                                                                width: 400,
-                                                                child: ChatRoom(
-                                                                  roomId: id,
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            }
+                                    if (snapshot.data.otherIds != null) {
+                                      print(
+                                          'snapshot value is ${snapshot.data.otherIds} and ena here');
 
-                                            return Center(
-                                                child: Container(
-                                                    child:
-                                                        CircularProgressIndicator()));
-                                          });
-                                    } else {
-                                      return Center(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                                "You don't have a doctor ! Add one"),
-                                            SizedBox(height: defaultPadding),
-                                            TextField(
-                                              controller: _addPatient,
-                                              decoration: InputDecoration(
-                                                  fillColor: secondaryColor,
-                                                  hintText: "Add Doctor",
-                                                  filled: true,
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide.none,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                10)),
-                                                  ),
-                                                  suffixIcon: InkWell(
-                                                    onTap: () {
-                                                      FirestoreServices()
-                                                          .addOtherId(
-                                                              currentUserId:
-                                                                  args.userData
-                                                                      .id,
-                                                              otherID: _addPatient
-                                                                  .text
-                                                                  .toString())
-                                                          .then((value) =>
-                                                              setState(() {
-                                                                updated = value;
-                                                              }));
-                                                    },
-                                                    child: Container(
-                                                      padding: EdgeInsets.all(
-                                                          defaultPadding * 0.5),
-                                                      margin: EdgeInsets.symmetric(
-                                                          horizontal:
+                                      if (snapshot.data.otherIds.isNotEmpty) {
+                                        return FutureBuilder<UserData>(
+                                            future: FirestoreServices()
+                                                .getUserData(
+                                                    uid: snapshot
+                                                        .data.otherIds[0]),
+                                            builder: (context, snapshot1) {
+                                              if (snapshot1.hasData) {
+                                                print("behiiiiii");
+                                                return Container(
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                          height:
+                                                              defaultPadding),
+                                                      Stack(children: [
+                                                        CircleAvatar(
+                                                          radius: 70.0,
+                                                          backgroundImage: snapshot1
+                                                                      .data
+                                                                      .photoURL !=
+                                                                  null
+                                                              ? NetworkImage(
+                                                                  snapshot1.data
+                                                                      .photoURL)
+                                                              : AssetImage(
+                                                                  "assets/images/user.png"),
+                                                        ),
+                                                        Positioned(
+                                                          right: 10,
+                                                          bottom: 10,
+                                                          child: Icon(
+                                                            Icons.circle,
+                                                            color: isConnected
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                      SizedBox(
+                                                          height:
+                                                              defaultPadding),
+                                                      Text(
+                                                          snapshot1.data
+                                                                  .firstName +
+                                                              ' ' +
+                                                              snapshot1.data
+                                                                  .lastName,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .headline5
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          30)),
+                                                      SizedBox(
+                                                          height:
                                                               defaultPadding /
-                                                                  2,
-                                                          vertical:
-                                                              defaultPadding /
+                                                                  4),
+                                                      Text(
+                                                          snapshot1
+                                                              .data.speciality,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .headline5
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          20)),
+                                                      SizedBox(
+                                                          height:
+                                                              defaultPadding *
                                                                   2),
-                                                      decoration: BoxDecoration(
-                                                        color: primaryColor,
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10)),
+                                                      Container(
+                                                        child: Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              if (Responsive
+                                                                  .isMobile(
+                                                                      context))
+                                                                Info(
+                                                                    userData:
+                                                                        snapshot1
+                                                                            .data,
+                                                                    isMobile:
+                                                                        true),
+                                                              if (!Responsive
+                                                                  .isMobile(
+                                                                      context))
+                                                                Info(
+                                                                    userData:
+                                                                        snapshot1
+                                                                            .data,
+                                                                    isMobile:
+                                                                        false),
+                                                              SizedBox(
+                                                                  height:
+                                                                      defaultPadding),
+                                                              Text("Chat",
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subtitle1),
+                                                              if (Responsive
+                                                                  .isDesktop(
+                                                                      context))
+                                                                SizedBox(
+                                                                  height: 400,
+                                                                  width: 600,
+                                                                  child:
+                                                                      ChatRoom(
+                                                                    roomId: id,
+                                                                  ),
+                                                                ),
+                                                              if (Responsive
+                                                                  .isTablet(
+                                                                      context))
+                                                                SizedBox(
+                                                                  height: 400,
+                                                                  width: 600,
+                                                                  child:
+                                                                      ChatRoom(
+                                                                    roomId: id,
+                                                                  ),
+                                                                ),
+                                                              if (Responsive
+                                                                  .isMobile(
+                                                                      context))
+                                                                SizedBox(
+                                                                  height: 400,
+                                                                  width: 400,
+                                                                  child:
+                                                                      ChatRoom(
+                                                                    roomId: id,
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
-                                                      child: Icon(Icons.add),
+                                                    ],
+                                                  ),
+                                                );
+                                              }
+
+                                              return Center(
+                                                  child: Container(
+                                                      child:
+                                                          CircularProgressIndicator()));
+                                            });
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                  "You don't have a doctor ! Add one"),
+                                              SizedBox(height: defaultPadding),
+                                              TextField(
+                                                controller: _addPatient,
+                                                decoration: InputDecoration(
+                                                    fillColor: secondaryColor,
+                                                    hintText: "Add Doctor",
+                                                    filled: true,
+                                                    border: OutlineInputBorder(
+                                                      borderSide:
+                                                          BorderSide.none,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  10)),
                                                     ),
-                                                  )),
-                                            )
-                                          ],
-                                        ),
-                                      );
+                                                    suffixIcon: InkWell(
+                                                      onTap: () {
+                                                        FirestoreServices()
+                                                            .addOtherId(
+                                                                currentUserId:
+                                                                    args.userData
+                                                                        .id,
+                                                                otherID: _addPatient
+                                                                    .text
+                                                                    .toString())
+                                                            .then((value) =>
+                                                                setState(() {
+                                                                  updated =
+                                                                      value;
+                                                                }));
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            defaultPadding *
+                                                                0.5),
+                                                        margin: EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                defaultPadding /
+                                                                    2,
+                                                            vertical:
+                                                                defaultPadding /
+                                                                    2),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: primaryColor,
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                        ),
+                                                        child: Icon(Icons.add),
+                                                      ),
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                   }
                                   return Center(

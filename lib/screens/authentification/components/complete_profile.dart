@@ -226,22 +226,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
           ),
         ),
         SizedBox(
-          height: 32,
-        ),
-        TextFormField(
-          controller: _gidController,
-          style: TextStyle(color: Colors.white, fontSize: 10.sp),
-          keyboardType: TextInputType.streetAddress,
-          validator:
-              FieldValidator.required(message: "Please enter your product id"),
-          decoration: const InputDecoration(
-            labelText: "product id",
-            prefixIcon: Icon(
-              Icons.fingerprint,
-            ),
-          ),
-        ),
-        SizedBox(
           height: 24,
         ),
         DateTimePicker(
@@ -308,6 +292,23 @@ class _CompleteProfileState extends State<CompleteProfile> {
         SizedBox(
           height: 4,
         ),
+        if (!_isDoctor)
+          TextFormField(
+            controller: _gidController,
+            style: TextStyle(color: Colors.white, fontSize: 10.sp),
+            keyboardType: TextInputType.streetAddress,
+            validator: FieldValidator.required(
+                message: "Please enter your product id"),
+            decoration: const InputDecoration(
+              labelText: "product id",
+              prefixIcon: Icon(
+                Icons.fingerprint,
+              ),
+            ),
+          ),
+        SizedBox(
+          height: 24,
+        ),
         if (_isDoctor)
           FastDropdown(
             autovalidateMode: AutovalidateMode.disabled,
@@ -334,11 +335,11 @@ class _CompleteProfileState extends State<CompleteProfile> {
             ? SizedBox(
                 height: 300,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                  style: TextStyle(color: Colors.white, fontSize: 7.sp),
                   keyboardType: TextInputType.multiline,
                   controller: _doctorBioController,
                   maxLines: 99,
-                  maxLength: 1000,
+                  maxLength: 5000,
                   validator: FieldValidator.required(
                       message: "Please enter a short description"),
                   decoration: const InputDecoration(

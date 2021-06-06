@@ -43,7 +43,7 @@ class ProfileInputBox extends StatelessWidget {
               height: 200,
               child: TextFormField(
                 maxLines: 99,
-                maxLength: 3000,
+                maxLength: 5000,
                 keyboardType: TextInputType.multiline,
                 controller: value,
                 style: TextStyle(color: Colors.white, fontSize: 8.sp),

@@ -17,9 +17,7 @@ class ProfilePhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return !isMobile
         ? Row(
-            crossAxisAlignment: userData.isDoctor
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfilePictureSelect(
                 isMobile: false,
@@ -70,6 +68,25 @@ class ProfilePhoto extends StatelessWidget {
                                     fontWeight: FontWeight.w400)),
                       ],
                     ),
+                  if (userData.isDoctor)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Doctor ID: ",
+                          style: Theme.of(context).textTheme.headline5.copyWith(
+                              fontSize: 6.sp, fontWeight: FontWeight.bold),
+                        ),
+                        SelectableText(userData.id,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(
+                                    fontSize: 6.sp,
+                                    fontWeight: FontWeight.w400)),
+                      ],
+                    ),
                 ],
               ),
             ],
@@ -91,32 +108,64 @@ class ProfilePhoto extends StatelessWidget {
                   userData.firstName + " " + userData.lastName,
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Gadget ID: ",
-                        style: Theme.of(context).textTheme.headline5.copyWith(
-                            fontSize: 6.sp, fontWeight: FontWeight.bold)),
-                    SelectableText(userData.gid,
-                        style: Theme.of(context).textTheme.headline5.copyWith(
-                            fontSize: 6.sp, fontWeight: FontWeight.w400)),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "User ID: ",
-                      style: Theme.of(context).textTheme.headline5.copyWith(
-                          fontSize: 6.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SelectableText(userData.id.substring(0, 4),
-                        style: Theme.of(context).textTheme.headline5.copyWith(
-                            fontSize: 6.sp, fontWeight: FontWeight.w400)),
-                  ],
-                ),
+                if (!userData.isDoctor)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Gadget ID: ",
+                          style: Theme.of(context).textTheme.headline5.copyWith(
+                              fontSize: 6.sp, fontWeight: FontWeight.bold)),
+                      SelectableText(userData.gid,
+                          style: Theme.of(context).textTheme.headline5.copyWith(
+                              fontSize: 6.sp, fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                !userData.isDoctor
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "User ID: ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(
+                                    fontSize: 6.sp,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                          SelectableText(userData.id.substring(0, 4),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      fontSize: 6.sp,
+                                      fontWeight: FontWeight.w400)),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Doctor ID: ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(
+                                    fontSize: 6.sp,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                          SelectableText(userData.id,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                      fontSize: 6.sp,
+                                      fontWeight: FontWeight.w400)),
+                        ],
+                      ),
               ],
             ),
           );
