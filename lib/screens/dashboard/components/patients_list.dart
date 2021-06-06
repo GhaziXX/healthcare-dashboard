@@ -1,6 +1,7 @@
 import 'package:admin/backend/firebase/firestore_services.dart';
 import 'package:admin/constants/constants.dart';
 import 'package:admin/models/data_models/UserData.dart';
+import 'package:admin/models/snackbar.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/ScreenArgs.dart';
 import 'package:flutter/material.dart';
@@ -97,16 +98,25 @@ class _PatientListState extends State<PatientList> {
                                   first4: _patientId.text.substring(0, 4),
                                   gid: _patientId.text.substring(4))
                               .then((value) {
-                            id = value;
-                            FirestoreServices()
-                                .addOtherId(
-                                    currentUserId: widget.userData.id,
-                                    otherID: value)
-                                .then((value) {
-                              setState(() {
-                                widget.onPressed(id);
+                            if (value == "No user found") {
+                              SnackbarMessage(
+                                message: "No user found with this ID",
+                                icon: Icon(Icons.error, color: Colors.red),
+                              ).showMessage(
+                                context,
+                              );
+                            } else {
+                              id = value;
+                              FirestoreServices()
+                                  .addOtherId(
+                                      currentUserId: widget.userData.id,
+                                      otherID: value)
+                                  .then((value) {
+                                setState(() {
+                                  widget.onPressed(id);
+                                });
                               });
-                            });
+                            }
                           });
 
                           Navigator.pop(context);
@@ -192,104 +202,97 @@ DataRow patientDataRow(
       .then((value) => patientData = value);
   return DataRow(cells: [
     DataCell(
-      FutureBuilder(
-          future: FirestoreServices().getUserData(uid: uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              return Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: defaultPadding),
-                    child: Text(
-                        snapshot.data.firstName + ' ' + snapshot.data.lastName),
-                  )
-                ],
-              );
-            }
-            if (!snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              return Text("No Available Patients");
-            }
-            return CircularProgressIndicator();
-          }),
-      onTap: () {
-        Navigator.pushNamed(context, '/patientInfo',
-            arguments:
-                ScreenArguments(true, userData, patientData, null, null));
-      },
-        onLongPress: () {
-          NDialog(
-            dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
-            title: Center(child: Text("Remove a patient")),
-            content: Text("Are you sure?"),
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                ),
-                label: Text("Cancel"),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    onRemove(patientData.id);
-                    Navigator.pop(context);
-                  },
-                  child: Text("Yes"))
-            ],
-          ).show(context, transitionType: DialogTransitionType.Bubble);
-        }
-    ),
-    DataCell(
-      FutureBuilder(
-          future: FirestoreServices().getUserData(uid: uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              return Text(snapshot.data.gid);
-            }
-            if (!snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              return Text("No Available Patients");
-            }
-            return CircularProgressIndicator();
-            //return Container();
-          }),
-      onTap: () {
-        Navigator.pushNamed(context, '/patientInfo',
-            arguments:
-                ScreenArguments(true, userData, patientData, null, null));
-      },
-      onLongPress: () {
-        NDialog(
-          dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
-          title: Center(child: Text("Remove a patient")),
-          content: Text("Are you sure?"),
-          actions: [
-            ElevatedButton.icon(
+        FutureBuilder(
+            future: FirestoreServices().getUserData(uid: uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding),
+                      child: Text(snapshot.data.firstName +
+                          ' ' +
+                          snapshot.data.lastName),
+                    )
+                  ],
+                );
+              }
+              if (!snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return Text("No Available Patients");
+              }
+              return CircularProgressIndicator();
+            }), onTap: () {
+      Navigator.pushNamed(context, '/patientInfo',
+          arguments: ScreenArguments(true, userData, patientData, null, null));
+    }, onLongPress: () {
+      NDialog(
+        dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
+        title: Center(child: Text("Remove a patient")),
+        content: Text("Are you sure?"),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.red,
+            ),
+            label: Text("Cancel"),
+          ),
+          ElevatedButton(
               onPressed: () {
+                onRemove(patientData.id);
                 Navigator.pop(context);
               },
-              icon: Icon(
-                Icons.cancel,
-                color: Colors.red,
-              ),
-              label: Text("Cancel"),
+              child: Text("Yes"))
+        ],
+      ).show(context, transitionType: DialogTransitionType.Bubble);
+    }),
+    DataCell(
+        FutureBuilder(
+            future: FirestoreServices().getUserData(uid: uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return Text(snapshot.data.gid);
+              }
+              if (!snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return Text("No Available Patients");
+              }
+              return CircularProgressIndicator();
+              //return Container();
+            }), onTap: () {
+      Navigator.pushNamed(context, '/patientInfo',
+          arguments: ScreenArguments(true, userData, patientData, null, null));
+    }, onLongPress: () {
+      NDialog(
+        dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
+        title: Center(child: Text("Remove a patient")),
+        content: Text("Are you sure?"),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.red,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  onRemove(patientData.id);
-                  Navigator.pop(context);
-                },
-                child: Text("Yes"))
-          ],
-        ).show(context, transitionType: DialogTransitionType.Bubble);
-      }
-    ),
+            label: Text("Cancel"),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                onRemove(patientData.id);
+                Navigator.pop(context);
+              },
+              child: Text("Yes"))
+        ],
+      ).show(context, transitionType: DialogTransitionType.Bubble);
+    }),
   ]);
 }

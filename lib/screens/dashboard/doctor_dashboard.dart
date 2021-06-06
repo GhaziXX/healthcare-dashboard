@@ -69,15 +69,18 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                             patientsList: patientsList,
                             onPressed: (value) {
                               setState(() {
-                                patientsList.add(value);
+                                if (!patientsList.contains(value))
+                                  patientsList.add(value);
                               });
                             },
                             onRemove: (value) {
                               setState(() {
                                 patientsList.remove(value);
-                                FirestoreServices().deleteIdInOthersId(
-                                    currentId: widget.userData.id,
-                                    otherId: value).then((value) => print(value));
+                                FirestoreServices()
+                                    .deleteIdInOthersId(
+                                        currentId: widget.userData.id,
+                                        otherId: value)
+                                    .then((value) => print(value));
                               });
                             },
                           ),
