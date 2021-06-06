@@ -7,3 +7,5 @@ enum MqttCurrentConnectionState {
 }
 
 enum MqttSubscriptionState { IDLE, SUBSCRIBED }
+
+enum MqttGettingDataState { GETTING, IDLE }

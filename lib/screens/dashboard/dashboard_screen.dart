@@ -57,8 +57,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget build(BuildContext context) {
-    bool connected =
-        mqttClientWrapper.subscriptionState == MqttSubscriptionState.SUBSCRIBED;
     ScrollController _scrollController = ScrollController();
     return SafeArea(
       child: Scrollbar(
@@ -88,6 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             GeneralDetails(
                               state: state,
                               userData: widget.userData,
+                              state2: mqttClientWrapper.recievingState,
                             ),
                           if (Responsive.isMobile(context))
                             SizedBox(height: defaultPadding),
@@ -117,6 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         flex: 2,
                         child: GeneralDetails(
                           state: state,
+                          state2: mqttClientWrapper.recievingState,
                           userData: widget.userData,
                         ),
                       )

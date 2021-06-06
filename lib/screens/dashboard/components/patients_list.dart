@@ -43,7 +43,6 @@ class _PatientListState extends State<PatientList> {
           children: [
             Text("My patients", style: Theme.of(context).textTheme.subtitle1),
             Spacer(),
-
             InkWell(
               child: Container(
                 padding: EdgeInsets.all(defaultPadding * 0.5),
@@ -156,6 +155,7 @@ class _PatientListState extends State<PatientList> {
                                 widget.patientsList[index],
                                 widget.userData,
                                 context,
+                                widget.onRemove,
                               ),
                             ),
                     )
@@ -184,6 +184,7 @@ DataRow patientDataRow(
   String uid,
   UserData userData,
   BuildContext context,
+  Function(String) onRemove,
 ) {
   UserData patientData;
   FirestoreServices()
@@ -218,7 +219,6 @@ DataRow patientDataRow(
             arguments:
                 ScreenArguments(true, userData, patientData, null, null));
       },
-      
     ),
     DataCell(
       FutureBuilder(
@@ -240,9 +240,30 @@ DataRow patientDataRow(
             arguments:
                 ScreenArguments(true, userData, patientData, null, null));
       },
-      // onLongPress:()
-      // {
-
+      //onLongPress: () {
+      //   NDialog(
+      //     dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
+      //     title: Center(child: Text("Remove a patient")),
+      //     content: Text("Are you sure?"),
+      //     actions: [
+      //       ElevatedButton.icon(
+      //         onPressed: () {
+      //           Navigator.pop(context);
+      //         },
+      //         icon: Icon(
+      //           Icons.cancel,
+      //           color: Colors.red,
+      //         ),
+      //         label: Text("Cancel"),
+      //       ),
+      //       ElevatedButton(
+      //           onPressed: () {
+      //             onRemove(patientData.id);
+      //             Navigator.pop(context);
+      //           },
+      //           child: Text("Yes"))
+      //     ],
+      //   ).show(context, transitionType: DialogTransitionType.Bubble);
       // }
     ),
   ]);

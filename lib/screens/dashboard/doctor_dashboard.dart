@@ -72,7 +72,10 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
                               });
                             },
                             onRemove: (value) {
-                              patientsList.remove(value);
+                              setState(() {
+                                print(value);
+                                patientsList.remove(value);
+                              });
                             },
                           ),
                         ],

@@ -145,10 +145,11 @@ class _PatientInfoCardGridViewState extends State<PatientInfoCardGridView> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                       ),
-                      widget.patientsList.isNotEmpty
-                          ? Text(widget.patientsList.length.toString(),
-                              style: TextStyle(fontSize: 20))
-                          : Text("0", style: TextStyle(fontSize: 20)),
+                      if (widget.patientsList != null)
+                        widget.patientsList.isNotEmpty
+                            ? Text(widget.patientsList.length.toString(),
+                                style: TextStyle(fontSize: 20))
+                            : Text("0", style: TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),

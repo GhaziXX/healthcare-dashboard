@@ -19,6 +19,7 @@ class MQTTWrapper {
 
   MqttCurrentConnectionState connectionState = MqttCurrentConnectionState.IDLE;
   MqttSubscriptionState subscriptionState = MqttSubscriptionState.IDLE;
+  MqttGettingDataState recievingState = MqttGettingDataState.IDLE;
 
   MQTTWrapper(
       {this.onConnectedCallback,
@@ -39,7 +40,10 @@ class MQTTWrapper {
     if (connectionState == MqttCurrentConnectionState.CONNECTED) {
       print('MQTTWrapper::Subscribing to ${topic.trim()}...');
       client.subscribe(topic, MqttQos.atLeastOnce);
-      client.updates.listen(_onMessage);
+      client.updates.listen(
+        _onMessage,
+      );
+      recievingState = MqttGettingDataState.IDLE;
     }
   }
 
@@ -63,6 +67,7 @@ class MQTTWrapper {
   }
 
   void _onMessage(List<MqttReceivedMessage> event) {
+    recievingState = MqttGettingDataState.GETTING;
     final MqttPublishMessage recMess = event[0].payload;
     final String message =
         MqttPublishPayload.bytesToStringAsString(recMess.payload.message);

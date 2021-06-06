@@ -3,6 +3,7 @@ import 'package:admin/backend/notifiers/auth_notifier.dart';
 import 'package:admin/models/data_models/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:admin/backend/firebase/firestore_services.dart';
 import '../../ScreenArgs.dart';
@@ -44,7 +45,7 @@ class SideMenu extends StatelessWidget {
             if (!isDoctor)
               DrawerListTile(
                   title: "Doctor",
-                  svgSrc: "assets/icons/menu_doctor.svg",
+                  icon: FontAwesomeIcons.userMd,
                   press: () {
                     if (userData.otherIds != null &&
                         userData.otherIds.length > 0) {
@@ -59,7 +60,7 @@ class SideMenu extends StatelessWidget {
                   usePath: true),
             DrawerListTile(
               title: "Report",
-              svgSrc: "assets/icons/menu_report.svg",
+              icon: FontAwesomeIcons.filePrescription,
               press: () {},
               usePath: true,
             ),
