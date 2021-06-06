@@ -219,6 +219,31 @@ DataRow patientDataRow(
             arguments:
                 ScreenArguments(true, userData, patientData, null, null));
       },
+        onLongPress: () {
+          NDialog(
+            dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
+            title: Center(child: Text("Remove a patient")),
+            content: Text("Are you sure?"),
+            actions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+                label: Text("Cancel"),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    onRemove(patientData.id);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Yes"))
+            ],
+          ).show(context, transitionType: DialogTransitionType.Bubble);
+        }
     ),
     DataCell(
       FutureBuilder(
@@ -240,31 +265,31 @@ DataRow patientDataRow(
             arguments:
                 ScreenArguments(true, userData, patientData, null, null));
       },
-      //onLongPress: () {
-      //   NDialog(
-      //     dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
-      //     title: Center(child: Text("Remove a patient")),
-      //     content: Text("Are you sure?"),
-      //     actions: [
-      //       ElevatedButton.icon(
-      //         onPressed: () {
-      //           Navigator.pop(context);
-      //         },
-      //         icon: Icon(
-      //           Icons.cancel,
-      //           color: Colors.red,
-      //         ),
-      //         label: Text("Cancel"),
-      //       ),
-      //       ElevatedButton(
-      //           onPressed: () {
-      //             onRemove(patientData.id);
-      //             Navigator.pop(context);
-      //           },
-      //           child: Text("Yes"))
-      //     ],
-      //   ).show(context, transitionType: DialogTransitionType.Bubble);
-      // }
+      onLongPress: () {
+        NDialog(
+          dialogStyle: DialogStyle(titleDivider: true, backgroundColor: bgColor),
+          title: Center(child: Text("Remove a patient")),
+          content: Text("Are you sure?"),
+          actions: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.cancel,
+                color: Colors.red,
+              ),
+              label: Text("Cancel"),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  onRemove(patientData.id);
+                  Navigator.pop(context);
+                },
+                child: Text("Yes"))
+          ],
+        ).show(context, transitionType: DialogTransitionType.Bubble);
+      }
     ),
   ]);
 }
