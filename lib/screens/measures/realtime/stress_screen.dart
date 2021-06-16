@@ -20,10 +20,11 @@ class StressScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _StressScreenState extends State<StressScreen> {
+  bool shouldInit = true;
   @override
   Widget build(BuildContext context) {
     if (shouldInit) {

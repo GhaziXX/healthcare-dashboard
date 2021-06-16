@@ -20,10 +20,11 @@ class ECGScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _ECGScreenState extends State<ECGScreen> {
+  bool shouldInit = true;
   Widget build(BuildContext context) {
     if (shouldInit) {
       args = ModalRoute.of(context).settings.arguments as ScreenArguments;

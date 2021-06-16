@@ -21,6 +21,7 @@ class ProfilePhoto extends StatelessWidget {
             children: [
               ProfilePictureSelect(
                 isMobile: false,
+                userId: userData.id,
               ),
               SizedBox(
                 width: defaultPadding,
@@ -100,6 +101,7 @@ class ProfilePhoto extends StatelessWidget {
                   borderRadius: 60.0,
                   circleRadius: 45.0,
                   isMobile: true,
+                  userId: userData.id,
                 ),
                 SizedBox(
                   height: defaultPadding * 2,

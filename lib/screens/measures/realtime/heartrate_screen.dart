@@ -20,10 +20,11 @@ class HeartScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _HeartScreenState extends State<HeartScreen> {
+  bool shouldInit = true;
   @override
   Widget build(BuildContext context) {
     if (shouldInit) {

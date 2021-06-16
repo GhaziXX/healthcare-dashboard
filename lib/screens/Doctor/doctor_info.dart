@@ -106,6 +106,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
                                   print("data ${snapshot.data}");
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
+                                    print("ena ndour");
                                     return Center(
                                       child: Container(
                                         child: CircularProgressIndicator(),
@@ -400,6 +401,64 @@ class _DoctorInfoState extends State<DoctorInfo> {
                                         );
                                       }
                                     }
+                                    return Center(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                              "You don't have a doctor ! Add one"),
+                                          SizedBox(height: defaultPadding),
+                                          TextField(
+                                            controller: _addPatient,
+                                            decoration: InputDecoration(
+                                                fillColor: secondaryColor,
+                                                hintText: "Add Doctor",
+                                                filled: true,
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                ),
+                                                suffixIcon: InkWell(
+                                                  onTap: () {
+                                                    FirestoreServices()
+                                                        .addOtherId(
+                                                            currentUserId: args
+                                                                .userData.id,
+                                                            otherID: _addPatient
+                                                                .text
+                                                                .toString())
+                                                        .then((value) =>
+                                                            setState(() {
+                                                              updated = value;
+                                                            }));
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(
+                                                        defaultPadding * 0.5),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                defaultPadding /
+                                                                    2,
+                                                            vertical:
+                                                                defaultPadding /
+                                                                    2),
+                                                    decoration: BoxDecoration(
+                                                      color: primaryColor,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                    ),
+                                                    child: Icon(Icons.add),
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                    );
                                   }
                                   return Center(
                                       child: Container(

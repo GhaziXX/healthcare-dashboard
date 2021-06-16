@@ -27,10 +27,11 @@ class PatientDetails extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _PatientDetailsState extends State<PatientDetails> {
+  bool shouldInit = true;
   @override
   void initState() {
     super.initState();
@@ -140,7 +141,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                     height: defaultPadding,
                                   ),
                                   Report(
-                                    userData: args.userData,
+                                    userData: args.otherData,
                                     isDoctor: args.isDoctor,
                                   ),
                                 ],

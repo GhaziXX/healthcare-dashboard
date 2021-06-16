@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hovering/hovering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:html' as dh;
+import 'package:universal_html/html.dart' as dh;
 
 class ProfilePictureSelect extends StatefulWidget {
   const ProfilePictureSelect({
@@ -17,10 +17,12 @@ class ProfilePictureSelect extends StatefulWidget {
     this.borderRadius = 100.0,
     this.circleRadius = 70.0,
     @required this.isMobile,
+    @required this.userId,
   }) : super(key: key);
   final double borderRadius;
   final double circleRadius;
   final bool isMobile;
+  final String userId;
 
   @override
   _ProfilePictureSelectState createState() => _ProfilePictureSelectState();
@@ -118,7 +120,7 @@ class _ProfilePictureSelectState extends State<ProfilePictureSelect> {
               await reference.child("$blob").putBlob(file);
               final uri = await reference.child("$blob").getDownloadURL();
               FirestoreServices().updatePhotoURL(
-                  userId: FirebaseAuth.instance.currentUser.uid, url: uri);
+                  userId: widget.userId, url: uri);
               updateProfile(imageURI: uri).then((value) {
                 if (value == true) {
                   setState(() {
@@ -148,13 +150,14 @@ class _ProfilePictureSelectState extends State<ProfilePictureSelect> {
           await reference.putFile(file);
           final uri = await reference.getDownloadURL();
           updateProfile(imageURI: uri).then((value) {
+            FirestoreServices().updatePhotoURL(
+                  userId: widget.userId, url: uri);
             if (value == true) {
               setState(() {
                 image = getImage();
               });
 
-              FirestoreServices().updatePhotoURL(
-                  userId: FirebaseAuth.instance.currentUser.uid, url: uri);
+              
             }
           });
         } on FirebaseException catch (e) {

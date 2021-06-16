@@ -20,10 +20,11 @@ class TempScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _TempScreenState extends State<TempScreen> {
+  bool shouldInit = true;
   @override
   Widget build(BuildContext context) {
     if (shouldInit) {

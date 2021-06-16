@@ -381,14 +381,16 @@ class _GeneralDetailsState extends State<GeneralDetails> {
         SizedBox(
           height: defaultPadding,
         ),
-        if (Responsive.isDesktop(context) || _size.width > 850)
-          SizedBox(
-            height: 400,
-            width: 600,
-            child: ChatRoom(
-              roomId: id,
+        if ((Responsive.isDesktop(context) || _size.width > 850) &&
+            widget.userData.otherIds != null)
+          if (widget.userData.otherIds.isNotEmpty)
+            SizedBox(
+              height: 400,
+              width: 600,
+              child: ChatRoom(
+                roomId: id,
+              ),
             ),
-          ),
       ],
     );
   }

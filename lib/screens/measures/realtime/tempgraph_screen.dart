@@ -20,10 +20,11 @@ class TempGraphScreen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _TempGraphScreenState extends State<TempGraphScreen> {
+  bool shouldInit = true;
   Widget build(BuildContext context) {
     if (shouldInit) {
       args = ModalRoute.of(context).settings.arguments as ScreenArguments;

@@ -20,10 +20,11 @@ class SPO2Screen extends StatefulWidget {
 
 var data;
 MQTTWrapper mqttClientWrapper;
-bool shouldInit = true;
+
 ScreenArguments args;
 
 class _SPO2ScreenState extends State<SPO2Screen> {
+  bool shouldInit = true;
   @override
   void initState() {
     super.initState();

@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
           '/heartrate': (context) => HeartScreen(),
           '/ECG': (context) => ECGScreen(),
           '/tempGraph': (context) => TempGraphScreen(),
-          '/stress' : (context) => StressScreen(),
+          '/stress': (context) => StressScreen(),
           '/all': (context) => AllinOneScreen(),
           '/auth': (context) => AuthScreen(),
           '/allFilter': (context) => AllinOneFilterScreen(),
@@ -81,10 +81,9 @@ class _MyAppState extends State<MyApp> {
           '/filteredStress': (context) => StressFilterScreen(),
           '/filteredHeartrate': (context) => HeartrateFilterScreen(),
           '/profile': (context) => ProfileScreen(),
-          '/patientDetails' : (context) => PatientDetails(),
-          '/patientInfo' : (context) => PatientInfo(),
-          '/doctorInfo' : (context) => DoctorInfo(),
-
+          '/patientDetails': (context) => PatientDetails(),
+          '/patientInfo': (context) => PatientInfo(),
+          '/doctorInfo': (context) => DoctorInfo(),
         },
         home:
             //FilterCard(),

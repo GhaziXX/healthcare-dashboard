@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:html' as dh;
+import 'package:universal_html/html.dart' as dh;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
